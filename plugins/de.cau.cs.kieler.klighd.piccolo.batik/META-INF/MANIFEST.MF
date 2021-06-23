@@ -9,14 +9,11 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
  lib/batik.jar,
  lib/lib/batik-dom.jar,
- lib/lib/batik-ext.jar,
  lib/lib/batik-svg-dom.jar,
  lib/lib/batik-svggen.jar,
  lib/lib/batik-util.jar,
  lib/lib/batik-awt-util.jar,
  lib/lib/batik-css.jar,
- lib/lib/xml-apis-ext.jar,
- lib/lib/xml-apis.jar,
  lib/lib/batik-xml.jar,
  lib/lib/batik-parser.jar,
  lib/lib/batik-anim.jar,
@@ -30,6 +27,5 @@ Bundle-ClassPath: .,
  lib/lib/batik-transcoder.jar,
  lib/lib/js.jar,
  lib/lib/pdf-transcoder.jar,
- lib/lib/xalan-2.6.0.jar,
- lib/lib/xerces_2_5_0.jar
+ lib/lib/xalan-2.6.0.jar
 Automatic-Module-Name: de.cau.cs.kieler.klighd.piccolo.batik
