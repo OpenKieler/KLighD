@@ -16,7 +16,9 @@ package de.cau.cs.kieler.klighd.ui.printing.dialog;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.printing.PrinterData;
@@ -78,12 +80,12 @@ final class OrientationBlock {
 
         final SelectObservableValue<Integer> orientationGroupValue = new SelectObservableValue<>(realm);
         
-        var observerPortrait = WidgetProperties.<Button, Boolean>widgetSelection().observe(portraitRadio); // SWTObservables.observeSelection(portraitRadio);
+        ISWTObservableValue<Boolean> observerPortrait = WidgetProperties.<Button, Boolean>widgetSelection().observe(portraitRadio); // SWTObservables.observeSelection(portraitRadio);
         orientationGroupValue.addOption(PrinterData.PORTRAIT, observerPortrait);
-        var observeLandscape = WidgetProperties.<Button, Boolean>widgetSelection().observe(landscapeRadio); // SWTObservables.observeSelection(landscapeRadio);
+        ISWTObservableValue<Boolean> observeLandscape = WidgetProperties.<Button, Boolean>widgetSelection().observe(landscapeRadio); // SWTObservables.observeSelection(landscapeRadio);
         orientationGroupValue.addOption(PrinterData.LANDSCAPE, observeLandscape);
 
-        var observeOrientation = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ORIENTATION)
+        IObservableValue<Object> observeOrientation = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ORIENTATION)
                 .observe(realm, options);
         // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ORIENTATION);
         bindings.bindValue(orientationGroupValue, observeOrientation);

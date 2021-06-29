@@ -30,6 +30,7 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
@@ -104,7 +105,7 @@ final class CopiesBlock {
         final IObservableValue<Object> copiesValue = 
                 BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_COPIES).observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COPIES);
-        var copiesObservation = WidgetProperties.widgetSelection().observe(copiesSpinner); //SWTObservables.observeSelection(copiesSpinner)
+        ISWTObservableValue<Object> copiesObservation = WidgetProperties.widgetSelection().observe(copiesSpinner); //SWTObservables.observeSelection(copiesSpinner)
         bindings.bindValue(copiesObservation, copiesValue);
 
         final Image collateOnImage = COLLATE_ON.createImage();
@@ -122,7 +123,7 @@ final class CopiesBlock {
         final IObservableValue<Object> collateValue =
                 BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_COLLATE).observe(realm, options);
                 // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_COLLATE);
-        var collateObservation =  WidgetProperties.widgetSelection().observe((Widget) collateCheck); //SWTObservables.observeSelection(collateCheck);
+        ISWTObservableValue<Object> collateObservation =  WidgetProperties.widgetSelection().observe((Widget) collateCheck); //SWTObservables.observeSelection(collateCheck);
         bindings.bindValue(collateObservation, collateValue);
 
         collateValue.addValueChangeListener(new IValueChangeListener<Object>() {

@@ -41,7 +41,7 @@ public class KGraphUtilTest {
 
     @Test
     public void getConnectedEdgesTest01() {
-        var edge =
+        KEdge edge =
                 getLast(getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges());
         final Iterator<KEdge> res = KGraphUtil.getConnectedEdges(edge);
 
@@ -50,7 +50,7 @@ public class KGraphUtilTest {
 
     @Test
     public void getConnectedEdgesTest01a() {
-        var edge = getLast(
+        KEdge edge = getLast(
                 getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges());
         final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(edge);
 

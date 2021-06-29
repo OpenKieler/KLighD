@@ -30,6 +30,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -188,21 +189,21 @@ final class ScalingBlock {
                     BeanProperties.value(dOptions.getClass().asSubclass(DiagramPrintOptions.class),
                             PrintOptions.PROPERTY_SCALE_PERCENT).observe(realm, dOptions);
             // BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_SCALE_PERCENT);
-            var observerScaleSpinner = WidgetProperties.widgetSelection().observe(scaleSpinner); // SWTObservables.observeSelection(scaleSpinner);
+            ISWTObservableValue<Object> observerScaleSpinner = WidgetProperties.widgetSelection().observe(scaleSpinner); // SWTObservables.observeSelection(scaleSpinner);
             bindings.bindValue(observerScaleSpinner, scalePercent);
 
             final IObservableValue<Object> pagesWide = 
                     BeanProperties.value(dOptions.getClass().asSubclass(DiagramPrintOptions.class),
                             PrintOptions.PROPERTY_PAGES_WIDE).observe(realm, dOptions); 
             // BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_PAGES_WIDE);
-            var observerWideSpinner = WidgetProperties.widgetSelection().observe(spinnerWide); // SWTObservables.observeSelection(spinnerWide);
+            ISWTObservableValue<Object> observerWideSpinner = WidgetProperties.widgetSelection().observe(spinnerWide); // SWTObservables.observeSelection(spinnerWide);
             bindings.bindValue(observerWideSpinner, pagesWide);
 
             final IObservableValue<Object> pagesTall = 
                     BeanProperties.value(dOptions.getClass().asSubclass(DiagramPrintOptions.class),
                             PrintOptions.PROPERTY_PAGES_TALL).observe(realm, dOptions); 
             // BeansObservables.observeValue(realm, dOptions, PrintOptions.PROPERTY_PAGES_TALL);
-            var observerTallSpinner = WidgetProperties.widgetSelection().observe(spinnerTall); // SWTObservables.observeSelection(spinnerTall);
+            ISWTObservableValue<Object> observerTallSpinner = WidgetProperties.widgetSelection().observe(spinnerTall); // SWTObservables.observeSelection(spinnerTall);
             bindings.bindValue(observerTallSpinner, pagesTall);
 
             result.addListener(SWT.Dispose, new Listener() {
