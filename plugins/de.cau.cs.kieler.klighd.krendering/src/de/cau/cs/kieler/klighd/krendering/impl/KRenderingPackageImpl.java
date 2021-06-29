@@ -15,6 +15,7 @@ package de.cau.cs.kieler.klighd.krendering.impl;
 
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 
+import de.cau.cs.kieler.klighd.kgraph.impl.KGraphPackageImpl;
 
 import de.cau.cs.kieler.klighd.krendering.Arc;
 import de.cau.cs.kieler.klighd.krendering.Colors;
