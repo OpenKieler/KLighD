@@ -28,6 +28,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -115,7 +116,7 @@ final class PrinterBlock {
                 }
             }
         };
-        final var labelText = WidgetProperties.text().observe(printerLabel); // SWTObservables.observeText(printerLabel); 
+        final ISWTObservableValue<String> labelText = WidgetProperties.text().observe(printerLabel); // SWTObservables.observeText(printerLabel); 
         bindings.bindValue(labelText, computedValue);
 
         // printer properties button
