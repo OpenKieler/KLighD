@@ -17,6 +17,7 @@ import static com.google.common.collect.Iterables.getLast;
 
 import java.util.Iterator;
 
+import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -40,16 +41,18 @@ public class KGraphUtilTest {
 
     @Test
     public void getConnectedEdgesTest01() {
-        final Iterator<KEdge> res = KGraphUtil.getConnectedEdges(
-                getLast(getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges()));
+        KEdge edge =
+                getLast(getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges());
+        final Iterator<KEdge> res = KGraphUtil.getConnectedEdges(edge);
 
-        Assert.assertThat(res, IsIteratorWithSize.iteratorWithSize(3));
+        MatcherAssert.assertThat("", res, IsIteratorWithSize.iteratorWithSize(3));
     }
 
     @Test
     public void getConnectedEdgesTest01a() {
-        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(
-                getLast(getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges()));
+        KEdge edge = getLast(
+                getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges());
+        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(edge);
 
         final KEdge first = Iterators.getNext(edges, null);
         Assert.assertTrue(first != null
@@ -61,8 +64,8 @@ public class KGraphUtilTest {
 
     @Test
     public void getConnectedEdgesTest01b() {
-        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(
-                getLast(getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges()));
+        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(getLast(
+                getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges()));
 
         Iterators.advance(edges, 1);
 
@@ -77,8 +80,8 @@ public class KGraphUtilTest {
 
     @Test
     public void getConnectedEdgesTest01c() {
-        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(
-                getLast(getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges()));
+        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(getLast(
+                getLast(getLast(testModel.getChildren()).getChildren()).getOutgoingEdges()));
 
         Iterators.advance(edges, 2);
 
@@ -93,16 +96,16 @@ public class KGraphUtilTest {
 
     @Test
     public void getConnectedEdgesTest02() {
-        final Iterator<KEdge> res = KGraphUtil.getConnectedEdges(
-                getLast(getLast(getLast(testModel.getChildren()).getChildren()).getIncomingEdges()));
+        final Iterator<KEdge> res = KGraphUtil.getConnectedEdges(getLast(
+                getLast(getLast(testModel.getChildren()).getChildren()).getIncomingEdges()));
 
-        Assert.assertThat(res, IsIteratorWithSize.iteratorWithSize(2));
+        MatcherAssert.assertThat("", res, IsIteratorWithSize.iteratorWithSize(2));
     }
 
     @Test
     public void getConnectedEdgesTest02a() {
-        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(
-                getLast(getLast(getLast(testModel.getChildren()).getChildren()).getIncomingEdges()));
+        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(getLast(
+                getLast(getLast(testModel.getChildren()).getChildren()).getIncomingEdges()));
 
         final KEdge first = Iterators.getNext(edges, null);
         Assert.assertTrue(first != null
@@ -114,8 +117,8 @@ public class KGraphUtilTest {
 
     @Test
     public void getConnectedEdgesTest02b() {
-        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(
-                getLast(getLast(getLast(testModel.getChildren()).getChildren()).getIncomingEdges()));
+        final Iterator<KEdge> edges = KGraphUtil.getConnectedEdges(getLast(
+                getLast(getLast(testModel.getChildren()).getChildren()).getIncomingEdges()));
 
         Iterators.advance(edges, 1);
 

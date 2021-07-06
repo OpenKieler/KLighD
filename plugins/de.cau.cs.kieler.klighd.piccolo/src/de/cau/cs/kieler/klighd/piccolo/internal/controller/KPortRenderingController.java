@@ -14,11 +14,7 @@
 package de.cau.cs.kieler.klighd.piccolo.internal.controller;
 
 import de.cau.cs.kieler.klighd.kgraph.KPort;
-import de.cau.cs.kieler.klighd.krendering.KBackground;
-import de.cau.cs.kieler.klighd.krendering.KForeground;
-import de.cau.cs.kieler.klighd.krendering.KRectangle;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
-import de.cau.cs.kieler.klighd.krendering.KRenderingFactory;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KPortNode;
 
 /**

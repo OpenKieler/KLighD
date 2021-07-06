@@ -22,3 +22,4 @@ Require-Bundle: org.apache.log4j,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Kiel University
+Automatic-Module-Name: de.cau.cs.kieler.klighd.ui.wizard

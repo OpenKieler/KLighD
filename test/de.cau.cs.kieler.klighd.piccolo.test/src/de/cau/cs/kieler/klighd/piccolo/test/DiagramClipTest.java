@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
+import org.hamcrest.MatcherAssert;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -200,12 +201,12 @@ public class DiagramClipTest {
             waitAmoment();
 
             moveTo((int) (port0pos.x), (int) (port0pos.y));
-            Assert.assertThat(Pair.of(viewer.getControl(), port0pos), IS_BLACK);
+            MatcherAssert.assertThat("",Pair.of(viewer.getControl(), port0pos), IS_BLACK);
 
             waitAmoment();
 
             moveTo((int) (portXpos.x), (int) (portXpos.y));
-            Assert.assertThat(Pair.of(viewer.getControl(), portXpos), IS_BLACK);
+            MatcherAssert.assertThat("",Pair.of(viewer.getControl(), portXpos), IS_BLACK);
         }
     }
 

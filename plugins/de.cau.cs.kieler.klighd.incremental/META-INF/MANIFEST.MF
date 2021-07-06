@@ -9,3 +9,4 @@ Require-Bundle: de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.krendering.extensions;bundle-version="0.8.0",
  com.google.guava
 Export-Package: de.cau.cs.kieler.klighd.incremental
+Automatic-Module-Name: de.cau.cs.kieler.klighd.incremental

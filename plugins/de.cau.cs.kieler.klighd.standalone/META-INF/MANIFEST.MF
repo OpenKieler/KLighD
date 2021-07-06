@@ -19,3 +19,4 @@ Require-Bundle: org.eclipse.emf.ecore.xmi,
  org.eclipse.elk.alg.mrtree;resolution:=optional,
  org.eclipse.elk.alg.radial;resolution:=optional
 Export-Package: de.cau.cs.kieler.klighd.standalone
+Automatic-Module-Name: de.cau.cs.kieler.klighd.standalone

@@ -18,3 +18,4 @@ Export-Package: de.cau.cs.kieler.klighd.test,
 Bundle-Vendor: Kiel University
 Bundle-Activator: de.cau.cs.kieler.klighd.test.KlighdTestPlugin
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: de.cau.cs.kieler.klighd.test

@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd.syntheses;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.util.IGraphElementVisitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.core.util.WrappedException;

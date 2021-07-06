@@ -134,21 +134,25 @@ abstract class AbstractLanguageServer implements Runnable {
                 println(e.stackTrace)
                 return
             }
-            println("Connection to: " + host + ":" + port)
+            LOG.info("Connection to: " + host + ":" + port)
             // Register all languages
-            println("Starting language server socket")
+            LOG.info("Starting language server socket")
             bindAndRegisterLanguages()
             
             val serverSocket = AsynchronousServerSocketChannel.open.bind(new InetSocketAddress(host, port))
             val threadPool = Executors.newCachedThreadPool()
+            
+            LOG.info("Language Server Socket ready!")
+            
             while (true) {
                 val socketChannel = serverSocket.accept.get            
                 val in = Channels.newInputStream(socketChannel)
                 val out = Channels.newOutputStream(socketChannel)
                 val injector = Guice.createInjector(createLSModules(true))
                 val ls = injector.getInstance(LanguageServerImpl)
+                LOG.info("Starting language server for client " + socketChannel.remoteAddress)
                 buildAndStartLS(injector, ls, in, out, threadPool, [it], true)
-                LOG.info("Started language server for client " + socketChannel.remoteAddress)
+                LOG.info("Finished language server for client " + socketChannel.remoteAddress)
             }
         } else {
             LanguageServerLauncher.launch(languageRegistration, creator)

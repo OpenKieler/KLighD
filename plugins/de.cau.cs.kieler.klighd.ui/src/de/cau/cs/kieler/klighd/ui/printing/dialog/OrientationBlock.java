@@ -14,10 +14,12 @@
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Button;
@@ -44,8 +46,8 @@ final class OrientationBlock {
     }
 
     /**
-     * Creates the 'Orientation' block contents.
-     * The bindings are used to bind observable GUI elements to print setting in the given options.
+     * Creates the 'Orientation' block contents. The bindings are used to bind observable GUI
+     * elements to print setting in the given options.
      *
      * @param parent
      *            the parent {@link Composite} to use
@@ -60,8 +62,8 @@ final class OrientationBlock {
         final int columns = 1;
 
         // create group
-        final Group result =
-                DialogUtil.group(parent, KlighdUIPrintingMessages.PrintDialog_Orientation_orientation);
+        final Group result = DialogUtil.group(parent,
+                KlighdUIPrintingMessages.PrintDialog_Orientation_orientation);
         DialogUtil.layout(result, columns);
 
         // radio button for portrait
@@ -70,26 +72,30 @@ final class OrientationBlock {
         DialogUtil.layoutSpanHorizontal(portraitRadio, columns);
 
         // radio button for landscape
-        final Button landscapeRadio =
-                DialogUtil.radio(result, KlighdUIPrintingMessages.PrintDialog_Orientation_landscape);
+        final Button landscapeRadio = DialogUtil.radio(result,
+                KlighdUIPrintingMessages.PrintDialog_Orientation_landscape);
         DialogUtil.layoutSpanHorizontal(landscapeRadio, columns);
 
         final Realm realm = bindings.getValidationRealm();
 
-        final SelectObservableValue orientationGroupValue = new SelectObservableValue(realm);
-        orientationGroupValue.addOption(PrinterData.PORTRAIT,
-                SWTObservables.observeSelection(portraitRadio));
-        orientationGroupValue.addOption(PrinterData.LANDSCAPE,
-                SWTObservables.observeSelection(landscapeRadio));
+        final SelectObservableValue<Integer> orientationGroupValue = new SelectObservableValue<>(realm);
+        
+        ISWTObservableValue<Boolean> observerPortrait = WidgetProperties.<Button, Boolean>widgetSelection().observe(portraitRadio); // SWTObservables.observeSelection(portraitRadio);
+        orientationGroupValue.addOption(PrinterData.PORTRAIT, observerPortrait);
+        ISWTObservableValue<Boolean> observeLandscape = WidgetProperties.<Button, Boolean>widgetSelection().observe(landscapeRadio); // SWTObservables.observeSelection(landscapeRadio);
+        orientationGroupValue.addOption(PrinterData.LANDSCAPE, observeLandscape);
 
-        bindings.bindValue(orientationGroupValue,
-                BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ORIENTATION));
+        IObservableValue<Object> observeOrientation = BeanProperties.value(options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_ORIENTATION)
+                .observe(realm, options);
+        // BeansObservables.observeValue(realm, options, PrintOptions.PROPERTY_ORIENTATION);
+        bindings.bindValue(orientationGroupValue, observeOrientation);
 
         result.addListener(SWT.Dispose, new Listener() {
 
             public void handleEvent(final Event event) {
-                // although the 'option SWTObservables' are automatically disposed via the radio buttons
-                //  the 'SelectObservableValue' is not, so...
+                // although the 'option SWTObservables' are automatically disposed via the radio
+                // buttons
+                // the 'SelectObservableValue' is not, so...
                 orientationGroupValue.dispose();
             }
         });

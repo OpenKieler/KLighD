@@ -13,8 +13,6 @@
  */
 package de.cau.cs.kieler.klighd.kgraph;
 
-import org.eclipse.elk.graph.properties.IPropertyHolder;
-import org.eclipse.emf.ecore.EObject;
 
 
 /**

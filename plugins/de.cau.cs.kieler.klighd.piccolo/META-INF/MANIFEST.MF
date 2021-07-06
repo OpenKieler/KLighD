@@ -36,3 +36,4 @@ Export-Package: de.cau.cs.kieler.klighd.piccolo,
    de.cau.cs.kieler.klighd.piccolo.test,
    de.cau.cs.kieler.klighd.ui",
  de.cau.cs.kieler.klighd.piccolo.viewer
+Automatic-Module-Name: de.cau.cs.kieler.klighd.piccolo

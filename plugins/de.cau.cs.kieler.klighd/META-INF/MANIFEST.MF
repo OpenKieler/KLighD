@@ -38,3 +38,4 @@ Export-Package: de.cau.cs.kieler.klighd,
  de.cau.cs.kieler.klighd.syntheses,
  de.cau.cs.kieler.klighd.util,
  de.cau.cs.kieler.klighd.viewers
+Automatic-Module-Name: de.cau.cs.kieler.klighd

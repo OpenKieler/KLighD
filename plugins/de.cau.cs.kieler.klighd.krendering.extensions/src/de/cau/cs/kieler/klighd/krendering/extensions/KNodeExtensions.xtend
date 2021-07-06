@@ -19,7 +19,6 @@ import de.cau.cs.kieler.klighd.kgraph.KGraphElement
 import de.cau.cs.kieler.klighd.kgraph.KNode
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
-import java.util.ArrayList
 import javax.inject.Inject
 import org.eclipse.elk.core.math.KVector
 import org.eclipse.elk.core.options.CoreOptions

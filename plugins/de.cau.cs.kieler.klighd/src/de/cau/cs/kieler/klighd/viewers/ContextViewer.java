@@ -301,26 +301,12 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     /**
      * {@inheritDoc}
      */
-    public void addViewChangedListener(final IViewChangeListener listener,
-            final ViewChangeType... eventTypes) {
-        this.addViewChangeListener(listener, eventTypes);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void removeViewChangeListener(final IViewChangeListener listener) {
         if (listener != null && currentViewer != null) {
             currentViewer.removeViewChangeListener(listener);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void removeViewChangedEventListener(final IViewChangeListener listener) {
-        this.removeViewChangeListener(listener);
-    }
 
     /* ----------------------------- */
     /*   the view manipulation API   */

@@ -31,3 +31,4 @@ Export-Package: de.cau.cs.kieler.kgraph.text.ui,
  de.cau.cs.kieler.kgraph.text.ui.random,
  de.cau.cs.kieler.kgraph.text.ui.random.wizard
 Bundle-Activator: de.cau.cs.kieler.kgraph.text.ui.internal.TextActivator
+Automatic-Module-Name: de.cau.cs.kieler.kgraph.text.ui

@@ -111,7 +111,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
             }
         };
 
-        viewer.addViewChangedListener(new KlighdLabelWidgetViewChangeListener(viewer, labelWidget));
+        viewer.addViewChangeListener(new KlighdLabelWidgetViewChangeListener(viewer, labelWidget));
     }
 
     private boolean widgetJustPrepared = false;

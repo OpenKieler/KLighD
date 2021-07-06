@@ -146,14 +146,6 @@ public abstract class AbstractViewer implements IViewer {
     /**
      * {@inheritDoc}
      */
-    public void addViewChangedListener(final IViewChangeListener listener,
-            final ViewChangeType... eventTypes) {
-        this.addViewChangeListener(listener, eventTypes);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void removeViewChangeListener(final IViewChangeListener listener) {
         if (listener != null && viewChangeListeners != null) {
 
@@ -172,12 +164,6 @@ public abstract class AbstractViewer implements IViewer {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void removeViewChangedEventListener(final IViewChangeListener listener) {
-        this.removeViewChangeListener(listener);
-    }
 
     private SetMultimap<ViewChangeType, IViewChangeListener> viewChangeListenersView;
 

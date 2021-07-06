@@ -25,7 +25,7 @@
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.DisplayRealm;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.window.IShellProvider;
@@ -178,7 +178,7 @@ public class KlighdPrintDialog extends TrayDialog {
      */
     @Override
     protected Control createDialogArea(final Composite parent) {
-        bindings = new DataBindingContext(SWTObservables.getRealm(parent.getDisplay()));
+        bindings = new DataBindingContext(DisplayRealm.getRealm(parent.getDisplay()) /*SWTObservables.getRealm(parent.getDisplay())*/);
 
         final boolean previewInitiallyOpen =
                 diagramPrintOptionsAvailable && DiagramPrintOptions.getInitiallyShowPreview()

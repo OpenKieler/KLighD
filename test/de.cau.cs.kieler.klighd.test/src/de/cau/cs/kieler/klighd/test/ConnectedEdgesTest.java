@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResourceSet;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Assert;
 import org.junit.Before;
@@ -113,7 +114,7 @@ public class ConnectedEdgesTest {
                             }
                         }, null);
 
-                Assert.assertThat(sourceId.eContainer(), IsInstanceOf.instanceOf(KPort.class));
+                MatcherAssert.assertThat("",sourceId.eContainer(), IsInstanceOf.instanceOf(KPort.class));
 
                 this.sourcePorts.add((KPort) sourceId.eContainer());
             } else if (EXPECTED_TARGET_PORT.equals(pe.getKey())) {
@@ -130,7 +131,7 @@ public class ConnectedEdgesTest {
                             }
                         }, null);
 
-                Assert.assertThat(targetId.eContainer(), IsInstanceOf.instanceOf(KPort.class));
+                MatcherAssert.assertThat("",targetId.eContainer(), IsInstanceOf.instanceOf(KPort.class));
 
                 this.expectedTargetPorts.add((KPort) targetId.eContainer());
 

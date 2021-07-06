@@ -11,4 +11,5 @@ Require-Bundle: de.cau.cs.kieler.kgraph.text,
 Export-Package: de.cau.cs.kieler.kgraph.text.ide,
  de.cau.cs.kieler.kgraph.text.ide.contentassist.antlr,
  de.cau.cs.kieler.kgraph.text.ide.contentassist.antlr.internal
+Automatic-Module-Name: de.cau.cs.kieler.kgraph.text.ide
 

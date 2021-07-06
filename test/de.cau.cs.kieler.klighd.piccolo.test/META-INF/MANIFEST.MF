@@ -16,3 +16,4 @@ Require-Bundle: org.junit;bundle-version="4.8.0",
  de.cau.cs.kieler.kgraph.text,
  de.cau.cs.kieler.klighd.krendering.extensions
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: de.cau.cs.kieler.klighd.piccolo.test

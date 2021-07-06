@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.internal;
 
 import java.util.List;
 
-import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.util.IGraphElementVisitor;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;

@@ -13,15 +13,10 @@
 package de.cau.cs.kieler.klighd.lsp
 
 import de.cau.cs.kieler.klighd.SynthesisOption
-import de.cau.cs.kieler.klighd.lsp.model.GetOptionsParam
-import de.cau.cs.kieler.klighd.lsp.model.GetOptionsResult
 import de.cau.cs.kieler.klighd.lsp.model.PerformActionParam
 import de.cau.cs.kieler.klighd.lsp.model.SetLayoutOptionsParam
 import de.cau.cs.kieler.klighd.lsp.model.SetSynthesisOptionsParam
-import de.cau.cs.kieler.klighd.lsp.model.ValuedSynthesisOption
-import java.util.concurrent.CompletableFuture
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification
-import org.eclipse.lsp4j.jsonrpc.services.JsonRequest
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment
 
 /**

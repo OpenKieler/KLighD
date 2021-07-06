@@ -235,7 +235,7 @@ public class KlighdImage extends KlighdNode.KlighdFigureNode<KImage> implements 
         final ImageDescriptor descr = IMAGE_REGISTRY.getDescriptor(imageKey);
 
         if (descr != null) {
-            setImage(descr.getImageData());
+            setImage(descr.getImageData(100));
 
         } else {
             try {

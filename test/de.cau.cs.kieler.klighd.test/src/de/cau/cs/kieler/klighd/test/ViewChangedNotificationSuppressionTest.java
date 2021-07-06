@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.After;
 import org.junit.Assert;
@@ -132,11 +133,11 @@ public class ViewChangedNotificationSuppressionTest {
 
         shell.close();
 
-        Assert.assertThat(observedNotifications01,
+        MatcherAssert.assertThat("",observedNotifications01,
                 IsIterableContainingInOrder.contains(expectedNotifications01.toArray()));
 
         if (secondListenerEmployed) {
-            Assert.assertThat(observedNotifications02,
+            MatcherAssert.assertThat("",observedNotifications02,
                     IsIterableContainingInOrder.contains(expectedNotifications02.toArray()));
         }
     }

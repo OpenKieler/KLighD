@@ -22,7 +22,6 @@ import de.cau.cs.kieler.klighd.krendering.KRenderingFactory
 import de.cau.cs.kieler.klighd.krendering.KRoundedBendsPolyline
 import de.cau.cs.kieler.klighd.krendering.KSpline
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared
-import java.util.ArrayList
 import java.util.List
 import javax.inject.Inject
 import org.eclipse.elk.graph.properties.IProperty

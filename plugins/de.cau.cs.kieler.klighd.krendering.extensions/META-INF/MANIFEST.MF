@@ -15,3 +15,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: de.cau.cs.kieler.klighd.krendering.extensions
+Automatic-Module-Name: de.cau.cs.kieler.klighd.krendering.extensions

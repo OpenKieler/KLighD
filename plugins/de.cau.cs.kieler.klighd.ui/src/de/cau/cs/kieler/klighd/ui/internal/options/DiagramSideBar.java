@@ -461,7 +461,7 @@ public final class DiagramSideBar {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 viewContext.setZoomStyle(
-                        ZoomStyle.create(false, zoomToFitBtn.getSelection(), false));
+                        ZoomStyle.create(false, zoomToFitBtn.getSelection(), false, false, false));
 
                 // perform zoom to fit upon activation of the toggle button
                 if (zoomToFitBtn.getSelection()) {
@@ -486,7 +486,7 @@ public final class DiagramSideBar {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 viewContext.setZoomStyle(
-                        ZoomStyle.create(false, false, zoomToFocusBtn.getSelection()));
+                        ZoomStyle.create(false, false, false, zoomToFocusBtn.getSelection(), false));
 
                 // perform zoom to focus upon activation of the toggle button
                 if (zoomToFocusBtn.getSelection()) {

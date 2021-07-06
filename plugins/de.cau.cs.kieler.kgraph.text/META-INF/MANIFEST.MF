@@ -36,4 +36,5 @@ Export-Package: de.cau.cs.kieler.kgraph.text,
  de.cau.cs.kieler.kgraph.text.serializer,
  de.cau.cs.kieler.kgraph.text.services,
  de.cau.cs.kieler.kgraph.text.validation
+Automatic-Module-Name: de.cau.cs.kieler.kgraph.text
 

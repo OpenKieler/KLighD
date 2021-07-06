@@ -3,7 +3,7 @@
  * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
- * Copyright 2019, 2021 by
+ * Copyright 2019, 2020, 2021 by
  * + Kiel University
  *   + Department of Computer Science
  *     + Real-Time and Embedded Systems Group
@@ -45,7 +45,6 @@ import org.eclipse.xtext.util.CancelIndicator
  * @author nre
  */
 class KGraphDiagramUpdater extends DiagramUpdater {
-    
     /**
      * The {@link Provider} to call an injected {@link KGraphDiagramGenerator} to generate {@link KNode KGraphs} and 
      * {@link SKGraph}s from that.
@@ -331,18 +330,22 @@ class KGraphDiagramUpdater extends DiagramUpdater {
             val List<String> configuredOptions = newArrayList
             for (option : synthesisOptions.entrySet) {
                 val optionId = option.key
-                val optionValue = option.value.asJsonPrimitive
-                // Search an option with the same ID in the view context and configure it with the new value.
-                val availableOptions = viewContext.displayedSynthesisOptions
-                val matchedOption = availableOptions.findFirst [ it.id == optionId ]
-                if (matchedOption !== null) {
-                    val Object optionValueObject = optionValue.isBoolean ? optionValue.asBoolean
-                                                 : optionValue.isNumber  ? optionValue.asNumber
-                                                 : optionValue.isString  ? optionValue.asString
-                    KGraphLanguageServerExtension.configureOption(matchedOption, optionValueObject, viewContext)
-                    // Store the option with the new value in the recent options.
-                    recentSynthesisOptions.put(matchedOption, viewContext.getOptionValue(matchedOption))
-                    configuredOptions.add(optionId)
+                if (option.value.isJsonPrimitive){
+                    val optionValue = option.value.asJsonPrimitive
+                    // Search an option with the same ID in the view context and configure it with the new value.
+                    val availableOptions = viewContext.displayedSynthesisOptions
+                    val matchedOption = availableOptions.findFirst [ it.id == optionId ]
+                    if (matchedOption !== null) {
+                        val Object optionValueObject = optionValue.isBoolean ? optionValue.asBoolean
+                                                     : optionValue.isNumber  ? optionValue.asNumber
+                                                     : optionValue.isString  ? optionValue.asString
+                        KGraphLanguageServerExtension.configureOption(matchedOption, optionValueObject, viewContext)
+                        // Store the option with the new value in the recent options.
+                        recentSynthesisOptions.put(matchedOption, viewContext.getOptionValue(matchedOption))
+                        configuredOptions.add(optionId)
+                    }
+                } else {
+                   println("Not a JSON Primitive: " + option.value)
                 }
             }
             // These options now already have been configured here, so remove them from being configured again.

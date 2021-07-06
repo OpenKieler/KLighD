@@ -130,24 +130,10 @@ public class StringViewer implements IViewer {
     /**
      * {@inheritDoc}
      */
-    public void addViewChangedListener(final IViewChangeListener listener,
-            final ViewChangeType... eventTypes) {
-        // do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void removeViewChangeListener(final IViewChangeListener listener) {
         // do nothing
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void removeViewChangedEventListener(final IViewChangeListener listener) {
-        // do nothing
-    }
 
     /**
      * {@inheritDoc}

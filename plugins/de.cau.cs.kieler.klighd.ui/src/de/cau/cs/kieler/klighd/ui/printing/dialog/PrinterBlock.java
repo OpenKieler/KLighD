@@ -25,10 +25,11 @@
 package de.cau.cs.kieler.klighd.ui.printing.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -95,13 +96,19 @@ final class PrinterBlock {
         final Realm realm = bindings.getValidationRealm();
 
         // Observable to display the printer resp. file name, if print to file is set.
-        final ComputedValue computedValue = new ComputedValue(realm) {
+        final ComputedValue<?> computedValue = new ComputedValue<>(realm) {
 
             @Override
             protected Object calculate() {
-                final PrinterData data =
+                final PrinterData data = 
+                        (PrinterData) BeanProperties
+                        .value( options.getClass().asSubclass(PrintOptions.class), PrintOptions.PROPERTY_PRINTER_DATA)
+                        .observe(realm, options)
+                        .getValue();
+                /*final PrinterData data =
                         (PrinterData) BeansObservables.observeValue(realm, options,
                                 PrintOptions.PROPERTY_PRINTER_DATA).getValue();
+                */
                 if (data.printToFile) {
                     return data.fileName;
                 } else {
@@ -109,7 +116,8 @@ final class PrinterBlock {
                 }
             }
         };
-        bindings.bindValue(SWTObservables.observeText(printerLabel), computedValue);
+        final ISWTObservableValue<String> labelText = WidgetProperties.text().observe(printerLabel); // SWTObservables.observeText(printerLabel); 
+        bindings.bindValue(labelText, computedValue);
 
         // printer properties button
         final Button propertiesButton =

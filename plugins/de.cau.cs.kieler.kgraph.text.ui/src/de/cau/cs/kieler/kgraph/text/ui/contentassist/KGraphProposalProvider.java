@@ -14,6 +14,7 @@
 package de.cau.cs.kieler.kgraph.text.ui.contentassist;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 import javax.inject.Inject;
@@ -471,13 +472,19 @@ public class KGraphProposalProvider extends AbstractKGraphProposalProvider {
                         break;
                     case OBJECT:
                         try {
+                        
                             proposal = "\""
-                                    + optionData.getOptionClass().newInstance().toString()
+                                    + optionData.getOptionClass().getConstructor().newInstance().toString()
                                     + "\"";
+                        
                         } catch (final InstantiationException e) {
                             proposal = "\"\"";
                         } catch (final IllegalAccessException e) {
                             proposal = "\"\"";
+                        }catch (IllegalArgumentException | InvocationTargetException
+                                | NoSuchMethodException | SecurityException e) {
+                            proposal = "\"\"";
+                            e.printStackTrace();
                         }
                         break;
 

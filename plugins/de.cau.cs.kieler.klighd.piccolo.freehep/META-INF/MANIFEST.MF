@@ -13,3 +13,4 @@ Bundle-ClassPath: .,
  lib/freehep-graphicsio-svg-2.3.jar,
  lib/freehep-graphicsio-tests-2.3.jar,
  lib/freehep-io-2.2.2.jar
+Automatic-Module-Name: de.cau.cs.kieler.klighd.piccolo.freehep

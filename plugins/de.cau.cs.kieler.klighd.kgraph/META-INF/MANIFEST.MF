@@ -16,3 +16,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-Vendor: Kiel University
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: de.cau.cs.kieler.klighd.kgraph

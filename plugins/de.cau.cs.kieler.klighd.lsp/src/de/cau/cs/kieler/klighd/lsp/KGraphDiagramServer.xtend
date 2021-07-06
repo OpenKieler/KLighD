@@ -15,7 +15,6 @@ package de.cau.cs.kieler.klighd.lsp
 import com.google.common.base.Strings
 import com.google.common.base.Throwables
 import com.google.common.io.ByteStreams
-import com.google.common.reflect.ClassPath
 import com.google.inject.Inject
 import de.cau.cs.kieler.klighd.IAction
 import de.cau.cs.kieler.klighd.IAction.ActionContext

@@ -194,6 +194,8 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         // Do post processing.
         postProcess()
 
+        LOG.info("Completed generating diagram for input: '" + uri + "'")
+
         return if (cancelIndicator.canceled) 
                null
            else 
