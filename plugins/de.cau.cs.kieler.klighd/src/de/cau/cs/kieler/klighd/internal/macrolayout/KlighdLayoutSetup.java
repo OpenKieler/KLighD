@@ -24,7 +24,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
@@ -62,8 +61,6 @@ public final class KlighdLayoutSetup implements ILayoutSetup {
         } else if (object instanceof ViewContext) {
             return true;
         } else if (object instanceof IViewer) {
-            return true;
-        } else if (object instanceof IDiagramWorkbenchPart) {
             return true;
         }
         

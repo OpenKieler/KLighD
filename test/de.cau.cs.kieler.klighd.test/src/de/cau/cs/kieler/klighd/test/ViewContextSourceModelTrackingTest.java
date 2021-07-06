@@ -37,9 +37,9 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IUpdateStrategy;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.incremental.IncrementalUpdateStrategy;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.internal.util.SourceModelTrackingAdapter;
@@ -65,7 +65,7 @@ public class ViewContextSourceModelTrackingTest {
     private static final IUpdateStrategy INCREMENTAL_UPDATE_STRATEGY = new IncrementalUpdateStrategy();
     
     private ViewContext createViewContext() {
-        return new ViewContext((IDiagramWorkbenchPart) null, null);
+        return new ViewContext(null);
     }
     
     private void checkTracerMaps(final ViewContext viewContext, final int expectedEntryNumber) {

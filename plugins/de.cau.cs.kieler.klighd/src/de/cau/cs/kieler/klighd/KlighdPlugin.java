@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.elk.core.data.LayoutMetaDataService;
 import org.eclipse.elk.graph.util.ElkReflect;
-import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.BundleContext;
 
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
@@ -64,10 +63,11 @@ public class KlighdPlugin extends Plugin {
         super.start(context);
         plugin = this;
 
-        // install an alternative status manager delegating to the default Eclipse Status Manager
-        Klighd.setStatusManager((status, style) -> {
-            StatusManager.getManager().handle(status, style);
-        });
+        // XXX
+//        // install an alternative status manager delegating to the default Eclipse Status Manager
+//        Klighd.setStatusManager((status, style) -> {
+//            StatusManager.getManager().handle(status, style);
+//        });
 
         // make sure that the layout meta data service has been initialized, 
         //  in particular that the ElkReflect registry has been filled 

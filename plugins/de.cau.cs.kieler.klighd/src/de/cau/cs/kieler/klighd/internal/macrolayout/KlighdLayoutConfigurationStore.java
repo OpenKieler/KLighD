@@ -33,13 +33,7 @@ import org.eclipse.elk.core.service.ILayoutConfigurationStore;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyValueProxy;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.swt.SWTException;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchPart;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
@@ -73,10 +67,10 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
     public static final class Provider implements ILayoutConfigurationStore.Provider {
 
         @Override
-        public ILayoutConfigurationStore get(final IWorkbenchPart workbenchPart, final Object context) {
+        public ILayoutConfigurationStore get(final Object workbenchPart, final Object context) {
             if (context instanceof KGraphElement) {
                 try {
-                    return new KlighdLayoutConfigurationStore(workbenchPart, (KGraphElement) context);
+                    return new KlighdLayoutConfigurationStore((KGraphElement) context);
                 } catch (IllegalArgumentException e) {
                     // Fall back to null
                 }
@@ -85,11 +79,8 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
         }
     }
 
-    /** The {@link IWorkbenchPart} attached to this context. */
-    private final IWorkbenchPart workbenchPart;
-
     /** The view model part used as context for this configuration store. */
-    private final KGraphElement graphElement;
+    protected final KGraphElement graphElement;
 
     /**
      * Create a KLighD layout configuration store.
@@ -100,9 +91,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
      *            The {@link KGraphElement} of the view model this {@link ILayoutConfigurationStore}
      *            is attached to.
      */
-    public KlighdLayoutConfigurationStore(final IWorkbenchPart workbenchPart,
-            final KGraphElement context) {
-        this.workbenchPart = workbenchPart;
+    public KlighdLayoutConfigurationStore(final KGraphElement context) {
         this.graphElement = context;
     }
 
@@ -126,34 +115,35 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
             final ExpansionAwareLayoutOptionData ealo =
                     graphElement.getProperty(ExpansionAwareLayoutOption.OPTION);
             
-            if (ealo == null) {
-                // We provide special support for certain layout options
-                return getSpecialLayoutOptionValue(optionData);
+            // XXX
+//            if (ealo == null) {
+//                // We provide special support for certain layout options
+//                return getSpecialLayoutOptionValue(optionData);
+//            } else {
+            final KNode node;
+            if (graphElement instanceof KNode) {
+                node = (KNode) graphElement;
+                
+            } else if (graphElement instanceof KPort) {
+                node = ((KPort) graphElement).getNode();
+                
             } else {
-                final KNode node;
-                if (graphElement instanceof KNode) {
-                    node = (KNode) graphElement;
-                    
-                } else if (graphElement instanceof KPort) {
-                    node = ((KPort) graphElement).getNode();
-                    
-                } else {
-                    return null;
-                }
-                
-                final RenderingContextData rcd = RenderingContextData.get(node);
-                final boolean expanded = !node.getChildren().isEmpty()
-                        && rcd.getProperty(KlighdInternalProperties.POPULATED);
-                
-                return ealo.getValue(optionData, expanded);
+                return null;
             }
+            
+            final RenderingContextData rcd = RenderingContextData.get(node);
+            final boolean expanded = !node.getChildren().isEmpty()
+                    && rcd.getProperty(KlighdInternalProperties.POPULATED);
+            
+            return ealo.getValue(optionData, expanded);
+//            }
         } else {
             return value;
         }
     }
 
      /** The aspect ratio is rounded to two decimal places. */
-     private static final double ASPECT_RATIO_ROUND = 100;
+     protected static final double ASPECT_RATIO_ROUND = 100;
 
     /**
      * When asked about the padding of the node we need to take the node insets into account.
@@ -173,58 +163,6 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
          }
          return null;
      }
-     
-     
-    /**
-     * We support special layout options whose value we infer if they are not explicitly set on the
-     * element. This method assumes that this is indeed the case and returns the special layout option
-     * value, if any.
-     * 
-     * @param optionData the option whose value to return.
-     * @return the value or {@code null} if it is not a special layout option.
-     */
-    private Object getSpecialLayoutOptionValue(final LayoutOptionData optionData) {
-        if (optionData.equals(CoreOptions.ASPECT_RATIO) 
-                && (getContainer() == null || isSingleNodeOnRootLevel())) {
-            // Get aspect ratio for the current diagram
-            final IViewer viewer = getViewer();
-            if (viewer == null || viewer.getControl() == null) {
-                return null;
-            }
-
-            final Control control = viewer.getControl();
-
-            final RunnableWithResult<Double> runnable = new AbstractRunnableWithResult<Double>() {
-
-                public void run() {
-                    final Point size;
-
-                    try {
-                        size = control.getSize();
-                    } catch (final SWTException exception) {
-                        // ignore exception
-                        return;
-                    }
-
-                    if (size.x == 0 || size.y == 0) {
-                        return;
-                    }
-
-                    setResult(Math.round(ASPECT_RATIO_ROUND * size.x / size.y) / ASPECT_RATIO_ROUND);
-                }
-            };
-
-            if (control.getDisplay() == Display.getCurrent()) {
-                runnable.run();
-            } else {
-                control.getDisplay().syncExec(runnable);
-            }
-
-            return runnable.getResult();
-        }
-
-        return null;
-    }
 
     /**
      * {@inheritDoc}
@@ -248,12 +186,12 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
     private IViewer getViewer() {
         IViewer viewer = graphElement.getProperty(KlighdInternalProperties.VIEWER);
 
-        if (viewer == null) {
-            if (workbenchPart instanceof IDiagramWorkbenchPart) {
-                viewer = ((IDiagramWorkbenchPart) workbenchPart).getViewer();
-                graphElement.setProperty(KlighdInternalProperties.VIEWER, viewer);
-            }
-        }
+//        if (viewer == null) {
+//            if (workbenchPart instanceof IDiagramWorkbenchPart) {
+//                viewer = ((IDiagramWorkbenchPart) workbenchPart).getViewer();
+//                graphElement.setProperty(KlighdInternalProperties.VIEWER, viewer);
+//            }
+//        }
         return viewer;
     }
 
@@ -379,7 +317,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
     public ILayoutConfigurationStore getParent() {
         KGraphElement container = getContainer();
         if (container != null) {
-            return new KlighdLayoutConfigurationStore(workbenchPart, container);
+            return new KlighdLayoutConfigurationStore(container);
         } else {
             return null;
         }
@@ -392,7 +330,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
      *            a graph element
      * @return the corresponding parent node
      */
-    private KNode getContainer() {
+    protected KNode getContainer() {
         if (graphElement instanceof KNode) {
             return ((KNode) graphElement).getParent();
 
@@ -422,7 +360,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
      * @return {@code true} if and only if {@code graphElement} is a {@link KNode} and it node is
      *         the sole child of the root node.
      */
-    private boolean isSingleNodeOnRootLevel() {
+    protected boolean isSingleNodeOnRootLevel() {
         if (graphElement instanceof KNode) {
             KNode node = (KNode) graphElement;
             return node.getParent() != null 

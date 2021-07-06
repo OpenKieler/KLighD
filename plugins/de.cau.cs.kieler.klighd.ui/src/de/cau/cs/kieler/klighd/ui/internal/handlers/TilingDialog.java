@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.cau.cs.kieler.klighd.IDiagramExporter.TilingData;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramExporter.TilingData;
 import de.cau.cs.kieler.klighd.ui.internal.Messages;
 
 /**

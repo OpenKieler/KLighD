@@ -13,10 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.util;
 
+import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.eclipse.swt.graphics.Color;
 
 import com.google.common.collect.Iterables;
 

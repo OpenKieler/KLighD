@@ -1,0 +1,10 @@
+de.cau.cs.kieler.klighd.actions.CollapseExpandAction
+de.cau.cs.kieler.klighd.actions.ClipParentAction
+de.cau.cs.kieler.klighd.actions.ClipResetAction
+de.cau.cs.kieler.klighd.actions.ClipSelectionAction
+de.cau.cs.kieler.klighd.actions.ClipTowardsSelectionAction
+de.cau.cs.kieler.klighd.actions.FocusAndContextAction
+de.cau.cs.kieler.klighd.actions.ManageLabelsAction
+de.cau.cs.kieler.klighd.actions.ScaleUpAction
+de.cau.cs.kieler.klighd.actions.ScaleDownAction
+de.cau.cs.kieler.klighd.actions.ScaleResetAction

@@ -29,10 +29,11 @@ import org.eclipse.ui.PlatformUI;
 
 import com.google.common.collect.Maps;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.eclipse.EclipseViewContext;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 
@@ -244,7 +245,7 @@ public final class DiagramViewManager implements IPartListener {
         boolean res = new LightDiagramLayoutConfig(viewContext)
                             .model(model)
                             .performUpdate();
-        return res ? viewContext.getDiagramWorkbenchPart() : null;
+        return res ? ((EclipseViewContext) viewContext).getDiagramWorkbenchPart() : null;
     }
 
     /**

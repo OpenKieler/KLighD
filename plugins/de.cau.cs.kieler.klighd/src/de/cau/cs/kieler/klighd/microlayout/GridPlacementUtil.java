@@ -235,9 +235,9 @@ public final class GridPlacementUtil {
 
                 // size for this element is size of child elements or minSize
                 this.columnMaxMinWidth[column] = ElkMath.maxf(
-                        gpd.getMinCellWidth(), childMinSize.width, this.columnMaxMinWidth[column]);
+                        gpd.getMinCellWidth(), childMinSize.getWidth(), this.columnMaxMinWidth[column]);
                 this.rowMaxMinHeight[row] = ElkMath.maxf(
-                        gpd.getMinCellHeight(), childMinSize.height, this.rowMaxMinHeight[row]);
+                        gpd.getMinCellHeight(), childMinSize.getHeight(), this.rowMaxMinHeight[row]);
             }
 
             // calculate the total width and height
@@ -268,7 +268,7 @@ public final class GridPlacementUtil {
             final Bounds[] bounds = new Bounds[children.size()];
 
             // in case there is actually no space - skip the costly computations
-            if (parentBounds.width == 0f || parentBounds.height == 0f) {
+            if (parentBounds.getWidth() == 0f || parentBounds.getHeight() == 0f) {
                 Arrays.fill(bounds, new Bounds(0, 0));
                 return bounds;
             }
@@ -312,15 +312,15 @@ public final class GridPlacementUtil {
                     this.calculatedColumnWidth = estimatedGrid.getCalculatedColumnWidths().clone();
                     this.calculatedRowHeight = estimatedGrid.getCalculatedRowHeights().clone();
 
-                    if (gridBounds.width - width > TOLERANCE
+                    if (gridBounds.getWidth() - width > TOLERANCE
                             && childAreaPosition.getFirst() < numColumns) {
                         calculatedColumnWidth[childAreaPosition.getFirst()]
-                                += gridBounds.width - width;
+                                += gridBounds.getWidth() - width;
                     }
-                    if (gridBounds.height - height > TOLERANCE
+                    if (gridBounds.getHeight() - height > TOLERANCE
                             && childAreaPosition.getSecond() < numRows) {
                         calculatedRowHeight[childAreaPosition.getSecond()]
-                                += gridBounds.height - height;
+                                += gridBounds.getHeight() - height;
                     }
 
                 } else {
@@ -330,26 +330,26 @@ public final class GridPlacementUtil {
                     final boolean[] tempFlexibleRows = new boolean[flexibleRows.length];
                     tempFlexibleRows[childAreaPosition.getSecond()] = true;
 
-                    this.calculatedColumnWidth = computeCellSizes(gridBounds.width, minOverallWidth,
+                    this.calculatedColumnWidth = computeCellSizes(gridBounds.getWidth(), minOverallWidth,
                             columnMaxMinWidth, 1, tempFlexibleCols);
 
-                    this.calculatedRowHeight = computeCellSizes(gridBounds.height, minOverallHeight,
+                    this.calculatedRowHeight = computeCellSizes(gridBounds.getHeight(), minOverallHeight,
                             rowMaxMinHeight, 1, tempFlexibleRows);
                 }
 
             } else {
                 // we have to calculate the data for the single rows / cols
 
-                this.calculatedColumnWidth = computeCellSizes(gridBounds.width, minOverallWidth,
+                this.calculatedColumnWidth = computeCellSizes(gridBounds.getWidth(), minOverallWidth,
                         columnMaxMinWidth, numFlexibleCols, flexibleCols);
 
-                this.calculatedRowHeight = computeCellSizes(gridBounds.height, minOverallHeight,
+                this.calculatedRowHeight = computeCellSizes(gridBounds.getHeight(), minOverallHeight,
                         rowMaxMinHeight, numFlexibleRows, flexibleRows);
             }
 
             // variables that are later on used to define the bounds of single objects
-            final float startX = gridBounds.x;
-            final float startY = gridBounds.y;
+            final float startX = gridBounds.getX();
+            final float startY = gridBounds.getY();
 
             float currentX = startX;
             float currentY = startY;
@@ -369,11 +369,11 @@ public final class GridPlacementUtil {
                 bounds[i] = localBounds.move(currentX, currentY);
 
 
-                currentX += cellBounds.width * widthScale;
+                currentX += cellBounds.getWidth() * widthScale;
 
                 // advance the current y-coordinate if necessary
                 if (column == numColumns - 1) {
-                    currentY += cellBounds.height * heightScale;
+                    currentY += cellBounds.getHeight() * heightScale;
                     // new row => start from left.
                     currentX = startX;
                 }
@@ -506,8 +506,8 @@ public final class GridPlacementUtil {
 
             // compare the width and height of the current rendering with the biggest width
             // and height of the corresponding row and column and update the values with the maximum
-            minRowHeights[row] = Math.max(minRowHeights[row], cellSize.height);
-            minColumnWidths[col] = Math.max(minColumnWidths[col], cellSize.width);
+            minRowHeights[row] = Math.max(minRowHeights[row], cellSize.getHeight());
+            minColumnWidths[col] = Math.max(minColumnWidths[col], cellSize.getWidth());
         }
 
         // store the information of the size of the cells in the KRendering containing the grid
@@ -540,10 +540,10 @@ public final class GridPlacementUtil {
         final Bounds childBounds = new Bounds(0, 0);
 
         for (final float width : minColumnWidths) {
-            childBounds.width += width;
+            childBounds.setWidth(childBounds.getWidth() + width);
         }
         for (final float height : minRowHeights) {
-            childBounds.height += height;
+            childBounds.setHeight(childBounds.getHeight() + height);
         }
 
         // take insets of the grid itself into consideration

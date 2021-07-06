@@ -70,7 +70,8 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
-import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.microlayout.EclipsePlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics.KlighdGradientPaint;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
 
@@ -131,9 +132,9 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
 
     private BasicStroke defaultStroke =
             new BasicStroke(
-                    KlighdConstants.DEFAULT_LINE_ATTRIBUTES.width,
-                    KlighdConstants.DEFAULT_LINE_ATTRIBUTES.cap - 1,
-                    KlighdConstants.DEFAULT_LINE_ATTRIBUTES.join - 1);
+                    EclipseKlighdConstants.DEFAULT_LINE_ATTRIBUTES.width,
+                    EclipseKlighdConstants.DEFAULT_LINE_ATTRIBUTES.cap - 1,
+                    EclipseKlighdConstants.DEFAULT_LINE_ATTRIBUTES.join - 1);
 
     public static final String EMBED_FONTS = rootKey + "."
             + FontConstants.EMBED_FONTS;
@@ -947,7 +948,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 final Double nextLineLength = noTextLengthPerLineCalcRequired ? nextLength :
                     // need to box the result here as the type of the ternary operation would be 'double' otherwise
                     //  yielding NPEs if 'nextLength' is 'null'
-                    Double.valueOf(PlacementUtil.estimateTextSize(fontData, line).getWidth());
+                    Double.valueOf(EclipsePlacementUtil.estimateTextSize(fontData, line).getWidth());
                 
                 // text length
                 content.append(textLength(nextLineLength));
@@ -982,7 +983,7 @@ public class SemanticSVGGraphics2D extends AbstractVectorGraphicsIO {
                 final Double nextLineLength = noTextLengthPerLineCalcRequired ? nextLength :
                     // need to box the result here as the type of the ternary operation would be 'double' otherwise
                     //  yielding NPEs if 'nextLength' is 'null'
-                    Double.valueOf(PlacementUtil.estimateTextSize(fontData, line).getWidth());
+                    Double.valueOf(EclipsePlacementUtil.estimateTextSize(fontData, line).getWidth());
                 
                 // text length
                 content.append(textLength(nextLineLength));

@@ -19,9 +19,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.contexts.IContextService;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
+import de.cau.cs.kieler.klighd.eclipse.EclipseViewContext;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.eclipse.internal.IDiagramOutlinePage;
+import de.cau.cs.kieler.klighd.eclipse.viewers.EclipseContextViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
@@ -32,7 +34,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  *
  * @author chsch
  */
-public class UiContextViewer extends ContextViewer implements ISelectionProvider,
+public class UiContextViewer extends EclipseContextViewer implements ISelectionProvider,
         IDiagramOutlinePage.Provider {
 
     /**
@@ -94,7 +96,7 @@ public class UiContextViewer extends ContextViewer implements ISelectionProvider
 
                 // register the context menu in the current work bench part site
                 //  this enables the population with entries contributed via extension points
-                ((ViewContext) model).getDiagramWorkbenchPart().getSite()
+                ((EclipseViewContext) model).getDiagramWorkbenchPart().getSite()
                         .registerContextMenu(menuManager, this);
             }
 

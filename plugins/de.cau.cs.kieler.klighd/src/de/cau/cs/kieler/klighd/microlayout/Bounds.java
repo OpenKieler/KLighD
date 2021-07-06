@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd.microlayout;
 
+import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
@@ -37,18 +38,18 @@ public class Bounds {
     // CHECKSTYLEOFF Visibility: values shall be directly accessible by the classes in the same package!
 
     /** the x-coordinate. */
-    float x;
+    private float x;
     /** the y-coordinate. */
-    float y;
+    private float y;
     /** the width. */
-    float width;
+    private float width;
     /** the height. */
-    float height;
+    private float height;
     /**
      * the insets used to transport the position of a ChildAreaCell from estimateGridSize to
      * calculateInsets method.
      */
-    KInsets insets = null;
+    private KInsets insets = null;
 
     // CHECKSTYLEON Visibility
 
@@ -61,11 +62,11 @@ public class Bounds {
      *            the height
      */
     public Bounds(final float width, final float height) {
-        this.x = 0;
-        this.y = 0;
-        this.width = width;
-        this.height = height;
-        this.insets = KGraphFactory.eINSTANCE.createKInsets();
+        this.setX(0);
+        this.setY(0);
+        this.setWidth(width);
+        this.setHeight(height);
+        this.setInsets(KGraphFactory.eINSTANCE.createKInsets());
     }
 
     /**
@@ -77,11 +78,11 @@ public class Bounds {
      *            the height
      */
     public Bounds(final double width, final double height) {
-        this.x = 0;
-        this.y = 0;
-        this.width = (float) width;
-        this.height = (float) height;
-        this.insets = KGraphFactory.eINSTANCE.createKInsets();
+        this.setX(0);
+        this.setY(0);
+        this.setWidth((float) width);
+        this.setHeight((float) height);
+        this.setInsets(KGraphFactory.eINSTANCE.createKInsets());
     }
 
     /**
@@ -91,11 +92,11 @@ public class Bounds {
      *            the Bounds to take the data from
      */
     public Bounds(final Bounds bounds) {
-        this.x = bounds.x;
-        this.y = bounds.y;
-        this.width = bounds.width;
-        this.height = bounds.height;
-        this.insets = KGraphFactory.eINSTANCE.createKInsets();
+        this.setX(bounds.getX());
+        this.setY(bounds.getY());
+        this.setWidth(bounds.getWidth());
+        this.setHeight(bounds.getHeight());
+        this.setInsets(KGraphFactory.eINSTANCE.createKInsets());
     }
 
     /**
@@ -104,10 +105,10 @@ public class Bounds {
      * @param point
      *            the SWT point to take width and height from
      */
-    public Bounds(final org.eclipse.swt.graphics.Point point) {
-        this.width = point.x;
-        this.height = point.y;
-        this.insets = KGraphFactory.eINSTANCE.createKInsets();
+    public Bounds(final Point point) {
+        this.setWidth(point.x);
+        this.setHeight(point.y);
+        this.setInsets(KGraphFactory.eINSTANCE.createKInsets());
     }
 
     /**
@@ -117,11 +118,11 @@ public class Bounds {
      *            the {@link Rectangle2D.Float} to take x, y, width, and height from
      */
     public Bounds(final Rectangle2D.Float rect) {
-        this.x = rect.x;
-        this.y = rect.y;
-        this.width = rect.width;
-        this.height = rect.height;
-        this.insets = KGraphFactory.eINSTANCE.createKInsets();
+        this.setX(rect.x);
+        this.setY(rect.y);
+        this.setWidth(rect.width);
+        this.setHeight(rect.height);
+        this.setInsets(KGraphFactory.eINSTANCE.createKInsets());
     }
 
     /**
@@ -131,11 +132,11 @@ public class Bounds {
      *            the {@link Rectangle2D} to take x, y, width, and height from
      */
     public Bounds(final Rectangle2D rect) {
-        this.x = (float) rect.getX();
-        this.y = (float) rect.getY();
-        this.width = (float) rect.getWidth();
-        this.height = (float) rect.getHeight();
-        this.insets = KGraphFactory.eINSTANCE.createKInsets();
+        this.setX((float) rect.getX());
+        this.setY((float) rect.getY());
+        this.setWidth((float) rect.getWidth());
+        this.setHeight((float) rect.getHeight());
+        this.setInsets(KGraphFactory.eINSTANCE.createKInsets());
     }
 
     /**
@@ -151,11 +152,11 @@ public class Bounds {
      *            the height
      */
     public Bounds(final float x, final float y, final float width, final float height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.insets = KGraphFactory.eINSTANCE.createKInsets();
+        this.setX(x);
+        this.setY(y);
+        this.setWidth(width);
+        this.setHeight(height);
+        this.setInsets(KGraphFactory.eINSTANCE.createKInsets());
     }
 
     /**
@@ -165,11 +166,11 @@ public class Bounds {
      *            the bounds to take the data from
      */
     void setBounds(final Bounds bounds) {
-        this.x = bounds.x;
-        this.y = bounds.y;
-        this.width = bounds.width;
-        this.height = bounds.height;
-        this.insets = KGraphFactory.eINSTANCE.createKInsets();
+        this.setX(bounds.getX());
+        this.setY(bounds.getY());
+        this.setWidth(bounds.getWidth());
+        this.setHeight(bounds.getHeight());
+        this.setInsets(KGraphFactory.eINSTANCE.createKInsets());
     }
 
     /**
@@ -179,11 +180,11 @@ public class Bounds {
      *            the bounds to take the data from
      */
     void setBounds(final Rectangle2D bounds) {
-        this.x = (float) bounds.getX();
-        this.y = (float) bounds.getY();
-        this.width = (float) bounds.getWidth();
-        this.height = (float) bounds.getHeight();
-        this.insets = KGraphFactory.eINSTANCE.createKInsets();
+        this.setX((float) bounds.getX());
+        this.setY((float) bounds.getY());
+        this.setWidth((float) bounds.getWidth());
+        this.setHeight((float) bounds.getHeight());
+        this.setInsets(KGraphFactory.eINSTANCE.createKInsets());
     }
 
     /**
@@ -227,7 +228,7 @@ public class Bounds {
      *         zero.
      */
     public boolean isEmpty() {
-        return this.width == 0f && this.height == 0f;
+        return this.getWidth() == 0f && this.getHeight() == 0f;
     }
 
     /**
@@ -241,8 +242,8 @@ public class Bounds {
      * @return <code>this</code> {@link Bounds} for convenience
      */
     public Bounds move(final float horDir, final float vertDir) {
-        this.x += horDir;
-        this.y += vertDir;
+        this.setX(this.getX() + horDir);
+        this.setY(this.getY() + vertDir);
         return this;
     }
 
@@ -253,7 +254,7 @@ public class Bounds {
      * @return a related {@link Rectangle2D}
      */
     public Rectangle2D toRectangle2D() {
-        return new Rectangle2D.Float(this.x, this.y, this.width, this.height);
+        return new Rectangle2D.Float(this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
 
     /**
@@ -262,7 +263,7 @@ public class Bounds {
      * @return a related {@link Ellipse2D}
      */
     public Ellipse2D toEllipse2D() {
-        return new Ellipse2D.Float(this.x, this.y, this.width, this.height);
+        return new Ellipse2D.Float(this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
 
     /**
@@ -274,7 +275,7 @@ public class Bounds {
      * @return <code>shape</code> for convenience
      */
     public <S extends RectangularShape> S setBoundsOf(final S shape) {
-        shape.setFrame(this.x, this.y, this.width, this.height);
+        shape.setFrame(this.getX(), this.getY(), this.getWidth(), this.getHeight());
         return shape;
     }
 
@@ -292,7 +293,7 @@ public class Bounds {
      */
     @Override
     public String toString() {
-        return "(" + this.x + "," + this.y + "|" + this.width + "," + this.height + ")";
+        return "(" + this.getX() + "," + this.getY() + "|" + this.getWidth() + "," + this.getHeight() + ")";
     }
 
     /**
@@ -323,8 +324,8 @@ public class Bounds {
      * @return a {@link Pair} of {@link Boolean} denoting the width and height equality
      */
     public static Pair<Boolean, Boolean> compare(final Bounds b1, final Bounds b2, final float delta) {
-        final boolean widthEqual = Math.abs(b1.width - b2.width) <= delta;
-        final boolean heightEqual = Math.abs(b1.height - b2.height) <= delta;
+        final boolean widthEqual = Math.abs(b1.getWidth() - b2.getWidth()) <= delta;
+        final boolean heightEqual = Math.abs(b1.getHeight() - b2.getHeight()) <= delta;
 
         return Pair.of(widthEqual, heightEqual);
     }
@@ -341,8 +342,8 @@ public class Bounds {
      *         containing the particular maximal values.
      */
     public static Bounds max(final Bounds b1, final Bounds b2) {
-        b1.width = Math.max(b1.width, b2.width);
-        b1.height = Math.max(b1.height, b2.height);
+        b1.setWidth(Math.max(b1.getWidth(), b2.getWidth()));
+        b1.setHeight(Math.max(b1.getHeight(), b2.getHeight()));
         return b1;
     }
 
@@ -358,8 +359,8 @@ public class Bounds {
      *         containing the particular minimal values.
      */
     public static Bounds min(final Bounds b1, final Bounds b2) {
-        b1.width = Math.min(b1.width, b2.width);
-        b1.height = Math.min(b1.height, b2.height);
+        b1.setWidth(Math.min(b1.getWidth(), b2.getWidth()));
+        b1.setHeight(Math.min(b1.getHeight(), b2.getHeight()));
         return b1;
     }
 
@@ -435,6 +436,41 @@ public class Bounds {
      */
     public static Bounds immutableCopy(final Bounds bounds) {
         return new ImmutableBounds(bounds);
+    }
+
+    /**
+     * @param width the width to set
+     */
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    /**
+     * @param height the height to set
+     */
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    /**
+     * @param y the y to set
+     */
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    /**
+     * @param x the x to set
+     */
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    /**
+     * @param insets the insets to set
+     */
+    private void setInsets(KInsets insets) {
+        this.insets = insets;
     }
 
     /**

@@ -16,7 +16,6 @@ import com.google.common.base.Throwables
 import com.google.gson.JsonObject
 import com.google.inject.Inject
 import com.google.inject.Provider
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart
 import de.cau.cs.kieler.klighd.KlighdDataManager
 import de.cau.cs.kieler.klighd.SynthesisOption
 import de.cau.cs.kieler.klighd.ViewContext
@@ -205,8 +204,8 @@ class KGraphDiagramUpdater extends DiagramUpdater {
         if (modelTypeChanged) {
             // Configure the ViewContext and the KlighD synthesis to generate the KGraph model correctly.
             // needs to be a IDiagramWorkbenchPart, as it calls the standard constructor.
-            viewContext = new ViewContext(null as IDiagramWorkbenchPart, model).configure(properties)
-            viewer = viewContext.createViewer(null, null) as SprottyViewer
+            viewContext = new ViewContext(model).configure(properties)
+            viewer = viewContext.createViewer(null) as SprottyViewer
             viewer.diagramServer = server as KGraphDiagramServer
             viewer.viewContext = viewContext
         }

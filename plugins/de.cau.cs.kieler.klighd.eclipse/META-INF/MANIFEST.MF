@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KIELER Lightweight Diagrams (KLighD) Eclipse
+Bundle-SymbolicName: de.cau.cs.kieler.klighd.eclipse;singleton:=true
+Bundle-Version: 2.0.1.qualifier
+Bundle-Vendor: Kiel University
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: de.cau.cs.kieler.klighd.kgraph,
+ de.cau.cs.kieler.klighd.krendering;visibility:=reexport,
+ org.eclipse.core.runtime;bundle-version="3.6.0";visibility:=reexport,
+ org.eclipse.elk.core.service,
+ org.eclipse.elk.core.service.ui,
+ org.eclipse.emf.ecore;bundle-version="2.8.0";visibility:=reexport,
+ org.eclipse.emf.edit;bundle-version="2.8.0";resolution:=optional,
+ org.eclipse.jface;bundle-version="3.8.0";visibility:=reexport,
+ org.eclipse.swt;bundle-version="3.100.0";visibility:=reexport,
+ org.eclipse.ui.workbench;bundle-version="3.103.0";visibility:=reexport,
+ com.google.guava;bundle-version="10.0.0";visibility:=reexport,
+ com.google.inject;bundle-version="3.0.0",
+ javax.inject;bundle-version="1.0.0";visibility:=reexport,
+ de.cau.cs.kieler.klighd
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: de.cau.cs.kieler.klighd.KlighdPlugin
+Export-Package: de.cau.cs.kieler.klighd.eclipse,
+ de.cau.cs.kieler.klighd.eclipse.internal,
+ de.cau.cs.kieler.klighd.eclipse.microlayout,
+ de.cau.cs.kieler.klighd.eclipse.viewers

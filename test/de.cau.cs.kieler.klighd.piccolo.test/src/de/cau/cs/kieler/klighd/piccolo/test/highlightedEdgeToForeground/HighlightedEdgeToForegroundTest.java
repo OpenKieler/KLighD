@@ -32,17 +32,17 @@ import com.google.inject.Guice;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewer;
+import de.cau.cs.kieler.klighd.eclipse.viewers.EclipseContextViewer;
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 import de.cau.cs.kieler.klighd.krendering.Colors;
 import de.cau.cs.kieler.klighd.krendering.ViewSynthesisShared;
 import de.cau.cs.kieler.klighd.piccolo.test.ColorMatcher;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
-import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * The aim of this class is to test the "bring the highlighted edge to foreground" feature.<br>
@@ -83,10 +83,10 @@ public class HighlightedEdgeToForegroundTest {
         shell.setSize(650, 330);
         shell.setLayout(new FillLayout());
 
-        viewContext = new ViewContext((IDiagramWorkbenchPart) null, testModelGen.getTestModel())
+        viewContext = new ViewContext(testModelGen.getTestModel())
                 .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewer.ID));
 
-        new ContextViewer(shell).setModel(viewContext, true);
+        new EclipseContextViewer(shell).setModel(viewContext, true);
 
         viewContext.update(null);
         new LightDiagramLayoutConfig(viewContext)
@@ -97,7 +97,7 @@ public class HighlightedEdgeToForegroundTest {
         shell.layout(true, true);
         shell.open();
 
-        canvas = viewContext.getViewer().getControl();
+        canvas = ((IEclipseViewer) viewContext.getViewer()).getControl();
         zeroPoint = canvas.toDisplay(0, 0);
 
         // make sure the color recognition works by checking the background color in the top left corner

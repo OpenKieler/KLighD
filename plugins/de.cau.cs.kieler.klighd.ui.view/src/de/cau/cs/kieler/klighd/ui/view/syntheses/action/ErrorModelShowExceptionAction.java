@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 
+import de.cau.cs.kieler.klighd.eclipse.EclipseViewContext;
 import de.cau.cs.kieler.klighd.ide.model.ErrorModel;
 import de.cau.cs.kieler.klighd.ide.syntheses.action.AbstractErrorModelShowExceptionAction;
 
@@ -47,7 +48,7 @@ public class ErrorModelShowExceptionAction extends AbstractErrorModelShowExcepti
                 final Status status = new Status(IStatus.INFO, ID, errorModel.getMessage(),
                         new Exception(errorModel.getStackTrace()));
                 ErrorDialog errorDialog = new ErrorDialog(
-                        context.getViewContext().getDiagramWorkbenchPart().getSite().getShell(),
+                        ((EclipseViewContext) context.getViewContext()).getDiagramWorkbenchPart().getSite().getShell(),
                         errorModel.getMessage(), errorModel.getMessage(), status, IStatus.INFO);
                 errorDialog.setBlockOnOpen(false);
                 errorDialog.create();

@@ -61,7 +61,7 @@ import de.cau.cs.kieler.klighd.syntheses.ReinitializingDiagramSynthesisProxy;
  *
  * @author mri, chsch, akoc, csp
  */
-public final class KlighdDataManager {
+public class KlighdDataManager {
 
     /** identifier of the extension point for viewer providers. */
     public static final String EXTP_ID_EXTENSIONS = "de.cau.cs.kieler.klighd.extensions";
@@ -100,7 +100,7 @@ public final class KlighdDataManager {
     private static final String ELEMENT_STARTUP_HOOK = "startupHook";
 
     /** name of the 'id' attribute in the extension points. */
-    private static final String ATTRIBUTE_ID = "id";
+    protected static final String ATTRIBUTE_ID = "id";
 
     /** name of the 'class' attribute in the extension points. */
     private static final String ATTRIBUTE_CLASS = "class";
@@ -218,7 +218,7 @@ public final class KlighdDataManager {
     private final BiMap<String, IAction> idActionMapping = HashBiMap.create();
 
     /** the mapping of ids to the associated configuration elements describing the exporters. */
-    private final Map<String, IConfigurationElement> exportersMap = Maps.newHashMap();
+    protected final Map<String, IConfigurationElement> exportersMap = Maps.newHashMap();
 
     /** the list of the available exporters' descriptors. */
     private final List<ExporterDescriptor> descriptors = Lists.newArrayList();
@@ -238,7 +238,7 @@ public final class KlighdDataManager {
     /**
      * A private constructor to prevent instantiation.
      */
-    private KlighdDataManager() {}
+    public KlighdDataManager() {}
 
     /**
      * Reports an error that occurred while reading extensions.
@@ -252,7 +252,7 @@ public final class KlighdDataManager {
      * @param exception
      *            an optional exception that was caused by the invalid entry
      */
-    private static void reportError(final String extensionPoint,
+    protected static void reportError(final String extensionPoint,
             final IConfigurationElement element, final String attribute, final String msgSuffix, final Exception exception) {
         final String message =
                 "KLighD: Element '" + element.getName() + "' extending extension point '"
@@ -1053,30 +1053,6 @@ public final class KlighdDataManager {
      */
     public List<ExporterDescriptor> getAvailableExporters() {
         return Lists.newLinkedList(descriptors);
-    }
-
-    /**
-     * @param id
-     *            the id of the registered {@link IDiagramExporter}.
-     * @return the registered exporter for the passed id.
-     *
-     * @throws IllegalArgumentException
-     *             if the passed {@code id} is not registered.
-     */
-    public IDiagramExporter getExporter(final String id) {
-        IDiagramExporter exporter = null;
-        IConfigurationElement element = null;
-        try {
-            element = exportersMap.get(id);
-            if (element == null) {
-                throw new IllegalArgumentException("Id of " + IDiagramExporter.class + " not registered: "
-                        + id + ".");
-            }
-            exporter = (IDiagramExporter) element.createExecutableExtension("class");
-        } catch (final CoreException exception) {
-            reportError(EXTP_ID_EXTENSIONS, element, ATTRIBUTE_ID, null, exception);
-        }
-        return exporter;
     }
 
     /**

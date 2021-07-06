@@ -11,13 +11,14 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.actions;
+package de.cau.cs.kieler.klighd.eclipse.actions;
 
 import org.eclipse.jface.viewers.TreePath;
 
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.KlighdTreeSelection;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewer;
+import de.cau.cs.kieler.klighd.eclipse.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
@@ -41,7 +42,7 @@ public class ClipTowardsSelectionAction implements IAction {
      * {@inheritDoc}
      */
     public ActionResult execute(final ActionContext context) {
-        final KlighdTreeSelection selection = context.getContextViewer().getDiagramSelection();
+        final KlighdTreeSelection selection = ((IEclipseViewer) context.getContextViewer()).getDiagramSelection();
         final IViewer contextViewer = context.getContextViewer();
         
         final Object first = selection.getFirstElement();

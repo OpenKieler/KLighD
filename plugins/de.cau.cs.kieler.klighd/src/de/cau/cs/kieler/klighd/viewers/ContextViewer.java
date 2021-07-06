@@ -31,30 +31,17 @@ import java.util.Set;
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.emf.common.util.AbstractTreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Sets;
 
-import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.Klighd;
-import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
@@ -68,9 +55,7 @@ import de.cau.cs.kieler.klighd.krendering.KText;
  * {@link de.cau.cs.kieler.klighd.views.DiagramViewPart DiagramViewPart} and
  * {@link de.cau.cs.kieler.klighd.views.DiagramEditorPart DiagramEditorPart}.<br>
  * <br>
- * This class acts as a wrapper for the viewer supplied by the current view context. The method
- * {@code getControl} returns the control of that viewer, all other methods are delegated to the
- * wrapped viewer.<br>
+ * This class acts as a wrapper for the viewer supplied by the current view context.<br>
  * <br>
  * The motivation of this class is the intended multiformity of model viewers (although only the
  * Piccolo2D-based one has been realized). In addition, multiple diagram viewers, i.e. diagram
@@ -89,11 +74,7 @@ import de.cau.cs.kieler.klighd.krendering.KText;
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
-public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvider,
-        IDiagramOutlinePage.Provider {
-
-    /** the parent composite for diagram viewers. */
-    private Composite diagramComposite;
+public class ContextViewer implements IViewer, ILayoutRecorder {
 
     /** the current viewer. */
     private IViewer currentViewer;
@@ -104,17 +85,6 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     /** the {@link #currentViewer} if it is a {@link ILayoutRecorder}, <code>null</code> otherwise. */
     private ILayoutRecorder layoutRecorder;
 
-
-    /**
-     * Constructs a view context viewer.
-     *
-     * @param parent
-     *            the parent composite
-     */
-    public ContextViewer(final Composite parent) {
-        this.diagramComposite = parent;
-    }
-
     /**
      * Employs the given <code>viewer</code>.
      *
@@ -124,14 +94,11 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     protected synchronized void setViewer(final IViewer viewer) {
         // remove the current viewer if someone exists
         if (currentViewer != null) {
-            currentViewer.getControl().dispose();
             currentViewer = null;
         }
 
         final IViewer objViewer = viewer;
         currentViewer = objViewer;
-
-        diagramComposite.layout();
 
         if (currentViewer instanceof ILayoutRecorder) {
             layoutRecorder = (ILayoutRecorder) currentViewer;
@@ -142,17 +109,6 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     /* -------------------------------------------------- */
     /*   implementation of IDiagramOutlinePage.Provider   */
     /* -------------------------------------------------- */
-
-    /**
-     * {@inheritDoc}
-     */
-    public IDiagramOutlinePage getDiagramOutlinePage() {
-        if (currentViewer instanceof IDiagramOutlinePage.Provider) {
-            return ((IDiagramOutlinePage.Provider) currentViewer).getDiagramOutlinePage();
-        } else {
-            return null;
-        }
-    }
 
 
     /* -------------------------------------------------- */
@@ -223,12 +179,6 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
 
             // set the new view context
             currentViewContext = viewContext;
-
-            // create and set a corresponding new viewer
-            setViewer(viewContext.createViewer(this, diagramComposite));
-
-            // initialize the current selection
-            notifySelectionListeners(new KlighdTreeSelection(currentViewContext));
         }
     }
 
@@ -237,13 +187,6 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
      */
     public ViewContext getViewContext() {
         return currentViewContext;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Control getControl() {
-        return currentViewer != null ? currentViewer.getControl() : null;
     }
 
     /**
@@ -366,17 +309,6 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
         return this.currentViewer.isVisible(diagramElement, checkParents);
     }
 
-    private static void checkValidThread(String msgReplacement) {
-        if (Klighd.IS_PLATFORM_RUNNING && PlatformUI.isWorkbenchRunning() && Display.getCurrent() == null) {
-            throw new RuntimeException(NON_DISPLAY_ERROR_MSG.replace("##", msgReplacement));
-        }
-    }
-
-    private static final String NON_DISPLAY_ERROR_MSG =
-            "KLighD: Application attempted to traverse an Iterator provided by "
-            + "IViewer.##. Evaluations of those Iterators must be "
-            + "performed by the display (UI) thread for integrity reasons.";
-
     /**
      * {@inheritDoc}
      */
@@ -395,7 +327,6 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
 
                 @Override
                 protected Iterator<? extends KNode> getChildren(final Object object) {
-                    checkValidThread("getVisibleDiagramNodes()");
 
                     return Iterators.filter(((KNode) object).getChildren().iterator(),
                             new Predicate<KNode>() {
@@ -427,7 +358,6 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
 
                 @Override
                 protected Iterator<? extends KGraphElement> getChildren(final Object object) {
-                    checkValidThread("getVisibleDiagramElements()");
 
                     final Iterator<EObject> candidates;
                     if (object instanceof KNode) {
@@ -786,24 +716,14 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
 
     /* ----------------------------- */
     /*   the selection setting API   */
-    /* ----------------------------- */
-
-    private final Function<Object, EObject> getViews = new Function<Object, EObject>() {
-        public EObject apply(final Object semanticElement) {
-            final EObject diagramElement = getViewContext().getTargetElement(semanticElement, null);
-            return isSelectable().apply(diagramElement) ? diagramElement : null;
-        }
-    };
-
-
-    /**
+    /* ----------------------------- *//**
      * {@inheritDoc}
      */
     public void toggleSelectionOf(final Object semanticElement) {
-        final EObject diagramElement = getViews.apply(semanticElement);
-        if (diagramElement != null) {
-            toggleSelectionOfDiagramElements(singleton(diagramElement));
-        }
+//        final EObject diagramElement = getViews.apply(semanticElement);
+//        if (diagramElement != null) {
+//            toggleSelectionOfDiagramElements(singleton(diagramElement));
+//        }
     };
 
     /**
@@ -824,8 +744,8 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
      * {@inheritDoc}
      */
     public void toggleSelectionOfSemanticElements(final Set<Object> semanticElements) {
-        toggleSelectionOfDiagramElements(
-                Sets.newHashSet(transform(semanticElements, getViews)));
+//        toggleSelectionOfDiagramElements(
+//                Sets.newHashSet(transform(semanticElements, getViews)));
 
     }
 
@@ -833,18 +753,18 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
      * {@inheritDoc}
      */
     public void toggleSelectionOfDiagramElements(final Set<? extends EObject> toBeToggled) {
-        final KlighdTreeSelection diagSelection = this.getDiagramSelection();
-        final List<EObject> theSelection = newArrayList(
-                filter(diagSelection != null ? diagSelection : KlighdTreeSelection.EMPTY, EObject.class)
-        );
-
-        for (final EObject diagramElement : Sets.filter(toBeToggled, isSelectable())) {
-            final boolean removed = theSelection.remove(diagramElement);
-            if (!removed) {
-                theSelection.add(diagramElement);
-            }
-        }
-        updateSelection(theSelection);
+//        final KlighdTreeSelection diagSelection = this.getDiagramSelection();
+//        final List<EObject> theSelection = newArrayList(
+//                filter(diagSelection != null ? diagSelection : KlighdTreeSelection.EMPTY, EObject.class)
+//        );
+//
+//        for (final EObject diagramElement : Sets.filter(toBeToggled, isSelectable())) {
+//            final boolean removed = theSelection.remove(diagramElement);
+//            if (!removed) {
+//                theSelection.add(diagramElement);
+//            }
+//        }
+//        updateSelection(theSelection);
 
     }
 
@@ -852,9 +772,9 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
      * {@inheritDoc}
      */
     public void resetSelectionTo(final Object semanticElement) {
-        final EObject diagramElement = getViews.apply(semanticElement);
+//        final EObject diagramElement = getViews.apply(semanticElement);
         // Collections.singleton accepts 'null' values and 'updateSelection' does so, too!
-        updateSelection(singleton(diagramElement));
+//        updateSelection(singleton(diagramElement));
     }
 
     /**
@@ -875,7 +795,7 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
      * {@inheritDoc}
      */
     public void resetSelectionToSemanticElements(final Iterable<? extends Object> semanticElements) {
-        updateSelection(transform(semanticElements, getViews));
+//        updateSelection(transform(semanticElements, getViews));
     }
 
     /**
@@ -884,7 +804,6 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     public void resetSelectionToDiagramElements(final Iterable<? extends EObject> diagramElements) {
         updateSelection(filter(diagramElements, isSelectable()));
     }
-
 
     /**
      * Function for determining the (root) {@link KRendering KRenderings} corresponding to a
@@ -904,7 +823,7 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
             }
         }
     };
-
+    
     /**
      * Updates the selection provided by this {@link IViewer}.
      *
@@ -913,10 +832,7 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
     private void updateSelection(final Iterable<? extends EObject> diagramElements) {
         // here the selected elements are assumed to be diagram elements, i.e. KGraph elements or KTexts
 
-        final KlighdTreeSelection diagSelection = getDiagramSelection();
-
-        final List<EObject> currentlySelected = diagSelection != null
-                ? newArrayList(filter(diagSelection, EObject.class)) : Collections.<EObject>emptyList();
+        final List<EObject> currentlySelected = Collections.<EObject>emptyList();
         final List<EObject> toBeSelected = newArrayList(filter(diagramElements, Predicates.notNull()));
 
         for (final KRendering r : concat(transform(filter(currentlySelected, notIn(toBeSelected)),
@@ -935,9 +851,10 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
 
         createSelection(toBeSelected);
     }
+    
 
     /**
-     * Updates the selection provided by <code>this</code> {@link ContextViewer} and notifies the
+     * Updates the selection provided by <code>this</code> {@link EclipseContextViewer} and notifies the
      * registered {@link ISelectionChangedListener ISelectionChangedListeners}.
      *
      * @param elements
@@ -945,114 +862,58 @@ public class ContextViewer implements IViewer, ILayoutRecorder, ISelectionProvid
      */
     protected void createSelection(final Collection<EObject> elements) {
         // update the selection status for the ISelectionProvider interface
-        notifySelectionListeners(new KlighdTreeSelection(getViewContext(), elements));
+//        notifySelectionListeners(new KlighdTreeSelection(getViewContext(), elements));
     }
 
-
+    
+    
     /* -------------------------------------------------- */
     /*   The selection provider related stuff             */
     /* -------------------------------------------------- */
-
-    /** the current selection. */
-    private KlighdTreeSelection diagramSelection = KlighdTreeSelection.EMPTY;
-
-    /** alternative generic selection, required for providing next selections by KLighD's UI parts. */
-    private IKlighdSelection selection = diagramSelection;
-
-    /** the selection listeners registered on this view. */
-    // don't change the type to a collection type violating the Set property
-    //  see doc of 'ISelectionProvider.addSelectionChangedListener(...)'
-    private Set<ISelectionChangedListener> selectionListeners = Sets.newLinkedHashSet();
-
-    /**
-     * Notifies the registered {@link ISelectionChangedListener ISelectionChangedListeners}. Such
-     * listeners are registered e.g. by the platform in order to broadcast changes in the selection
-     * across change listeners registered in the {@link org.eclipse.ui.ISelectionService
-     * ISelectionService}.
-     *
-     * @param theSelection
-     *            the selection to be broadcasted
-     */
-    void notifySelectionListeners(final IKlighdSelection theSelection) {
-        // method is package protected as it is called in AbstractViewer, too
-
-        synchronized (selectionListeners) {
-            this.selection = theSelection;
-
-            if (theSelection instanceof KlighdTreeSelection) {
-                this.diagramSelection = (KlighdTreeSelection) theSelection;
-            } else {
-                resetSelectionHighlighting();
-                this.diagramSelection = null;
-            }
-
-            if (!selectionListeners.isEmpty()) {
-                final SelectionChangedEvent event = new SelectionChangedEvent(this, theSelection);
-
-                for (final ISelectionChangedListener listener : selectionListeners) {
-                    listener.selectionChanged(event);
-                }
-            }
-        }
-    }
-
-    /**
-     * Resets the highlighting of the currently selected diagram elements.
-     */
-    private void resetSelectionHighlighting() {
-        final Iterable<EObject> currentSelection = filter(getDiagramSelection(), EObject.class);
-        if (currentSelection != null) {
-            for (final KRendering r : concat(transform(currentSelection, AS_RENDERING))) {
-                r.setProperty(KlighdInternalProperties.SELECTED, false);
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KlighdTreeSelection getDiagramSelection() {
-        return this.diagramSelection;
-    }
 
 
     /* -------------------------------------------------- */
     /*   implementation of ISelectionProvider             */
     /* -------------------------------------------------- */
+    
+
+
+    /* -------------------------------------------------- */
+    /*            getter and setter                       */
+    /* -------------------------------------------------- */
 
     /**
-     * {@inheritDoc}
+     * @return the currentViewer
      */
-    public IKlighdSelection getSelection() {
-        return this.selection;
+    public IViewer getCurrentViewer() {
+        return currentViewer;
     }
 
     /**
-     * {@inheritDoc}
+     * @param currentViewer the currentViewer to set
      */
-    public void setSelection(final ISelection selection) {
-        // not supported yet
-        final String msg = "KLighD: Setting the selection "
-                + "in KLighD viewers via ISelectionProvider.setSelection(...) is not supported.";
-        throw new UnsupportedOperationException(msg);
+    public void setCurrentViewer(final IViewer currentViewer) {
+        this.currentViewer = currentViewer;
     }
 
     /**
-     * {@inheritDoc}
+     * @param currentViewContext the currentViewContext to set
      */
-    public void addSelectionChangedListener(final ISelectionChangedListener listener) {
-        synchronized (selectionListeners) {
-            selectionListeners.add(listener);
-            listener.selectionChanged(new SelectionChangedEvent(this, selection));
-        }
+    public void setCurrentViewContext(final ViewContext currentViewContext) {
+        this.currentViewContext = currentViewContext;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the layoutRecorder
      */
-    public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
-        synchronized (selectionListeners) {
-            selectionListeners.remove(listener);
-        }
+    public ILayoutRecorder getLayoutRecorder() {
+        return layoutRecorder;
+    }
+
+    /**
+     * @param layoutRecorder the layoutRecorder to set
+     */
+    public void setLayoutRecorder(final ILayoutRecorder layoutRecorder) {
+        this.layoutRecorder = layoutRecorder;
     }
 }

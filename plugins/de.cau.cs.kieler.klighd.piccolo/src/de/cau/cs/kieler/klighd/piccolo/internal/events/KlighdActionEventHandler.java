@@ -331,19 +331,20 @@ public class KlighdActionEventHandler implements PInputEventListener {
         }
 
         @Override
-        public Point getControlRelativeMousePos() {
+        public java.awt.Point getControlRelativeMousePos() {
             // the following cast doesn't need to be checked since the action event handler
             //  doesn't react on other kinds events, see above
             final MouseEvent me = ((KlighdMouseEvent) event.getSourceSwingEvent()).getEvent();
-            return new Point(me.x, me.y);
+            return new java.awt.Point(me.x, me.y);
         }
 
         @Override
-        public Point getDisplayRelativeMousePos() {
+        public java.awt.Point getDisplayRelativeMousePos() {
             // the following cast doesn't need to be checked since the action event handler
             //  doesn't react on other kinds events, see above
             final MouseEvent me = ((KlighdMouseEvent) event.getSourceSwingEvent()).getEvent();
-            return getActiveViewer().getControl().toDisplay(me.x, me.y);
+            Point p = ((PiccoloViewer) getActiveViewer()).getControl().toDisplay(me.x, me.y);
+            return new java.awt.Point(p.x, p.y);
         }
     }
 

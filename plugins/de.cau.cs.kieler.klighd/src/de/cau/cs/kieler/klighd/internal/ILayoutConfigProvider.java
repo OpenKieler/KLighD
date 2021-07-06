@@ -17,9 +17,9 @@ import org.eclipse.elk.core.LayoutConfigurator;
 
 /**
  * In interface of classes contributing a {@link LayoutConfigurator}.<br>
- * It is currently implemented by the {@link de.cau.cs.kieler.klighd.IDiagramWorkbenchPart
+ * It is currently implemented by the {@link de.cau.cs.kieler.klighd.eclipse.IDiagramWorkbenchPart
  * IDiagramWorkbenchParts} in <code>de.cau.cs.kieler.klighd.ui</code>. This interface is separated
- * from {@link de.cau.cs.kieler.klighd.IDiagramWorkbenchPart IDiagramWorkbenchPart} since it
+ * from {@link de.cau.cs.kieler.klighd.eclipse.IDiagramWorkbenchPart IDiagramWorkbenchPart} since it
  * describes an orthogonal aspect and is used for internal purposes only.
  *
  * @author chsch

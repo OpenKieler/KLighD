@@ -21,7 +21,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.Property;
-import org.eclipse.swt.graphics.RGB;
 
 /**
  * Implementations of this interface are able to render diagram formats like PNG or SVG without
@@ -78,10 +77,6 @@ public interface IOffscreenRenderer {
      */
     IProperty<Integer> IMAGE_SCALE = new Property<Integer>(
             "de.cau.cs.kieler.klighd.offscreenRendering.imageScale", 1);
-
-    /** Property definition for defining the diagram background color. */
-    IProperty<RGB> BACKGROUND_COLOR = new Property<RGB>(
-            "de.cau.cs.kieler.klighd.offscreenRendering.backgroundColor", KlighdConstants.WHITE);
 
     /** Property definition for defining transparent diagram background. */
     IProperty<Boolean> TRANSPARENT_BACKGROUND = new Property<Boolean>(

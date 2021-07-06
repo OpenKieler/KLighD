@@ -37,7 +37,9 @@ import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
-import de.cau.cs.kieler.klighd.internal.IDiagramOutlinePage;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewerProvider;
+import de.cau.cs.kieler.klighd.eclipse.internal.IDiagramOutlinePage;
+import de.cau.cs.kieler.klighd.eclipse.viewers.AbstractEclipseViewer;
 import de.cau.cs.kieler.klighd.internal.ILayoutRecorder;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
@@ -56,7 +58,6 @@ import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdSelectiveZoomEventH
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.NodeUtil;
 import de.cau.cs.kieler.klighd.util.KlighdProperties;
-import de.cau.cs.kieler.klighd.viewers.AbstractViewer;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PNode;
@@ -68,7 +69,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * @author mri
  * @author chsch
  */
-public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
+public class PiccoloViewer extends AbstractEclipseViewer implements ILayoutRecorder,
         IDiagramOutlinePage.Provider {
 
     /** The identifier of this viewer type as specified in the extension. */
@@ -82,13 +83,22 @@ public class PiccoloViewer extends AbstractViewer implements ILayoutRecorder,
      * <code>PiccoloViewerUI</code> is contributed via a related {@link IViewerProvider} in
      * <code>de.cau.cs.kieler.klighd.ui</code>.
      */
-    public static class Provider implements IViewerProvider {
+    public static class Provider implements IEclipseViewerProvider {
 
         /**
          * {@inheritDoc}
          */
         public IViewer createViewer(final ContextViewer parentViewer, final Composite parent) {
             return new PiccoloViewer(parentViewer, parent);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public IViewer createViewer(ContextViewer parentViewer) {
+            // TODO Not needed
+            return null;
         }
     }
 

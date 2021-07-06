@@ -254,11 +254,11 @@ public class KlighdSynthesisProperties extends MapPropertyHolder {
     }
 
     /**
-     * Configures the {@link de.cau.cs.kieler.klighd.IViewerProvider IViewerProvider} to be employed
+     * Configures the {@link de.cau.cs.kieler.klighd.eclipse.IViewerProvider IViewerProvider} to be employed
      * by means of the {@code id} it is registered via KLighD's 'extensions' extension point.
      *
      * @param id
-     *            the {@code id} of the desired {@link de.cau.cs.kieler.klighd.IViewerProvider
+     *            the {@code id} of the desired {@link de.cau.cs.kieler.klighd.eclipse.IViewerProvider
      *            IViewerProvider}
      * @return <code>this<code> {@link KlighdSynthesisProperties} object.
      */

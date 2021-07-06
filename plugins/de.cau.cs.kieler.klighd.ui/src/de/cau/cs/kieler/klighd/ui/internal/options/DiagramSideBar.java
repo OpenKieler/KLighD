@@ -55,7 +55,6 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 import de.cau.cs.kieler.klighd.DisplayedActionData;
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
@@ -64,6 +63,11 @@ import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.EclipseViewContext;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewer;
+import de.cau.cs.kieler.klighd.eclipse.viewers.EclipseContextViewer;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
@@ -575,14 +579,14 @@ public final class DiagramSideBar {
         if (actionsAvailable) {
             // register the actionsControlFactory as selection listener in the current context viewer
             //  multiple additions are harmless as internally a LinkedHashSet is used hold the listeners
-            viewer.getContextViewer().addSelectionChangedListener(actionControlFactory);
+            ((EclipseContextViewer) viewer.getContextViewer()).addSelectionChangedListener(actionControlFactory);
 
             // register the actionsControlFactory as view change listener in the current (diagram) viewer
             //  multiple additions are harmless as internally a HashMultimap is used hold the listeners
             viewer.addViewChangeListener(actionControlFactory,
                     ViewChangeType.clipCollapseExpandHideShow());
         } else {
-            viewer.getContextViewer().removeSelectionChangedListener(actionControlFactory);
+            ((EclipseContextViewer) viewer.getContextViewer()).removeSelectionChangedListener(actionControlFactory);
             viewer.removeViewChangeListener(actionControlFactory);
         }
 
@@ -658,7 +662,7 @@ public final class DiagramSideBar {
 
         updateZoomButtons(sideBarEnabled);
 
-        final IDiagramWorkbenchPart part = viewContext.getDiagramWorkbenchPart();
+        final IDiagramWorkbenchPart part = ((EclipseViewContext) viewContext).getDiagramWorkbenchPart();
         if (part instanceof DiagramViewPart) {
             final IAction action = ((DiagramViewPart) part).getAction(
                     DiagramViewPart.ACTION_ID_RESET_LAYOUT_OPTIONS);
@@ -690,10 +694,10 @@ public final class DiagramSideBar {
         }
 
         // side bar is hidden: if required, initialize the canvas buttons.
-        if (viewContext.getViewer().getControl() instanceof Composite
+        if (((IEclipseViewer) viewContext.getViewer()).getControl() instanceof Composite
                 && canvasZoomBtnsContainer == null) {
 
-            final Composite canvas = (Composite) viewContext.getViewer().getControl();
+            final Composite canvas = (Composite) ((IEclipseViewer) viewContext.getViewer()).getControl();
             canvas.addDisposeListener(new DisposeListener() {
 
                 public void widgetDisposed(final DisposeEvent e) {
@@ -711,7 +715,7 @@ public final class DiagramSideBar {
             // Otherwise 'SWT.KeyDown' and 'SWT.KeyUp' will be forwarded to that composite rather than
             //  the canvas and the magnifier glass and other key-based features won't work anymore.
             canvasZoomBtnsContainer = new Composite(canvas, SWT.NO_FOCUS);
-            final Color white = new Color(Display.getCurrent(), KlighdConstants.WHITE);
+            final Color white = new Color(Display.getCurrent(), EclipseKlighdConstants.WHITE);
             resources.add(white);
             canvasZoomBtnsContainer.setBackground(white);
 

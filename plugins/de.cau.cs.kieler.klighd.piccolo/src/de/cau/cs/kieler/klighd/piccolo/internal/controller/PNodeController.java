@@ -20,6 +20,7 @@ import org.eclipse.swt.graphics.RGB;
 import com.google.common.primitives.Floats;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.HorizontalAlignment;
 import de.cau.cs.kieler.klighd.krendering.KColor;
 import de.cau.cs.kieler.klighd.krendering.KColoring;
@@ -428,7 +429,7 @@ public abstract class PNodeController<T extends IKlighdFigureNode> {
             }
 
         } else {
-            this.setForegroundColor(KlighdConstants.BLACK, KlighdConstants.ALPHA_FULL_OPAQUE);
+            this.setForegroundColor(EclipseKlighdConstants.BLACK, KlighdConstants.ALPHA_FULL_OPAQUE);
         }
 
         // apply background coloring
@@ -541,14 +542,14 @@ public abstract class PNodeController<T extends IKlighdFigureNode> {
         if (styles.underline != null) {
             this.setUnderline(styles.underline.getUnderline(), toRGB(styles.underline.getColor()));
         } else {
-            this.setUnderline(null, KlighdConstants.BLACK);
+            this.setUnderline(null, EclipseKlighdConstants.BLACK);
         }
 
         // apply the strikeout property
         if (styles.strikeout != null) {
             this.setStrikeout(styles.strikeout.getStruckOut(), toRGB(styles.strikeout.getColor()));
         } else {
-            this.setStrikeout(false, KlighdConstants.BLACK);
+            this.setStrikeout(false, EclipseKlighdConstants.BLACK);
         }
     }
 

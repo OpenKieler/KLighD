@@ -23,7 +23,7 @@ import org.eclipse.elk.core.data.LayoutOptionData;
 import org.eclipse.elk.core.math.ElkMath;
 import org.eclipse.elk.core.service.ILayoutConfigurationStore;
 import org.eclipse.elk.core.service.LayoutConfigurationManager;
-import org.eclipse.elk.core.service.LayoutConnectorsService;
+import org.eclipse.elk.core.service.ui.EclipseLayoutConnectorsService;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -41,9 +41,10 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.inject.Injector;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.eclipse.EclipseViewContext;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
@@ -107,13 +108,13 @@ public class LayoutOptionControlFactory {
         layoutConfig = new LayoutConfigurator();
         
         this.viewContext = theViewContext;
-        this.workbenchPart = viewContext.getDiagramWorkbenchPart();
+        this.workbenchPart = ((EclipseViewContext) viewContext).getDiagramWorkbenchPart();
 
         final KNode viewModel = this.viewContext.getViewModel();
         
         // We need to obtain the LayoutConfigurationManager responsible for the view context to get
         // our hands at default option values later
-        Injector injector = LayoutConnectorsService.getInstance().getInjector(null, theViewContext);
+        Injector injector = EclipseLayoutConnectorsService.getInstance().getInjector(null, theViewContext);
         layoutConfigManager = injector.getInstance(LayoutConfigurationManager.class);
         
         // We also need to get the configuration store for the top-level diagram element

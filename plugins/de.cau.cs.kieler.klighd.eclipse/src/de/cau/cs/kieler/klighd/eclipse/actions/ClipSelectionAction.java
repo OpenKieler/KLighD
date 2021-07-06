@@ -11,12 +11,13 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.actions;
+package de.cau.cs.kieler.klighd.eclipse.actions;
 
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.klighd.IAction;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewer;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 
 /**
@@ -40,7 +41,7 @@ public class ClipSelectionAction implements IAction {
      * {@inheritDoc}
      */
     public ActionResult execute(final ActionContext context) {
-        final Iterable<?> selection = context.getContextViewer().getDiagramSelection();
+        final Iterable<?> selection = ((IEclipseViewer) context.getContextViewer()).getDiagramSelection();
         final IViewer contextViewer = context.getContextViewer();
         
         final Object first = Iterables.getFirst(selection, null);

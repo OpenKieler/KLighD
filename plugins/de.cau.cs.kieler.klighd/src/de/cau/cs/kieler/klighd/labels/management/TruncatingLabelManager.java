@@ -13,10 +13,10 @@
  */
 package de.cau.cs.kieler.klighd.labels.management;
 
+import java.awt.Font;
 import java.util.List;
 
 import org.eclipse.elk.graph.ElkLabel;
-import org.eclipse.swt.graphics.FontData;
 
 import com.google.common.collect.Lists;
 
@@ -57,16 +57,16 @@ public class TruncatingLabelManager extends AbstractKlighdLabelManager {
     }
     
     /** The string appended to a truncated label text. */
-    private static final String ELLIPSES = "...";
+    protected static final String ELLIPSES = "...";
 
     
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Variables and Configuration
     
     /** The mode we're in. Some of those use additional configuration variables. */
-    private TruncationMode truncationMode = TruncationMode.TARGET_WIDTH;
+    protected TruncationMode truncationMode = TruncationMode.TARGET_WIDTH;
     /** Whether to append an ellipsis to truncated text. */
-    private boolean appendEllipsis = true;
+    protected boolean appendEllipsis = true;
     /** How many words should survive truncation in {@link TruncationMode#FIRST_WORDS} mode. */
     private int wordsToSurvive = 1;
     
@@ -206,18 +206,18 @@ public class TruncatingLabelManager extends AbstractKlighdLabelManager {
      * Implementation based on the target width.
      */
     private Result targetWidth(final ElkLabel label, final double targetWidth) {
-        final FontData labelFontData = LabelManagementUtil.fontDataFor(label);
+        final Font labelFont = LabelManagementUtil.fontFor(label);
         String calculatedText = "";
         
         // Size of three ellipses, if they should be added
         final float ellipseWidth = appendEllipsis
-                ? PlacementUtil.estimateTextSize(labelFontData, ELLIPSES).getWidth()
+                ? PlacementUtil.estimateTextSize(labelFont, ELLIPSES).getWidth()
                 : 0;
 
         // If there is enough space for some text and ellipses, calculate the fitting text
         if (targetWidth > ellipseWidth) {
             calculatedText = LabelManagementUtil.findFittingString(label.getText(),
-                    LabelManagementUtil.fontDataFor(label), targetWidth - ellipseWidth);
+                    LabelManagementUtil.fontFor(label), targetWidth - ellipseWidth);
 
             // Delete whitespaces
             calculatedText = calculatedText.trim();                
@@ -243,7 +243,7 @@ public class TruncatingLabelManager extends AbstractKlighdLabelManager {
             // In all other cases whether we need to do stuff depends on whether the label exceeds
             // the supplied target width
             Bounds textBounds = PlacementUtil.estimateTextSize(
-                    LabelManagementUtil.fontDataFor(label), label.getText());
+                    LabelManagementUtil.fontFor(label), label.getText());
             return textBounds.getWidth() > targetWidth;
         }
     }

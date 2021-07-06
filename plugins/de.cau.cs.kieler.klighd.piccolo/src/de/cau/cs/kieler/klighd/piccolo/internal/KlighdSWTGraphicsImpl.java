@@ -66,6 +66,7 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdPaths;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
 import de.cau.cs.kieler.klighd.util.KlighdSemanticDiagramData;
@@ -317,7 +318,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
         gc.setLineAttributes(attributes);
     }
 
-    private float lineWidth = KlighdConstants.DEFAULT_LINE_ATTRIBUTES.width;
+    private float lineWidth = EclipseKlighdConstants.DEFAULT_LINE_ATTRIBUTES.width;
 
     /**
      * {@inheritDoc}
@@ -512,7 +513,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
                 curTextStyle.strikeoutColor = getColor(strikeoutColor);
             } else {
                 curTextStyle.strikeout = false;
-                curTextStyle.strikeoutColor = getColor(KlighdConstants.BLACK);
+                curTextStyle.strikeoutColor = getColor(EclipseKlighdConstants.BLACK);
             }
 
             if (underlining) {
@@ -522,7 +523,7 @@ public class KlighdSWTGraphicsImpl extends Graphics2D implements KlighdSWTGraphi
             } else {
                 curTextStyle.underline = false;
                 curTextStyle.underlineStyle = SWT.UNDERLINE_SINGLE;
-                curTextStyle.underlineColor = getColor(KlighdConstants.BLACK);
+                curTextStyle.underlineColor = getColor(EclipseKlighdConstants.BLACK);
             }
 
             if (lineWidthLimited) {

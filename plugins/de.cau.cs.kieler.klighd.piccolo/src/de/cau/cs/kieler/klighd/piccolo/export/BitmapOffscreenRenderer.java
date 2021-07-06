@@ -21,8 +21,8 @@ import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import de.cau.cs.kieler.klighd.IDiagramExporter.ExportDataBuilder;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramExporter.ExportDataBuilder;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.util.AbstractRunnableWithResult;

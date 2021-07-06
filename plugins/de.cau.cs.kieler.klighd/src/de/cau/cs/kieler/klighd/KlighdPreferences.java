@@ -17,9 +17,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.widgets.Widget;
 import org.osgi.framework.Bundle;
 
 import com.google.common.base.Strings;
@@ -274,34 +271,5 @@ public final class KlighdPreferences {
 
         return Strings.isNullOrEmpty(config)
                 ? defaultValue : STORE.getDouble(USER_ZOOMING_MAXIMAL_LEVEL);
-    }
-
-
-    /**
-     * Registers the given {@link IPreferenceChangeListener}.
-     *
-     * @param widget
-     *            an SWT {@link Widget} onto which a {@link DisposeListener} is installed to for
-     *            properly removing the preference change listener once it is not required anymore,
-     *            may be <code>null</code>
-     * @param listener
-     *            an {@link IPreferenceChangeListener} performing internal updates
-     */
-    public static void registerPrefChangeListener(final Widget widget,
-            final IPreferenceChangeListener listener) {
-        KlighdPreferences.STORE.addPreferenceChangeListener(listener);
-
-        if (widget == null) {
-            return;
-        }
-
-        widget.addDisposeListener(new DisposeListener() {
-
-            @Override
-            public void widgetDisposed(final DisposeEvent e) {
-                KlighdPreferences.STORE.removePreferenceChangeListener(listener);
-                e.widget.removeDisposeListener(this);
-            }
-        });
     }
 }

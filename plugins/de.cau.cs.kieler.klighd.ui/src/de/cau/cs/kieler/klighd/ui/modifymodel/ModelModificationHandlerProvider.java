@@ -22,7 +22,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.klighd.IModelModificationHandler;
+import de.cau.cs.kieler.klighd.eclipse.IModelModificationHandler;
 
 /**
  * Class is used to get fitting IModifyModelHandlers that can handle the given IWorkbenchPart.

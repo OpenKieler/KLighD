@@ -19,12 +19,13 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
-import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
-import de.cau.cs.kieler.klighd.LightDiagramServices;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.eclipse.EclipseLightDiagramLayoutConfig;
+import de.cau.cs.kieler.klighd.eclipse.EclipseLightDiagramServices;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewer;
 
 /**
  * A container class providing helpful things for {@link IDiagramWorkbenchPart IDiagramWorkbenchParts}.
@@ -82,7 +83,7 @@ public final class DiagramWorkbenchParts {
             final ViewContext context = diagramWorkbenchPart.getViewContext();
 
             if (KlighdPreferences.isZoomOnWorkbenchpartChange() && context != null) {
-                final Control control = context.getViewer().getControl();
+                final Control control = ((IEclipseViewer) context.getViewer()).getControl();
 
                 if (control == null || control.isDisposed() || !control.isVisible()) {
                     return;
@@ -102,7 +103,7 @@ public final class DiagramWorkbenchParts {
 
                     public void run() {
                         final IViewer viewer = diagramWorkbenchPart.getViewer();
-                        final Control control = viewer.getControl();
+                        final Control control = ((IEclipseViewer) viewer).getControl();
 
                         isScheduled = false;
                         if (!control.isDisposed() && control.isVisible()) {
@@ -120,7 +121,7 @@ public final class DiagramWorkbenchParts {
          */
         private void zoomOrRelayout(final IViewer viewer) {
             // calculate the aspect ratio of the current canvas
-            final Point size = viewer.getControl().getSize();
+            final Point size = ((IEclipseViewer) viewer).getControl().getSize();
 
             // assure that the composite's size is settled before we execute the layout
             if (size.x > 0 && size.y > 0) {
@@ -129,11 +130,11 @@ public final class DiagramWorkbenchParts {
 
                 if (oldAspectRatio == -1 || (oldAspectRatio > 1 && aspectRatio < 1)
                         || (oldAspectRatio < 1 && aspectRatio > 1)) {
-                    new LightDiagramLayoutConfig(diagramWorkbenchPart).performLayout();
+                    new EclipseLightDiagramLayoutConfig(diagramWorkbenchPart).performLayout();
                     oldAspectRatio = aspectRatio;
 
                 } else {
-                    LightDiagramServices.zoomDiagram(diagramWorkbenchPart);
+                    EclipseLightDiagramServices.zoomDiagram(diagramWorkbenchPart);
                 }
             }
         }

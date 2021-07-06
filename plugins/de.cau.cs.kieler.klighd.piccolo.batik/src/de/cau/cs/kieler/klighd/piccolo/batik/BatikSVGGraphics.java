@@ -34,6 +34,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
 import de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics;
 
 /**
@@ -96,7 +97,7 @@ public class BatikSVGGraphics extends KlighdAbstractSVGGraphics {
         // this setting influences the default stroke color as well as the default paint (fill) color!!
         defaults.setPaint(Color.BLACK);
         
-        final LineAttributes lineAttributes = KlighdConstants.DEFAULT_LINE_ATTRIBUTES;
+        final LineAttributes lineAttributes = EclipseKlighdConstants.DEFAULT_LINE_ATTRIBUTES;
         defaults.setStroke(new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
                 lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
                 lineAttributes.dashOffset));

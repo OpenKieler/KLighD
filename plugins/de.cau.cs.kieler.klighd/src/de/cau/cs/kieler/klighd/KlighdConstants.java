@@ -13,12 +13,8 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.awt.Color;
 import java.awt.Font;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.LineAttributes;
-import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.klighd.actions.CollapseExpandAction;
 import de.cau.cs.kieler.klighd.krendering.KColor;
@@ -33,7 +29,7 @@ import de.cau.cs.kieler.klighd.microlayout.Bounds;
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
-public final class KlighdConstants {
+public class KlighdConstants {
 
     /**
      * The background color used in default selection highlighting
@@ -46,32 +42,32 @@ public final class KlighdConstants {
     /**
      * Constant definition of the black {@link RGB} color constant.
      */
-    public static final RGB BLACK = new RGB(0, 0, 0);
+    public static final Color BLACK = new Color(0, 0, 0);
 
     /**
-     * Constant definition of the red {@link RGB} color constant.
+     * Constant definition of the red {@link Color} color constant.
      */
-    public static final RGB BLUE = new RGB(0, 0, 255);
+    public static final Color BLUE = new Color(0, 0, 255);
 
     /**
-     * Constant definition of the red {@link RGB} color constant.
+     * Constant definition of the red {@link Color} color constant.
      */
-    public static final RGB GREEN = new RGB(0, 255, 0);
+    public static final Color GREEN = new Color(0, 255, 0);
 
     /**
-     * Constant definition of the red {@link RGB} color constant.
+     * Constant definition of the red {@link Color} color constant.
      */
-    public static final RGB RED = new RGB(255, 0, 0);
+    public static final Color RED = new Color(255, 0, 0);
 
     /**
-     * Constant definition of the white {@link RGB} color constant.
+     * Constant definition of the white {@link Color} color constant.
      */
-    public static final RGB WHITE = new RGB(255, 255, 255);
+    public static final Color WHITE = new Color(255, 255, 255);
 
     /**
-     * Constant definition of the yellow {@link RGB} color constant.
+     * Constant definition of the yellow {@link Color} color constant.
      */
-    public static final RGB YELLOW = new RGB(255, 255, 0);
+    public static final Color YELLOW = new Color(255, 255, 0);
 
     /**
      * Constant definition of the <i>full transparent</i> SWT alpha value.
@@ -100,11 +96,6 @@ public final class KlighdConstants {
      */
     @SuppressWarnings("restriction")
     public static final float DEFAULT_DISPLAY_DPI = Klighd.IS_MACOSX ? 72f : 96f;
-
-    /**
-     * Constant definition denoting the standard line drawing attributes.
-     */
-    public static final LineAttributes DEFAULT_LINE_ATTRIBUTES = new LineAttributes(1f);
 
     /**
      * This font name is used for {@link de.cau.cs.kieler.klighd.krendering.KText KTexts}, if no
@@ -141,20 +132,10 @@ public final class KlighdConstants {
     public static final int DEFAULT_FONT_STYLE = Font.PLAIN;
 
     /**
-     * This font style used for {@link de.cau.cs.kieler.klighd.krendering.KText KTexts}, if no related
-     * {@link de.cau.cs.kieler.klighd.krendering.KFontBold KFontBold} and/or
-     * {@link de.cau.cs.kieler.klighd.krendering.KFontItalic KFontItalic} style is attached.
-     * 
-     * Note: SWT font styles are composed by performing 'style |= SWT.BOLD' and/or 'style |=
-     * SWT.ITALIC' while 'style' is the style integer.
-     */
-    public static final int DEFAULT_FONT_STYLE_SWT = SWT.NORMAL;
-
-    /**
      * This font configuration used for {@link de.cau.cs.kieler.klighd.krendering.KText KTexts}.
      */
-    public static final FontData DEFAULT_FONT = new FontData(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE,
-            DEFAULT_FONT_STYLE_SWT);
+    public static final Font DEFAULT_FONT = new Font(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE,
+            Font.PLAIN);
 
     /**
      * This constant is used to express the non-underlining configuration as {@link SWT} doesn't
@@ -208,11 +189,11 @@ public final class KlighdConstants {
      */
     public static final String SEMANTIC_DATA_RAW = "__raw";
 
-    
-    
     /**
      * Hidden default constructor.
      */
     private KlighdConstants() {
+        
     }
+
 }

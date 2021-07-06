@@ -23,6 +23,7 @@ import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.klighd.IKlighdPreferenceStore;
 import de.cau.cs.kieler.klighd.KlighdPreferences;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdPreferences;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMagnificationLensCamera;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
@@ -87,7 +88,7 @@ public class KlighdMagnificationLensEventHandler extends KlighdBasicInputEventHa
             }            
         };
 
-        KlighdPreferences.registerPrefChangeListener((KlighdCanvas) canvasCamera.getComponent(),
+        EclipseKlighdPreferences.registerPrefChangeListener((KlighdCanvas) canvasCamera.getComponent(),
                 new IPreferenceChangeListener() {
 
             @Override

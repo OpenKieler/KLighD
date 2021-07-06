@@ -42,11 +42,6 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
 public class LightDiagramLayoutConfig {
 
     /**
-     * The {@link IDiagramWorkbenchPart} containing the view model.
-     */
-    private IDiagramWorkbenchPart workbenchPart;
-
-    /**
      * The {@link ViewContext} for this layout.
      */
     private ViewContext viewContext;
@@ -102,6 +97,13 @@ public class LightDiagramLayoutConfig {
      * Model to be used to update the existing model in the {@link ViewContext}.
      */
     private Object model;
+    
+    /**
+     * Default constructor to be called by sub implementations.
+     */
+    protected LightDiagramLayoutConfig() {
+        
+    }
 
     /**
      * Creates a configuration for a {@link ViewContext}.
@@ -111,16 +113,6 @@ public class LightDiagramLayoutConfig {
      */
     public LightDiagramLayoutConfig(final ViewContext viewContext) {
         this.viewContext = viewContext;
-    }
-
-    /**
-     * Creates a configuration for a {@link IDiagramWorkbenchPart}.
-     * 
-     * @param workbenchPart
-     *            the {@link IDiagramWorkbenchPart} to be used in the configuration.
-     */
-    public LightDiagramLayoutConfig(final IDiagramWorkbenchPart workbenchPart) {
-        this.workbenchPart = workbenchPart;
     }
 
     ///////////////////////////////////////////////////////////
@@ -271,7 +263,7 @@ public class LightDiagramLayoutConfig {
      * 
      * @return the new model.
      */
-    Object model() {
+    public Object model() {
         return this.model;
     }
 
@@ -280,7 +272,7 @@ public class LightDiagramLayoutConfig {
      * 
      * @return <code>true</code> if the layout should be animated.
      */
-    Boolean animate() {
+    public Boolean animate() {
         return this.animate!= null ? this.animate : (
                 this.properties != null ? this.properties.getProperty(CoreOptions.ANIMATE) : null
         );
@@ -291,7 +283,7 @@ public class LightDiagramLayoutConfig {
      * 
      * @return the minimal time for animations, in milliseconds
      */
-    Integer minAnimationTime() {
+    public Integer minAnimationTime() {
         return this.minAnimationTime != null ? this.minAnimationTime : (
                 this.properties != null ? this.properties.getProperty(CoreOptions.MIN_ANIM_TIME) : null
         );
@@ -302,7 +294,7 @@ public class LightDiagramLayoutConfig {
      * 
      * @return the maximal time for animations, in milliseconds
      */
-    Integer maxAnimationTime() {
+    public Integer maxAnimationTime() {
         return this.maxAnimationTime != null ? this.maxAnimationTime : (
                 this.properties != null ? this.properties.getProperty(CoreOptions.MAX_ANIM_TIME) : null
         );
@@ -313,7 +305,7 @@ public class LightDiagramLayoutConfig {
      * 
      * @return Factor for computation of animation time.
      */
-    Integer animationTimeFactor() {
+    public Integer animationTimeFactor() {
         return this.animationTimeFactor != null ? this.animationTimeFactor : (
                 this.properties != null ? this.properties.getProperty(CoreOptions.ANIM_TIME_FACTOR) : null
         );
@@ -324,7 +316,7 @@ public class LightDiagramLayoutConfig {
      * 
      * @return the {@link ZoomStyle}.
      */
-    ZoomStyle zoomStyle() {
+    public ZoomStyle zoomStyle() {
         return this.zoomStyle;
     }
 
@@ -334,7 +326,7 @@ public class LightDiagramLayoutConfig {
      * 
      * @return the focusNode
      */
-    KNode focusNode() {
+    public KNode focusNode() {
         if (this.focusElement instanceof KNode) {
             return (KNode) this.focusElement;
         } else {
@@ -348,7 +340,7 @@ public class LightDiagramLayoutConfig {
      * 
      * @return the focusElement
      */
-    KGraphElement focusElement() {
+    public KGraphElement focusElement() {
         return this.focusElement;
     }
     
@@ -356,7 +348,7 @@ public class LightDiagramLayoutConfig {
      * The previous position of an element if {@link ZoomStyle#ZOOM_TO_STAY_SELECTED} is configured.
      * @return
      */
-    KVector previousPosition() {
+    public KVector previousPosition() {
         return this.previousPosition;
     }
 
@@ -365,7 +357,7 @@ public class LightDiagramLayoutConfig {
      * 
      * @return the list of {@link LayoutConfigurator LayoutConfigurators}.
      */
-    List<LayoutConfigurator> options() {
+    public List<LayoutConfigurator> options() {
         return this.options;
     }
 
@@ -375,7 +367,7 @@ public class LightDiagramLayoutConfig {
      * @return the {@link IPropertyHolder} containing properties like
      *         {@link KlighdSynthesisProperties#REQUESTED_UPDATE_STRATEGY}.
      */
-    IPropertyHolder properties() {
+    public IPropertyHolder properties() {
         return this.properties != null ? this.properties : KlighdSynthesisProperties.emptyConfig();
     }
 
@@ -385,18 +377,8 @@ public class LightDiagramLayoutConfig {
      * @return the {@link ViewContext} or <code>null</code> if the configuration is based on a
      *         {@link IDiagramWorkbenchPart}.
      */
-    ViewContext viewContext() {
+    public ViewContext viewContext() {
         return this.viewContext;
-    }
-
-    /**
-     * The {@link IDiagramWorkbenchPart} this layout is related to.
-     * 
-     * @return the {@link IDiagramWorkbenchPart} or <code>null</code> if a {@link ViewContext} was
-     *         used to create this configuration.
-     */
-    IDiagramWorkbenchPart workbenchPart() {
-        return this.workbenchPart;
     }
 
     ///////////////////////////////////////////////////////////

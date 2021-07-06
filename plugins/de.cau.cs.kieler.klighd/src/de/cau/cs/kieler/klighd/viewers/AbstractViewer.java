@@ -30,11 +30,9 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 
-import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ZoomStyle;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
@@ -298,17 +296,6 @@ public abstract class AbstractViewer implements IViewer {
         }
     }
 
-    /**
-     * Forwards the given <code>selection</code> to the employed {@link ContextViewer} that is in
-     * charge of broadcasting it into the platform and the registered selection listeners.
-     *
-     * @param selection
-     *            the new {@link IKlighdSelection}
-     */
-    protected void updateSelection(final IKlighdSelection selection) {
-        this.getContextViewer().notifySelectionListeners(selection);
-    }
-
     /* ----------------------------- */
     /*   the view manipulation API   */
     /* ----------------------------- */
@@ -453,26 +440,6 @@ public abstract class AbstractViewer implements IViewer {
      */
     public double getScale(final Object semanticElement) {
         return getContextViewer().getScale(semanticElement);
-    }
-
-    /* ---------------------------------------------------------- */
-    /*   the selection setting API                                */
-    /*    it is completely implemented by the ContextViewer,      */
-    /*    no implementations of this class need to implement it!  */
-    /* ---------------------------------------------------------- */
-
-    /**
-     * {@inheritDoc}
-     */
-    public IKlighdSelection getSelection() {
-        return getContextViewer().getSelection();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public KlighdTreeSelection getDiagramSelection() {
-        return getContextViewer().getDiagramSelection();
     }
 
     /**

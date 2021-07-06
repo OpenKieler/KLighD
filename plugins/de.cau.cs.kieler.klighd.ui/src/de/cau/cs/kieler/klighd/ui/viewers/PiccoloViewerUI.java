@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -37,12 +38,14 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import com.google.common.base.Function;
 
 import de.cau.cs.kieler.klighd.IKlighdSelection;
-import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.IViewerProvider;
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.eclipse.EclipseViewContext;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseKlighdSelection;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewerProvider;
+import de.cau.cs.kieler.klighd.eclipse.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKNodeNode;
@@ -75,13 +78,22 @@ public class PiccoloViewerUI extends PiccoloViewer {
     /**
      * The required corresponding provider class.
      */
-    public static class Provider implements IViewerProvider {
+    public static class Provider implements IEclipseViewerProvider {
 
         /**
          * {@inheritDoc}
          */
         public IViewer createViewer(final ContextViewer parentViewer, final Composite parent) {
             return new PiccoloViewerUI(parentViewer, parent);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public IViewer createViewer(ContextViewer parentViewer) {
+            // TODO Auto-generated method stub
+            return null;
         }
     }
 
@@ -165,10 +177,10 @@ public class PiccoloViewerUI extends PiccoloViewer {
         labelWidget.setMenu(menu.createContextMenu(labelWidget));
 
         // ... and register it in the workbench part site, in order to let the work bench populate it!
-        final IWorkbenchPart part = parentViewer.getViewContext().getDiagramWorkbenchPart();
+        final IWorkbenchPart part = ((EclipseViewContext) parentViewer.getViewContext()).getDiagramWorkbenchPart();
         if (part != null)
             part.getSite().registerContextMenu(
-                    KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu, parentViewer);
+                    KlighdUIPlugin.FLOATING_TEXT_MENU_ID, menu, (ISelectionProvider) parentViewer);
 
         this.getControl().getCamera().addInputEventListener(
                 new KlighdLabelWidgetEventHandler(this, labelWidget));
@@ -189,11 +201,11 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 PiccoloViewerUI.this.deactivateLabelWidget();
             }
         };
-        parentViewer.addSelectionChangedListener(selectionListener);
+        ((ISelectionProvider) parentViewer).addSelectionChangedListener(selectionListener);
 
         labelWidget.addListener(SWT.Dispose, new Listener() {
             public void handleEvent(final Event event) {
-                parentViewer.removeSelectionChangedListener(selectionListener);
+                ((ISelectionProvider) parentViewer).removeSelectionChangedListener(selectionListener);
             }
         });
 
@@ -309,7 +321,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 if (selection.equals(prevSelection)) {
                     break;
                 }
-                diagramViewer.updateSelection(new KlighdTextSelection(selection,
+                diagramViewer.updateSelection((IKlighdSelection) new KlighdTextSelection(selection,
                         labelWidget.getSelection().x, false, false, getFigureNode(), diagramViewer));
                 break;
 
@@ -328,7 +340,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
                 if (selection.equals(prevSelection)) {
                     break;
                 }
-                diagramViewer.updateSelection(new KlighdTextSelection(selection,
+                diagramViewer.updateSelection((IKlighdSelection) new KlighdTextSelection(selection,
                         labelWidget.getSelection().x, false, false, getFigureNode(), diagramViewer));
                 break;
             }
@@ -345,7 +357,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
     protected void updateSelection(final IKlighdSelection selection) {
         getControl().getDisplay().asyncExec(new Runnable() {
             public void run() {
-                PiccoloViewerUI.super.updateSelection(selection);
+                PiccoloViewerUI.super.updateSelection((IEclipseKlighdSelection) selection);
             }
         });
     }
@@ -538,7 +550,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
             return;
         }
 
-        final IWorkbenchPart wPart = viewContext.getSourceWorkbenchPart();
+        final IWorkbenchPart wPart = ((EclipseViewContext) viewContext).getSourceWorkbenchPart();
         final IModelModificationHandler handler =
                 ModelModificationHandlerProvider.getInstance().getFittingHandler(wPart);
         try {
@@ -550,7 +562,7 @@ public class PiccoloViewerUI extends PiccoloViewer {
         } catch (final Exception e) {
             final String msg =
                     "KLighD: An error occured while applying the updated string value in "
-                            + viewContext.getDiagramWorkbenchPart().getPartId() + "!";
+                            + ((EclipseViewContext) viewContext).getDiagramWorkbenchPart().getPartId() + "!";
             Klighd.handle(new Status(IStatus.ERROR, KlighdUIPlugin.PLUGIN_ID, msg, e));
         }
     }

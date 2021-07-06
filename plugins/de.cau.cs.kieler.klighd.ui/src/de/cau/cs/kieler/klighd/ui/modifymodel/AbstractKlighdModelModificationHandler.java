@@ -28,8 +28,8 @@ import org.eclipse.ui.PlatformUI;
 
 import com.google.common.base.Function;
 
-import de.cau.cs.kieler.klighd.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.eclipse.IModelModificationHandler;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramEditorPart;
 import de.cau.cs.kieler.klighd.ui.parts.DiagramViewPart;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;

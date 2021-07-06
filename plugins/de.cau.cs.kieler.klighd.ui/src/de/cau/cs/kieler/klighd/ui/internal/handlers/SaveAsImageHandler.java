@@ -24,12 +24,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import de.cau.cs.kieler.klighd.IDiagramExporter;
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IKlighdStatusManager;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdDataManager;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramExporter;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewer;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 
 /**
@@ -55,7 +57,7 @@ public class SaveAsImageHandler extends AbstractHandler {
             return null;
         }
 
-        final Shell shell = viewer.getControl().getShell();
+        final Shell shell = ((IEclipseViewer) viewer).getControl().getShell();
 
         // open the dialog to receive the required user input
         final SaveAsImageDialog dialog = new SaveAsImageDialog(viewer.getViewContext(), shell);
@@ -68,12 +70,12 @@ public class SaveAsImageHandler extends AbstractHandler {
 
         // retrieve the exporter from the central registry
         final IDiagramExporter exporter =
-                KlighdDataManager.getInstance().getExporter(dialog.getCurrentExporter().exporterId);
+                ((EclipseKlighdDataManager) KlighdDataManager.getInstance()).getExporter(dialog.getCurrentExporter().exporterId);
 
         IStatus res;
         try {
             // execute the export process
-            res = exporter.export(viewer.getControl(), dialog.getExportData());
+            res = exporter.export(((IEclipseViewer) viewer).getControl(), dialog.getExportData());
 
         } catch (final Throwable t) {
             final String msg = "The diagram export could not be completed.";

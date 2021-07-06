@@ -35,7 +35,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import de.cau.cs.kieler.kgraph.text.KGraphStandaloneSetup;
-import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KIdentifier;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
@@ -243,7 +243,7 @@ public class RenderingTest {
         }
         if (!(fg != null && strokepaint == null)) {
             Assert.assertTrue("Foreground color mismatched on node " + id,
-                    (fg == null && strokepaint == KlighdConstants.BLACK)
+                    (fg == null && strokepaint == EclipseKlighdConstants.BLACK)
                             || ((fg.getColor().getRed() == strokepaint.red)
                                     && (fg.getColor().getBlue() == strokepaint.blue) && (fg.getColor()
                                     .getGreen() == strokepaint.green)));

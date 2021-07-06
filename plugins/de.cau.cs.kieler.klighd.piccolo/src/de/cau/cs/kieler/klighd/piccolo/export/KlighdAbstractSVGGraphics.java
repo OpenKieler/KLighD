@@ -62,6 +62,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KTextUtil;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsEx;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
@@ -89,13 +90,13 @@ public abstract class KlighdAbstractSVGGraphics extends Graphics2D implements Kl
     private LineAttributes lineAttributes = new LineAttributes(1f);
     private int alpha = KlighdConstants.ALPHA_FULL_OPAQUE;
 
-    private RGB strokeColor = KlighdConstants.BLACK;
+    private RGB strokeColor = EclipseKlighdConstants.BLACK;
     private Pair<RGBGradient, Rectangle2D> strokePattern = null;
 
-    private RGB fillColor = KlighdConstants.WHITE;
+    private RGB fillColor = EclipseKlighdConstants.WHITE;
     private Pair<RGBGradient, Rectangle2D> fillPattern = null;
 
-    private FontData fontData = KlighdConstants.DEFAULT_FONT;
+    private FontData fontData = EclipseKlighdConstants.DEFAULT_FONT;
 
     private final Map<ImageData, BufferedImage> imageBuffer = Maps.newHashMap();
     private final Rectangle2D imageBoundsRect = new Rectangle2D.Double();

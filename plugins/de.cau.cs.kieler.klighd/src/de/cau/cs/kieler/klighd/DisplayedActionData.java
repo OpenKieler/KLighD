@@ -13,7 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
-import org.eclipse.swt.graphics.Image;
+import java.awt.Image;
 
 import com.google.common.base.Predicate;
 

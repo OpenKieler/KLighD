@@ -24,6 +24,7 @@ import org.eclipse.swt.graphics.Color;
 import com.google.common.base.Strings;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.piccolo.IKlighdNode.IKGraphElementNode;
 import de.cau.cs.kieler.klighd.piccolo.internal.events.KlighdBasicInputEventHandler;
@@ -310,7 +311,7 @@ public class KlighdLabelWidgetEventHandler extends KlighdBasicInputEventHandler 
             oldBackground.dispose();
 
         } else if (!oldBackground.getRGB().equals(KlighdConstants.WHITE)) {
-            labelWidget.setBackground(new Color(labelWidget.getDisplay(), KlighdConstants.WHITE));
+            labelWidget.setBackground(new Color(labelWidget.getDisplay(), EclipseKlighdConstants.WHITE));
             oldBackground.dispose();
         }
     }

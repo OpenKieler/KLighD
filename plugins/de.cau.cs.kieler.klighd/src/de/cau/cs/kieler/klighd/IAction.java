@@ -13,13 +13,13 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.elk.core.LayoutConfigurator;
 import org.eclipse.elk.core.math.KVector;
-import org.eclipse.swt.graphics.Point;
 
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
@@ -175,6 +175,7 @@ public interface IAction {
         public Point2D getCanvasRelativeMousePos() {
             return null;
         }
+        // TODO what is the difference between SWT and AWT Point???
 
         /**
          * @return an SWT {@link Point} denoting the mouse cursor position while invoking the action

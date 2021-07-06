@@ -74,6 +74,9 @@ import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.SynthesisOption;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.eclipse.EclipseLightDiagramLayoutConfig;
+import de.cau.cs.kieler.klighd.eclipse.EclipseViewContext;
+import de.cau.cs.kieler.klighd.eclipse.viewers.EclipseContextViewer;
 import de.cau.cs.kieler.klighd.ide.model.ErrorModel;
 import de.cau.cs.kieler.klighd.ide.model.MessageModel;
 import de.cau.cs.kieler.klighd.internal.ISynthesis;
@@ -84,7 +87,6 @@ import de.cau.cs.kieler.klighd.ui.view.controller.AbstractViewUpdateController;
 import de.cau.cs.kieler.klighd.ui.view.controller.ViewUpdateControllerFactory;
 import de.cau.cs.kieler.klighd.ui.view.menu.SynthesisSelectionMenu;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
-import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * 
@@ -255,7 +257,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
         layoutAction = new Action("Arrange diagram", IAction.AS_PUSH_BUTTON) {
             @Override
             public void run() {
-                new LightDiagramLayoutConfig(DiagramView.this).performLayout();
+                new EclipseLightDiagramLayoutConfig(DiagramView.this).performLayout();
             }
         };
         layoutAction.setId("layoutAction");
@@ -310,10 +312,10 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
                     public void run() {
                         if (getViewer() != null) {
                             if (isChecked()) {
-                                ((ContextViewer) getViewer())
+                                ((EclipseContextViewer) getViewer())
                                         .addSelectionChangedListener(DiagramView.this);
                             } else {
-                                ((ContextViewer) getViewer())
+                                ((EclipseContextViewer) getViewer())
                                         .removeSelectionChangedListener(DiagramView.this);
                             }
                         }
@@ -412,7 +414,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
         }
 
         // Register selection listener
-        ((ContextViewer) getViewer()).addSelectionChangedListener(this);
+        ((EclipseContextViewer) getViewer()).addSelectionChangedListener(this);
     }
 
     /**
@@ -1094,7 +1096,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
 
                 // Register editor
                 if (editor != null) {
-                    viewContext.setSourceWorkbenchPart(editor);
+                    ((EclipseViewContext) viewContext).setSourceWorkbenchPart(editor);
                 }
 
                 // reset layout to resolve KISEMA-905
@@ -1107,7 +1109,7 @@ public final class DiagramView extends DiagramViewPart implements ISelectionChan
 
                 // Register editor
                 if (editor != null) {
-                    viewContext.setSourceWorkbenchPart(editor);
+                    ((EclipseViewContext) viewContext).setSourceWorkbenchPart(editor);
                 }
                 
                 // Activate simple update strategy if requested

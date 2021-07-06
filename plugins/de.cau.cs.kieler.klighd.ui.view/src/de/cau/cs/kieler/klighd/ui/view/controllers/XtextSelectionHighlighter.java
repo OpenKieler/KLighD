@@ -30,7 +30,7 @@ import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 
 import com.google.common.collect.Iterators;
 
-import de.cau.cs.kieler.klighd.KlighdTreeSelection;
+import de.cau.cs.kieler.klighd.eclipse.KlighdTreeSelection;
 
 /**
  * This class contains utility methods for highlighting selection in Xtext editors.

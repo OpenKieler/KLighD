@@ -20,8 +20,8 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.incremental.IncrementalUpdateStrategy;
 import de.cau.cs.kieler.klighd.internal.util.KlighdInternalProperties;
 import de.cau.cs.kieler.klighd.kgraph.KEdge;
@@ -45,7 +45,7 @@ public class IncrementalUpdateTest {
     private static final IncrementalUpdateStrategy INCREMENTAL_UPDATE_STRATEGY = new IncrementalUpdateStrategy();
     
     private ViewContext createViewContext() {
-        return new ViewContext((IDiagramWorkbenchPart) null, null);
+        return new ViewContext(null);
     }
     
     private KNode createTestGraph() {

@@ -35,10 +35,13 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ViewPart;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.eclipse.EclipseLightDiagramLayoutConfig;
+import de.cau.cs.kieler.klighd.eclipse.EclipseViewContext;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewer;
 import de.cau.cs.kieler.klighd.internal.ILayoutConfigProvider;
 import de.cau.cs.kieler.klighd.ui.DiagramViewManager;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
@@ -172,7 +175,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
         }
 
         // let the light diagram service create a view context and register it
-        final ViewContext viewContext = new ViewContext(this, model);
+        final ViewContext viewContext = new EclipseViewContext(this, model);
         if (properties != null) {
             viewContext.configure(properties);
         } else {
@@ -325,7 +328,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
 
             @Override
             public void run() {
-                new LightDiagramLayoutConfig(DiagramViewPart.this)
+                new EclipseLightDiagramLayoutConfig(DiagramViewPart.this)
                     .performLayout();
             }
         });
@@ -360,7 +363,7 @@ public class DiagramViewPart extends ViewPart implements IDiagramWorkbenchPart,
      */
     @Override
     public void setFocus() {
-        viewer.getControl().setFocus();
+        ((IEclipseViewer) viewer).getControl().setFocus();
     }
 
     /**

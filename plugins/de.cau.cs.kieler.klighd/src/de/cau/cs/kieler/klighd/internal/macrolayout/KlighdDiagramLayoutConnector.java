@@ -41,7 +41,6 @@ import org.eclipse.elk.graph.util.ElkGraphUtil;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -51,7 +50,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
@@ -120,25 +118,17 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
     public static final Object LAYOUT_DATA_UNCHANGED_VALUE = new Object();
 
     /** the list of edges found in the graph. */
-    private static final IProperty<List<KEdge>> EDGES =
+    protected static final IProperty<List<KEdge>> EDGES =
             new Property<>("krendering.layout.edges");
     /** edges that have been excluded from the layout. */
-    private static final IProperty<List<KEdge>> EXCLUDED_EDGES =
+    protected static final IProperty<List<KEdge>> EXCLUDED_EDGES =
             new Property<>("krendering.layout.excludedEdges");
-    /**
-     * A property that is used to tell KIML about the workbench part this layout manager is
-     * responsible for. Note that this property is not referred to by KIML immediately, it rather
-     * filters given property definitions by their value types and looks for one of
-     * {@link IWorkbenchPart}.
-     */
-    private static final IProperty<IWorkbenchPart> WORKBENCH_PART = new Property<IWorkbenchPart>(
-            "klighd.layout.workbenchPart");
 
     /**
      * Static predicate definition avoiding the recurring creation and disposal of instances of the
      * filter predicate.
      */
-    private static final Predicate<KNode> NODE_FILTER =
+    protected static final Predicate<KNode> NODE_FILTER =
             Predicates.and(
                     RenderingContextData.IS_ACTIVE,
                     KlighdPredicates.kgePropertyPredicate(CoreOptions.NO_LAYOUT, false, true));
@@ -151,7 +141,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * {@inheritDoc}
      */
     @Override
-    public LayoutMapping buildLayoutGraph(final IWorkbenchPart workbenchPart, final Object diagramPart) {
+    public LayoutMapping buildLayoutGraph(final Object diagramPart) {
         final KNode viewModel;
         final ViewContext viewContext;
 
@@ -165,9 +155,6 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         } else if (diagramPart instanceof IViewer) {
             viewContext = ((IViewer) diagramPart).getViewContext();
             viewModel = viewContext.getViewModel();
-        } else if (workbenchPart instanceof IDiagramWorkbenchPart) {
-            viewContext = ((IDiagramWorkbenchPart) workbenchPart).getViewer().getViewContext();
-            viewModel = viewContext.getViewModel();
         } else  {
             viewContext = null;
             viewModel = null;
@@ -176,8 +163,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
         // if no root node could be found
         if (viewModel == null) {
             throw new UnsupportedOperationException(
-                    "Not supported by the KLighD KRendering layout manager: Workbench part "
-                            + workbenchPart + ", diagram part " + diagramPart);
+                    "Not supported by the KLighD KRendering layout manager: Diagram part " + diagramPart);
         }
 
         final boolean performSizeEstimation = viewContext == null
@@ -185,11 +171,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
 
         // create the mapping
         final LayoutMapping mapping = buildLayoutGraph(
-                viewModel, performSizeEstimation, workbenchPart);
+                viewModel, performSizeEstimation);
 
-        if (viewContext != null) {
-            mapping.setProperty(WORKBENCH_PART, viewContext.getDiagramWorkbenchPart());
-            
+        if (viewContext != null) {            
             // remember the layout recorder if any
             mapping.setProperty(KlighdInternalProperties.RECORDER, viewContext.getLayoutRecorder());
         }
@@ -204,14 +188,12 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            the graph to build the layout graph from
      * @param performSizeEstimation
      *            whether the size of nodes & labels should be automatically estimated.
-     * @param workbenchPart
-     *            the workbenchPart in which the layout takes place, if any
      * @return the layout graph mapping
      */
     public LayoutMapping buildLayoutGraph(final KNode viewModel,
-            final boolean performSizeEstimation, final IWorkbenchPart workbenchPart) {
+            final boolean performSizeEstimation) {
         
-        final LayoutMapping mapping = new LayoutMapping(workbenchPart);
+        final LayoutMapping mapping = new LayoutMapping();
         mapping.setProperty(EDGES, new LinkedList<KEdge>());
 
         // set the parent element
@@ -243,7 +225,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * @param performSizeEstimation
      *            whether the size of nodes & labels should be automatically estimated.
      */
-    private void processNodes(final LayoutMapping mapping, final KNode viewModelParent,
+    protected void processNodes(final LayoutMapping mapping, final KNode viewModelParent,
             final ElkNode layoutParent, final boolean performSizeEstimation) {
         
         // iterate through the parent's active children and put copies in the layout graph;
@@ -444,7 +426,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            if <code>true</code> the minimal sizes of the attached {@link KLabel KLabels} will
      *            be estimated
      */
-    private void processConnections(final LayoutMapping mapping,
+    protected void processConnections(final LayoutMapping mapping,
             final boolean estimateLabelSizes) {
         
         final BiMap<Object, ElkGraphElement> graphMap = mapping.getGraphMap().inverse();
@@ -596,8 +578,9 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
                 layoutLabel.setDimensions(minWidth, minHeight);
             }
             
+            // XXX
             if (setFontLayoutOptions) {
-                PlacementUtil.fontDataFor(label, true);
+                PlacementUtil.fontFor(label, true);
             }
 
             // attach a reference to the label's root rendering to the label so that our layout
@@ -627,9 +610,10 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
             final IViewer viewer = (IViewer) recorder;
             final boolean suppressEdgeAdjustment = viewer.getViewContext().getProperty(
                     KlighdSynthesisProperties.SUPPRESS_EDGE_ADJUSTMENT);
-            if (viewer.getControl() != null && viewer.getControl().isDisposed()) {
-                return;
-            }
+            // XXX
+//            if (viewer.getControl() != null && viewer.getControl().isDisposed()) {
+//                return;
+//            }
             recorder.startRecording();
             applyLayout(mapping, suppressEdgeAdjustment);
             recorder.stopRecording(calcAnimationTime(mapping, settings, false));
@@ -647,7 +631,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      *            if true edge adjustment will be suppressed, if no
      *            edge adjustment will be done
      */
-    private void applyLayout(final LayoutMapping mapping, final boolean suppressEdgeAdjustment) {
+    protected void applyLayout(final LayoutMapping mapping, final boolean suppressEdgeAdjustment) {
         final Set<Entry<ElkGraphElement, Object>> elementMappings =
                 mapping.getGraphMap().entrySet();
         
@@ -766,7 +750,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * @param copyInsets
      *            <code>true</code> if insets shall be copied
      */
-    private void shapeLayoutToLayoutGraph(
+    protected void shapeLayoutToLayoutGraph(
             final KShapeLayout sourceShapeLayout, final ElkShape targetShape) {
 
         // Attention: Layout options are transfered by the {@link KGraphPropertyLayoutConfig}
@@ -1281,7 +1265,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * @param viewerNotVisible whether the diagram viewer is currently not visible
      * @return number of milliseconds to animate, or 0 if no animation is desired
      */
-    private int calcAnimationTime(final LayoutMapping mapping, final IPropertyHolder settings,
+    protected int calcAnimationTime(final LayoutMapping mapping, final IPropertyHolder settings,
             final boolean viewerNotVisible) {
         
         boolean animate = settings.getProperty(CoreOptions.ANIMATE);

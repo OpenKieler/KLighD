@@ -38,9 +38,10 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewer;
+import de.cau.cs.kieler.klighd.eclipse.viewers.EclipseContextViewer;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.kgraph.KShapeLayout;
 import de.cau.cs.kieler.klighd.kgraph.util.KGraphUtil;
@@ -48,7 +49,6 @@ import de.cau.cs.kieler.klighd.krendering.Colors;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.test.KlighdTestPlugin;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
-import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * Tests KLighD's clipping feature by means of the circuit example available in {@code klighd.test},
@@ -132,12 +132,12 @@ public class DiagramClipTest {
         shell.setSize(1100, 200);
         shell.setLayout(new FillLayout());
 
-        final ViewContext viewContext = new ViewContext((IDiagramWorkbenchPart) null, testModel)
+        final ViewContext viewContext = new ViewContext(testModel)
                 .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewer.ID));
 
-        new ContextViewer(shell).setModel(viewContext, true);
+        new EclipseContextViewer(shell).setModel(viewContext, true);
 
-        heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
+        heightDelta = 200 - ((IEclipseViewer) viewContext.getViewer()).getControl().getSize().y;
         shell.setSize(1100, 800 + heightDelta);
 
         viewContext.update(null);
@@ -149,12 +149,12 @@ public class DiagramClipTest {
         viewer.zoomToLevel(4, 0);
         shell.open();
 
-        zeroPoint = viewer.getControl().toDisplay(0, 0);
+        zeroPoint = ((IEclipseViewer) viewer).getControl().toDisplay(0, 0);
 
         // make sure the color recognition works by checking the background color in the top left corner
         // in case this check gives, e.g., RGB {0, 0, 0} the color identification doesn't work and
         //  this whole test class shall be skipped
-        Assume.assumeThat(Pair.of(viewer.getControl(), new KVector(2, 2)), IS_WHITE);
+        Assume.assumeThat(Pair.of(((IEclipseViewer) viewer).getControl(), new KVector(2, 2)), IS_WHITE);
         
         finished = false;
     }
@@ -200,12 +200,12 @@ public class DiagramClipTest {
             waitAmoment();
 
             moveTo((int) (port0pos.x), (int) (port0pos.y));
-            Assert.assertThat(Pair.of(viewer.getControl(), port0pos), IS_BLACK);
+            Assert.assertThat(Pair.of(((IEclipseViewer) viewer).getControl(), port0pos), IS_BLACK);
 
             waitAmoment();
 
             moveTo((int) (portXpos.x), (int) (portXpos.y));
-            Assert.assertThat(Pair.of(viewer.getControl(), portXpos), IS_BLACK);
+            Assert.assertThat(Pair.of(((IEclipseViewer) viewer).getControl(), portXpos), IS_BLACK);
         }
     }
 

@@ -22,9 +22,10 @@ import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.Property;
 import org.eclipse.swt.graphics.RGB;
 
-import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
-import de.cau.cs.kieler.klighd.IDiagramExporter.ExportDataBuilder;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramExporter.ExportData;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramExporter.ExportDataBuilder;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseOffscreenRenderer;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 import edu.umd.cs.piccolo.PRoot;
@@ -35,7 +36,7 @@ import edu.umd.cs.piccolo.PRoot;
  *
  * @author chsch
  */
-public class SVGOffscreenRenderer extends AbstractOffscreenRenderer {
+public class SVGOffscreenRenderer extends AbstractOffscreenRenderer implements IEclipseOffscreenRenderer {
 
     /** The id used at registration of the offscreen renderer in the plugin.xml. */
     public static final String ID = "de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer";

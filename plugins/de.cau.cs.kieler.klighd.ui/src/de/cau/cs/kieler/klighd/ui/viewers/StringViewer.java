@@ -25,13 +25,13 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewer;
-import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseKlighdSelection;
+import de.cau.cs.kieler.klighd.eclipse.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.krendering.KText;
@@ -426,7 +426,7 @@ public class StringViewer implements IViewer {
     /**
      * {@inheritDoc}
      */
-    public IKlighdSelection getSelection() {
+    public IEclipseKlighdSelection getSelection() {
         return null;
     }
 

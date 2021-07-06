@@ -16,7 +16,6 @@ package de.cau.cs.kieler.klighd;
 import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.viewers.ISelection;
 
 /**
  * A common interface of KLighD-specific implementations of {@link ISelection}.
@@ -26,7 +25,7 @@ import org.eclipse.jface.viewers.ISelection;
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
-public interface IKlighdSelection extends ISelection {
+public interface IKlighdSelection {
 
     /**
      * Provides the {@link IViewer} of the corresponding diagram.

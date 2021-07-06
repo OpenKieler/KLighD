@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -39,10 +40,12 @@ import de.cau.cs.kieler.klighd.IKlighdSelection;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
-import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewer;
+import de.cau.cs.kieler.klighd.eclipse.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.util.Iterables2;
@@ -110,7 +113,7 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
         button.setToolTipText(actionData.tooltipText);
 
         if (actionData.image != null) {
-            button.setImage(actionData.image);
+            button.setImage(new Image(parent.getDisplay(), EclipseKlighdConstants.convertAWTImageToSWT(actionData.image)));
         }
 
         // the following call is taken from FormToolkit#createButton(...)
@@ -146,7 +149,7 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
                 viewContext.getLayoutRecorder().startRecording();
 
                 // check if we actually have a selection
-                final KlighdTreeSelection diagramSelection = viewer.getDiagramSelection();
+                final KlighdTreeSelection diagramSelection = ((IEclipseViewer) viewer).getDiagramSelection();
                 if (diagramSelection.isEmpty()) {
                     // call the action on the root of the view model
                     result = action.execute(new ActionContext(
@@ -212,7 +215,7 @@ public class ActionControlFactory implements ISelectionChangedListener, IViewCha
      * {@inheritDoc}
      */
     public void viewChanged(final ViewChange change) {
-        updateControls(change.getViewer().getSelection());
+        updateControls(((IEclipseViewer) change.getViewer()).getSelection());
     }
 
     /**

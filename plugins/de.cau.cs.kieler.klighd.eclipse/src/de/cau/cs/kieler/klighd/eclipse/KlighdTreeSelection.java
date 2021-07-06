@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd;
+package de.cau.cs.kieler.klighd.eclipse;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.reverse;
@@ -29,6 +29,8 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
+import de.cau.cs.kieler.klighd.IViewer;
+import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.util.ModelingUtil;
 import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
@@ -41,7 +43,7 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @author chsch
  */
 @SuppressWarnings("rawtypes")
-public class KlighdTreeSelection extends TreeSelection implements IKlighdSelection, Iterable {
+public class KlighdTreeSelection extends TreeSelection implements IEclipseKlighdSelection, Iterable {
     
     /**
      * Empty singleton instance of {@link KlighdTreeSelection}.

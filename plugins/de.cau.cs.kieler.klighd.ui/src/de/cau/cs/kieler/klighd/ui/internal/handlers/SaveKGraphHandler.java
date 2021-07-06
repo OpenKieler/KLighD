@@ -36,12 +36,14 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
 import de.cau.cs.kieler.klighd.Klighd;
-import de.cau.cs.kieler.klighd.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewContext;
+import de.cau.cs.kieler.klighd.eclipse.EclipseViewContext;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramWorkbenchPart;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewer;
+import de.cau.cs.kieler.klighd.eclipse.KlighdTreeSelection;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 
@@ -157,7 +159,7 @@ public class SaveKGraphHandler extends AbstractHandler {
             // ---------------------------------------------------
             // Default export of the selected (sub-)graph
             // ---------------------------------------------------
-            final SaveKGraphDialog fd = new SaveKGraphDialog(viewer.getControl().getShell());
+            final SaveKGraphDialog fd = new SaveKGraphDialog(((IEclipseViewer) viewer).getControl().getShell());
             // show a KLighd save KGraph dialog
             int success = fd.open();
 
@@ -318,8 +320,8 @@ public class SaveKGraphHandler extends AbstractHandler {
             parent = parent.getParent();
         }
         s = s.substring(1);
-        if (vc != null && vc.getDiagramWorkbenchPart() != null) {
-            s = vc.getDiagramWorkbenchPart().getTitle() + "-" + s;
+        if (vc != null && ((EclipseViewContext) vc).getDiagramWorkbenchPart() != null) {
+            s = ((EclipseViewContext) vc).getDiagramWorkbenchPart().getTitle() + "-" + s;
         }
         return s;
     }

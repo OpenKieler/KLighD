@@ -43,8 +43,9 @@ import org.eclipse.swt.widgets.Control;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
-import de.cau.cs.kieler.klighd.IDiagramExporter;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramExporter;
 import de.cau.cs.kieler.klighd.piccolo.export.KlighdAbstractSVGGraphics;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.KlighdPaintContext;
@@ -139,7 +140,7 @@ public class BatikPDFGraphics extends KlighdAbstractSVGGraphics implements IDiag
         // color!!
         defaults.setPaint(Color.BLACK);
 
-        final LineAttributes lineAttributes = KlighdConstants.DEFAULT_LINE_ATTRIBUTES;
+        final LineAttributes lineAttributes = EclipseKlighdConstants.DEFAULT_LINE_ATTRIBUTES;
         defaults.setStroke(new BasicStroke(lineAttributes.width, lineAttributes.cap - 1,
                 lineAttributes.join - 1, lineAttributes.miterLimit, lineAttributes.dash,
                 lineAttributes.dashOffset));

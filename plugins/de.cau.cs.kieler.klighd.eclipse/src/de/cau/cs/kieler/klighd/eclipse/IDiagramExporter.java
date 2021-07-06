@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd;
+package de.cau.cs.kieler.klighd.eclipse;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,6 +24,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Control;
+
+import de.cau.cs.kieler.klighd.ViewContext;
 
 /**
  * Basic interface of diagram exporters creating images in <code>png</code> or </code>svg</code>
@@ -368,7 +370,7 @@ public interface IDiagramExporter {
         private String additionalRootData = null;
         private TilingData tilingInfo = TilingData.createNonTiledData();
         private boolean transparentBackground = false;
-        private RGB backgroundColor = KlighdConstants.WHITE;
+        private RGB backgroundColor = EclipseKlighdConstants.WHITE;
 
         /**
          * Creates a builder for the given {@code ViewContext} using the specified

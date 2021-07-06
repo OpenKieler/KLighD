@@ -34,13 +34,14 @@ import de.cau.cs.kieler.klighd.IExportBranding;
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
+import de.cau.cs.kieler.klighd.eclipse.EclipseDiagramExportConfig;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdSWTGraphicsImpl;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdMainCamera;
 
 /**
- * An {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporter} contributing diagram
+ * An {@link de.cau.cs.kieler.klighd.eclipse.IDiagramExporter IDiagramExporter} contributing diagram
  * exports into the raster formats {@code .bmp}, {@code .jpeg}, and {@code .png}.
  *
  * @author chsch
@@ -110,7 +111,7 @@ public class BitmapExporter extends KlighdCanvasExporter {
         final int pages = columns * rows;
         final Dimension tileBounds = new Dimension(tileWidth, tileHeight);
         final DiagramExportConfig exportConfig =
-                new DiagramExportConfig(data.viewContext(), bounds, tileBounds, data.scale(), pages)
+                new EclipseDiagramExportConfig(data.viewContext(), bounds, tileBounds, data.scale(), pages)
                 .setBrandingsAndTrim(brandings, trim, tileTrimScaled)
                 .setExportViewport(data.cameraViewport())
                 .setApplyCameraZoomLevel(data.applyCameraZoomLevel());

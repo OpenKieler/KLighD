@@ -13,8 +13,9 @@
  */
 package de.cau.cs.kieler.klighd.labels.management;
 
+import java.awt.Font;
+
 import org.eclipse.elk.graph.ElkLabel;
-import org.eclipse.swt.graphics.FontData;
 
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
 
@@ -35,7 +36,7 @@ public class SoftWrappingLabelManager extends AbstractKlighdLabelManager {
 
     @Override
     public Result doResizeLabel(final ElkLabel label, final double targetWidth) {
-        final FontData font = LabelManagementUtil.fontDataFor(label);
+        final Font font = LabelManagementUtil.fontFor(label);
         
         if (PlacementUtil.estimateTextSize(font, label.getText()).getWidth() > targetWidth) {
             String textWithoutLineBreaks = label.getText().replace("\n", " ");

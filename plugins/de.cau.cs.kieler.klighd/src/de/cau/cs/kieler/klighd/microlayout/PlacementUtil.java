@@ -21,32 +21,27 @@ import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.toNonNullLeftPos
 import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.toNonNullRightPosition;
 import static de.cau.cs.kieler.klighd.krendering.KRenderingUtil.toNonNullTopPosition;
 
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.elk.core.math.KVector;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.widgets.Display;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
@@ -98,12 +93,12 @@ import de.cau.cs.kieler.klighd.util.ModelingUtil;
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch 
  */
-public final class PlacementUtil {
+public class PlacementUtil {
 
     /**
      * Hidden default constructor.
      */
-    private PlacementUtil() {
+    protected PlacementUtil() {
     }
 
     // CHECKSTYLEOFF Visibility
@@ -117,9 +112,9 @@ public final class PlacementUtil {
     public static class Point {
 
         /** the x-coordinate. */
-        float x;
+        public float x;
         /** the y-coordinate. */
-        float y;
+        public float y;
 
         /**
          * Constructs a point from the given coordinates.
@@ -138,9 +133,9 @@ public final class PlacementUtil {
          * Constructs a point according to the given SWT graphics point's coordinates.
          * 
          * @param point
-         *            an SWT graphics point
+         *            an AWT graphics point
          */
-        public Point(final org.eclipse.swt.graphics.Point point) {
+        public Point(final java.awt.Point point) {
             this.x = point.x;
             this.y = point.y;
         }
@@ -244,8 +239,8 @@ public final class PlacementUtil {
 
     // CHECKSTYLEON Visibility
 
-    private static final KRenderingPackage KRENDERING_PACKAGE = KRenderingPackage.eINSTANCE;
-    private static final float PT_TO_PX_FACTOR = KlighdConstants.DEFAULT_DISPLAY_DPI / 72f;
+    protected static final KRenderingPackage KRENDERING_PACKAGE = KRenderingPackage.eINSTANCE;
+    protected static final float PT_TO_PX_FACTOR = KlighdConstants.DEFAULT_DISPLAY_DPI / 72f;
 
     /**
      * Evaluates a position inside given parent bounds.
@@ -738,12 +733,12 @@ public final class PlacementUtil {
                     //  potentially negative value of ...
                     if (tl.getX().eClass().getClassifierID() == KRenderingPackage.KLEFT_POSITION) {
                         // ... topLeft's absolute value ...
-                        imageSize.width -= tl.getX().getAbsolute();
-                        imageSize.x = 0;
+                        imageSize.setWidth(imageSize.getWidth() - tl.getX().getAbsolute());
+                        imageSize.setX(0);
                     } else {
                         // ... bottomRight's absolute value ...
-                        imageSize.width -= br.getX().getAbsolute();
-                        imageSize.x = 0;
+                        imageSize.setWidth(imageSize.getWidth() - br.getX().getAbsolute());
+                        imageSize.setX(0);
                     }
                     // ... since in case of left/left (or right/right) positions just bottomRight's
                     //  absolute component (or topLeft's absolute component respectively)
@@ -753,11 +748,11 @@ public final class PlacementUtil {
                 if (heightModEnabled) {
                     // see horizontal case above
                     if (tl.getY().eClass().getClassifierID() == KRenderingPackage.KTOP_POSITION) {
-                        imageSize.height -= tl.getY().getAbsolute();
-                        imageSize.y = 0;
+                        imageSize.setHeight(imageSize.getHeight() - tl.getY().getAbsolute());
+                        imageSize.setY(0);
                     } else {
-                        imageSize.height -= br.getY().getAbsolute();
-                        imageSize.y = 0;
+                        imageSize.setHeight(imageSize.getHeight() - br.getY().getAbsolute());
+                        imageSize.setY(0);
                     }
                 }
 
@@ -777,8 +772,8 @@ public final class PlacementUtil {
      * @param kLabel the label whose font information to retrieve.
      * @return font information for the given label.
      */
-    public static FontData fontDataFor(final KLabel kLabel) {
-        return fontDataFor(kLabel, false);
+    public static Font fontFor(final KLabel kLabel) {
+        return fontFor(kLabel, false);
     }
 
     /**
@@ -794,7 +789,7 @@ public final class PlacementUtil {
      *            data as expected by Graphviz (dot) for properly sizing <i>edge</i> labels
      * @return font information for the given label.
      */
-    public static FontData fontDataFor(final KLabel kLabel, final boolean setFontLayoutOptions) {
+    public static Font fontFor(final KLabel kLabel, final boolean setFontLayoutOptions) {
         final KRendering rootRendering = Iterators.getNext(
                 ModelingUtil.eAllContentsOfType2(kLabel, KRendering.class),
                 null);
@@ -805,9 +800,9 @@ public final class PlacementUtil {
         
         // Check if we have found a KText thingy
         if (setFontLayoutOptions) {
-            return fontDataFor(kText, kLabel);
+            return fontFor(kText, kLabel);
         } else {
-            return fontDataFor(kText, null);
+            return fontFor(kText, null);
         }
     }
     
@@ -818,8 +813,8 @@ public final class PlacementUtil {
      * @param kText the rendering whose font information to retrieve.
      * @return font information for the given rendering.
      */
-    public static FontData fontDataFor(final KText kText) {
-        return fontDataFor(kText, null);
+    public static Font fontFor(final KText kText) {
+        return fontFor(kText, null);
     }
     
     /**
@@ -834,7 +829,7 @@ public final class PlacementUtil {
      *            name & size values
      * @return font information for the given rendering.
      */
-    private static FontData fontDataFor(final KText kText, final KGraphElement graphElement) {
+    private static Font fontFor(final KText kText, final KGraphElement graphElement) {
         KFontName kFontName = null;
         KFontSize kFontSize = null;
         KFontBold kFontBold = null;
@@ -864,11 +859,11 @@ public final class PlacementUtil {
                 : KlighdConstants.DEFAULT_FONT_SIZE;
 
         int fontStyle = kFontBold != null && kFontBold.isBold()
-                ? KlighdConstants.DEFAULT_FONT_STYLE_SWT | SWT.BOLD
-                : KlighdConstants.DEFAULT_FONT_STYLE_SWT;
+                ? KlighdConstants.DEFAULT_FONT_STYLE | Font.BOLD
+                : KlighdConstants.DEFAULT_FONT_STYLE;
 
         fontStyle = kFontItalic != null && kFontItalic.isItalic()
-                ? fontStyle | SWT.ITALIC : fontStyle;
+                ? fontStyle | Font.ITALIC : fontStyle;
 
         if (graphElement != null) {
             // setting the font name and size layout options is expected by the Graphviz layouter
@@ -878,7 +873,7 @@ public final class PlacementUtil {
             graphElement.setProperty(CoreOptions.FONT_SIZE, fontSize);
         }
 
-        return new FontData(fontName, fontSize, fontStyle);
+        return new Font(fontName, fontSize, fontStyle);
     }
 
     private static final Predicate<KStyle> FILTER = new Predicate<KStyle>() {
@@ -937,7 +932,8 @@ public final class PlacementUtil {
         if (testSize != null) {
             return testSize;
         } else {
-            return estimateTextSize(fontDataFor(kText, null), text);
+            // XXX
+            return estimateTextSize(fontFor(kText, null), text);
         }
     }
     
@@ -981,106 +977,33 @@ public final class PlacementUtil {
         }
         return null;
     }
-
-    /**
-     * A font cache preserving requested font configurations in order to avoid re-instantiation of
-     * {@link Font}, which is assumed to be much more expensive than {@link FontData}.
-     */
-    private static final Map<FontData, Font> FONT_CACHE = Maps.newHashMap();
-
-    /**
-     * Two instances of {@link GC} that the text size estimation is delegated to.
-     * We use two instances here because label management uses size estimation in another thread
-     * and SWT is not exactly thread-safe.
-     * It is unclear if this solves the issue completely, but it should at least circumvent
-     * the most common case.
-     */
-    private static GC gc = null;
-    private static GC asyncGC = null;
-    private static Point displayScale = null;
+    
+    protected static Point displayScale = null;
 
     private static BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     private static Graphics2D fmg = bi.createGraphics();
 
     /**
      * Returns the minimal bounds required by a drawing of the string <code>text</code> while
-     * respecting the given <code>fontData</code>. While being in an Eclipse context and having a
+     * respecting the given <code>font</code>. While being in an Eclipse context and having a
      * {@link Display}, the method uses SWT's {@link GC} to perform estimations. Otherwise it falls
      * back to AWT's {@link FontMetrics}.
      * 
-     * @param fontData
+     * @param font
      *            an SWT {@link FontData} record describing font name, size, and style
      * @param text
      *            the text string whose size is to be estimated; maybe <code>null</code>
      * @return the minimal bounds for the string
      */
-    public static Bounds estimateTextSize(final FontData fontData, final String text) {
-        final Display display = Display.getCurrent();
-        // if a GC has been instantiated before or a display is available.
-        if (gc != null || display != null) {
-            return estimateTextSizeSWT(fontData, text, display);
-        } else {
-            // if no display is available fallback to awt metrics
-            return estimateTextSizeAWT(fontData, text);
-        }
+    public static Bounds estimateTextSize(final Font font, final String text) {
+        // if no display is available fallback to awt metrics
+        return estimateTextSizeAWT(font, text);
     }
 
-    private static Bounds estimateTextSizeSWT(final FontData fontData,
-            final String text, final Display display) {
-
-        // In order to estimate the required size of a given string according to the determined
-        // font, style, and size GCs are instantiated, configured, and queried.
-        if (gc == null) {
-            // Create GC for the main thread
-            gc = new GC(display);
-            gc.setAntialias(SWT.OFF);
-            // Create (identical) GC for asynchronous threads
-            asyncGC = new GC(display);
-            asyncGC.setAntialias(SWT.OFF);
-
-            // determine the current display scale, used below for compensating the text bounds
-            //  see 
-            org.eclipse.swt.graphics.Point dpi = display.getDPI();
-            displayScale = new Point(
-                KlighdConstants.DEFAULT_DISPLAY_DPI / dpi.x,
-                KlighdConstants.DEFAULT_DISPLAY_DPI / dpi.y);
-        }
-
-        // Find the GC suitable for this thread.
-        // The main/UI thread has direct access to the Display, 
-        // so we use that check as the distinguishing feature
-        // between the main thread and the other stuff
-        final GC myGC = Display.getCurrent() != null ? gc : asyncGC;        
-
-        Font font = FONT_CACHE.get(fontData);
-        if (font == null) {
-            font = new Font(display, fontData);
-            FONT_CACHE.put(fontData, font);
-        }
-        myGC.setFont(font);
-
-        final Bounds textBounds;
-        if (Strings.isNullOrEmpty(text)) {
-            // if no text string is given, take the bounds of a space character to get a proper
-            // value for the height
-            textBounds = new Bounds(myGC.textExtent(" "));
-            textBounds.width = 0f; // omit the width in this case
-        } else {
-            textBounds = new Bounds(myGC.textExtent(text));
-        }
-
-        if (!Klighd.isSuppressDisplayScaleCompensationWhileHandlingText()) {
-            textBounds.width  *= displayScale.x;
-            textBounds.height *= displayScale.y;
-        }
-
-        return textBounds;
-    }
-
-    private static Bounds estimateTextSizeAWT(final FontData fontData, final String text) {
-        fmg.setFont(new java.awt.Font(fontData.getName(), 
-                KTextUtil.swtFontStyle2Awt(fontData.getStyle()), 
-                fontData.getHeight()));
+    private static Bounds estimateTextSizeAWT(final Font font, final String text) {
+        fmg.setFont(new java.awt.Font(font.getName(), 
+                KTextUtil.swtFontStyle2Awt(font.getStyle()), 
+                ((RenderedImage) font).getHeight()));
         final FontMetrics fm = fmg.getFontMetrics();
 
         final Bounds textBounds;
@@ -1088,14 +1011,14 @@ public final class PlacementUtil {
             // if no text string is given, take the bounds of a space character to get a proper
             // value for the height
             textBounds = new Bounds(fm.getStringBounds(" ", fmg));
-            textBounds.width = 0f; // omit the width in this case
+            textBounds.setWidth(0f); // omit the width in this case
         } else {
             textBounds = new Bounds(fm.getStringBounds(text, fmg));
         }
         
         if (Klighd.simulateSwtFontSizeInAwt()) {
-            textBounds.width  *= PT_TO_PX_FACTOR;
-            textBounds.height *= PT_TO_PX_FACTOR;
+            textBounds.setWidth(textBounds.getWidth() * PT_TO_PX_FACTOR);
+            textBounds.setHeight(textBounds.getHeight() * PT_TO_PX_FACTOR);
         }
         
         return textBounds;
@@ -1215,7 +1138,7 @@ public final class PlacementUtil {
      * 
      * @return the minimal required size
      */
-    private static Bounds estimateAreaPlacedChildSize(final KRendering rendering,
+    protected static Bounds estimateAreaPlacedChildSize(final KRendering rendering,
             final KAreaPlacementData apd, final Bounds initialSize) {
 
         final Bounds cSize = evaluateAreaPlacement(apd, initialSize);
@@ -1451,8 +1374,8 @@ public final class PlacementUtil {
         final float absYOffest = vertSize.getFirst();
         final float relHeight = vertSize.getSecond();
 
-        bounds.width = (relWidth == 0f ? absXOffest : (bounds.width  + absXOffest) / relWidth);
-        bounds.height = (relHeight == 0f ? absYOffest : (bounds.height  + absYOffest) / relHeight);
+        bounds.setWidth((relWidth == 0f ? absXOffest : (bounds.getWidth()  + absXOffest) / relWidth));
+        bounds.setHeight((relHeight == 0f ? absYOffest : (bounds.getHeight()  + absYOffest) / relHeight));
         
         return bounds;
     }
@@ -1513,10 +1436,10 @@ public final class PlacementUtil {
             }
 
             // update the insets using the new bounds
-            leftInset += bounds.x;
-            rightInset += currentBounds.width - bounds.x - bounds.width;
-            topInset += bounds.y;
-            bottomInset += currentBounds.height - bounds.y - bounds.height;
+            leftInset += bounds.getX();
+            rightInset += currentBounds.getWidth() - bounds.getX() - bounds.getWidth();
+            topInset += bounds.getY();
+            bottomInset += currentBounds.getHeight() - bounds.getY() - bounds.getHeight();
 
             // dereference all rendering references
             while (currentRendering instanceof KRenderingRef) {
@@ -1599,9 +1522,9 @@ public final class PlacementUtil {
      *            the given bounds
      * @return the actual polyline's bounding box' bounds
      */
-    private static Bounds evaluatePolylineBounds(final KPolyline line, final Bounds givenBounds) {
+    protected static Bounds evaluatePolylineBounds(final KPolyline line, final Bounds givenBounds) {
         if (line == null || line.getPoints().isEmpty()) {
-            return Bounds.of(givenBounds.width, givenBounds.height);
+            return Bounds.of(givenBounds.getWidth(), givenBounds.getHeight());
         }
 
         // evaluate the points of the polyline inside the parent bounds to compute the bounding box

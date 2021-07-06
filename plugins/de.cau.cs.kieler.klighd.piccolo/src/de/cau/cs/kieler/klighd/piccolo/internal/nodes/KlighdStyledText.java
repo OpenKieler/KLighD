@@ -22,6 +22,8 @@ import com.google.common.base.Strings;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.microlayout.EclipsePlacementUtil;
 import de.cau.cs.kieler.klighd.krendering.KText;
 import de.cau.cs.kieler.klighd.microlayout.Bounds;
 import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
@@ -65,16 +67,16 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     private FontData fontData = null;
 
     private int penAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
-    private RGB penColor = KlighdConstants.BLACK;
+    private RGB penColor = EclipseKlighdConstants.BLACK;
 
     private int paintAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
     private RGB paint = null;
     private RGBGradient paintGradient = null;
 
     private int underlining = KlighdConstants.NO_FONT_UNDERLINING;
-    private RGB underlineColor = KlighdConstants.BLACK;
+    private RGB underlineColor = EclipseKlighdConstants.BLACK;
     private boolean strikeout = false;
-    private RGB strikeoutColor = KlighdConstants.BLACK;
+    private RGB strikeoutColor = EclipseKlighdConstants.BLACK;
 
     private boolean occludedOnMainDiagram = false;
 
@@ -85,8 +87,8 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      *            The KText view model element containing the string to be displayed.
      */
     public KlighdStyledText(final KText theKText) {
-        this(theKText.getText(), KlighdConstants.DEFAULT_FONT,
-                PlacementUtil.getTestingTextSize(theKText));
+        this(theKText.getText(), EclipseKlighdConstants.DEFAULT_FONT,
+                EclipsePlacementUtil.getTestingTextSize(theKText));
         this.setRendering(theKText);
     }
 
@@ -97,7 +99,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
      *            The initial text.
      */
     public KlighdStyledText(final String theText) {
-        this(theText, KlighdConstants.DEFAULT_FONT, null);
+        this(theText, EclipseKlighdConstants.DEFAULT_FONT, null);
     }
 
     /**
@@ -118,7 +120,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
     private KlighdStyledText(final String theText, final FontData theFont, final Bounds testingSize) {
         super();
         this.text = theText;
-        this.setFont(theFont != null ? theFont : KlighdConstants.DEFAULT_FONT);
+        this.setFont(theFont != null ? theFont : EclipseKlighdConstants.DEFAULT_FONT);
         this.testingSize = testingSize;
     }
 
@@ -399,7 +401,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
             // lazy (re-)computation of the figure's (local) bounds if the bounds are set 'empty'
             this.setBounds(
                 testingSize != null ? testingSize.toRectangle2D()
-                    : PlacementUtil.estimateTextSize(this.fontData, this.text).toRectangle2D());
+                    : EclipsePlacementUtil.estimateTextSize(this.fontData, this.text).toRectangle2D());
 
             // update the scale-based visibility bounds (limits) according to specification defined
             //  on the corresponding KText element (either in absolute px or zoom scale fractions)
@@ -466,7 +468,7 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
         }
 
         if (this.paint != null || this.paintGradient != null) {
-            graphics.setLineAttributes(KlighdConstants.DEFAULT_LINE_ATTRIBUTES);
+            graphics.setLineAttributes(EclipseKlighdConstants.DEFAULT_LINE_ATTRIBUTES);
             graphics.fill(getBoundsReference());
         }
 
@@ -479,13 +481,13 @@ public class KlighdStyledText extends KlighdNode.KlighdFigureNode<KText> {
             graphics.setStrokeColor(this.penColor);
 
         } else {
-            graphics.setStrokeColor(KlighdConstants.BLACK);
+            graphics.setStrokeColor(EclipseKlighdConstants.BLACK);
         }
 
         if (fontData != null) {
             graphics.setFont(fontData);
         } else {
-            graphics.setFont(KlighdConstants.DEFAULT_FONT);
+            graphics.setFont(EclipseKlighdConstants.DEFAULT_FONT);
         }
 
         addSemanticData(kpc);

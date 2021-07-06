@@ -31,7 +31,6 @@ import org.junit.runners.MethodSorters;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
-import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewChangeListener;
 import de.cau.cs.kieler.klighd.IViewChangeListener.ViewChange;
 import de.cau.cs.kieler.klighd.Klighd;
@@ -39,11 +38,12 @@ import de.cau.cs.kieler.klighd.LightDiagramLayoutConfig;
 import de.cau.cs.kieler.klighd.ViewChangeType;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ZoomStyle;
+import de.cau.cs.kieler.klighd.eclipse.IEclipseViewer;
+import de.cau.cs.kieler.klighd.eclipse.viewers.EclipseContextViewer;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
 import de.cau.cs.kieler.klighd.piccolo.viewer.PiccoloViewer;
 import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
-import de.cau.cs.kieler.klighd.viewers.ContextViewer;
 
 /**
  * Tests KLighD's view change notification mechanism, especially
@@ -83,12 +83,12 @@ public class ViewChangedNotificationTest {
         shell.setLocation(100, 100);
         shell.setLayout(new FillLayout());
 
-        viewContext = new ViewContext((IDiagramWorkbenchPart) null, KlighdTestPlugin.loadTestModel())
+        viewContext = new ViewContext(KlighdTestPlugin.loadTestModel())
                 .configure(new KlighdSynthesisProperties().useViewer(PiccoloViewer.ID));
 
-        new ContextViewer(shell).setModel(viewContext, true);
+        new EclipseContextViewer(shell).setModel(viewContext, true);
 
-        heightDelta = 200 - viewContext.getViewer().getControl().getSize().y;
+        heightDelta = 200 - ((IEclipseViewer) viewContext.getViewer()).getControl().getSize().y;
         shell.setSize(300, 200 + heightDelta);
 
         viewContext.update(null);

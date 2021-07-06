@@ -27,7 +27,8 @@ import org.eclipse.swt.graphics.LineAttributes;
 import de.cau.cs.kieler.klighd.DiagramExportConfig;
 import de.cau.cs.kieler.klighd.KlighdConstants;
 import de.cau.cs.kieler.klighd.ViewContext;
-import de.cau.cs.kieler.klighd.microlayout.PlacementUtil;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.microlayout.EclipsePlacementUtil;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
 
 /**
@@ -95,7 +96,7 @@ public class AuthorConfidentialExportBranding extends AbstractExportBranding {
     @Override
     public void drawDiagramBackground(final KlighdSWTGraphics graphics,
             final DiagramExportConfig config) {
-        graphics.setFillColor(KlighdConstants.RED);
+        graphics.setFillColor(EclipseKlighdConstants.RED);
 
         final Rectangle2D bounds = config.diagramBounds.getBounds2D();
         bounds.setRect(0, 0, 200 + bounds.getWidth(), 400 + bounds.getHeight());
@@ -110,7 +111,7 @@ public class AuthorConfidentialExportBranding extends AbstractExportBranding {
         p.lineTo(100, 200);
         p.closePath();
 
-        graphics.setFillColor(KlighdConstants.BLUE);
+        graphics.setFillColor(EclipseKlighdConstants.BLUE);
 
         graphics.fill(p);
 
@@ -126,7 +127,7 @@ public class AuthorConfidentialExportBranding extends AbstractExportBranding {
     @Override
     public void drawDiagramTileBackground(final KlighdSWTGraphics graphics,
             final DiagramExportConfig config) {
-        graphics.setFillColor(KlighdConstants.YELLOW);
+        graphics.setFillColor(EclipseKlighdConstants.YELLOW);
         if (config.tileBounds.getWidth() > 1000 && config.tileBounds.getHeight() > 1000) {
             graphics.fill(new Rectangle2D.Double(500, 200,
                     config.tileBounds.getWidth() - 1000,
@@ -151,7 +152,7 @@ public class AuthorConfidentialExportBranding extends AbstractExportBranding {
 
         // make border
         graphics.setLineAttributes(new LineAttributes(BORDER_LINE_WIDTH));
-        graphics.setStrokeColor(KlighdConstants.WHITE);
+        graphics.setStrokeColor(EclipseKlighdConstants.WHITE);
         graphics.draw(new Rectangle2D.Double(
                 TOP_LEFT_RIGHT_MARGIN - BORDER_PADDING, TOP_LEFT_RIGHT_MARGIN - BORDER_PADDING,
                 innerWidth + 2 * BORDER_PADDING, innerHeight + 2 * BORDER_PADDING));
@@ -160,7 +161,7 @@ public class AuthorConfidentialExportBranding extends AbstractExportBranding {
         graphics.transform(AffineTransform.getTranslateInstance(TOP_LEFT_RIGHT_MARGIN,
                 bounds.getHeight() - TOP_LEFT_RIGHT_MARGIN));
         graphics.setFont(new FontData("Arial", KlighdConstants.DEFAULT_FONT_SIZE,
-                KlighdConstants.DEFAULT_FONT_STYLE_SWT));
+                EclipseKlighdConstants.DEFAULT_FONT_STYLE_SWT));
         graphics.drawText("Author: Max Mustermann");
 
     }
@@ -186,7 +187,7 @@ public class AuthorConfidentialExportBranding extends AbstractExportBranding {
         // size & scale
         final String confidential = "Confidential";
         final Rectangle size =
-                PlacementUtil.estimateTextSize(font, confidential).setBoundsOf(new Rectangle());
+                EclipsePlacementUtil.estimateTextSize(font, confidential).setBoundsOf(new Rectangle());
 
         final double scale = Math.sqrt(Math.pow(innerWidth, 2) + Math.pow(innerHeight, 2))
                 / size.width * WATERMARK_PADDING_FACTOR;
@@ -200,7 +201,7 @@ public class AuthorConfidentialExportBranding extends AbstractExportBranding {
         graphics.transform(AffineTransform.getRotateInstance(
                 innerWidth, -innerHeight, size.width / 2d, size.height / 2d));
 
-        graphics.setStrokeColor(KlighdConstants.BLACK);
+        graphics.setStrokeColor(EclipseKlighdConstants.BLACK);
         graphics.draw(size);
 
         graphics.transform(AffineTransform.getScaleInstance(scale, scale));

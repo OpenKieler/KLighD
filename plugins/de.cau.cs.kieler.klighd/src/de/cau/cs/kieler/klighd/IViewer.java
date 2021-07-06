@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.swt.widgets.Control;
 
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
 import de.cau.cs.kieler.klighd.kgraph.KNode;
@@ -39,13 +38,6 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer;
  * @kieler.rating proposed yellow by chsch
  */
 public interface IViewer {
-
-    /**
-     * Returns the control used by this viewer.
-     *
-     * @return the control
-     */
-    Control getControl();
 
     /**
      * Returns the {@link ContextViewer} containing this viewer.
@@ -608,28 +600,10 @@ public interface IViewer {
      * @return the scale factor of the given diagram node
      */
     double getScale(KNode diagramElement);
-
-
+    
     /* ----------------------------- */
     /*   the selection setting API   */
     /* ----------------------------- */
-
-    /**
-     * Provides the current {@link IKlighdSelection} maintained by the diagram viewer.<br>
-     * In earlier versions the return type was {@link org.eclipse.jface.viewers.ISelection}, which is
-     * the super interface of {@link IKlighdSelection}.
-     *
-     * @return the current {@link IKlighdSelection}
-     */
-    IKlighdSelection getSelection();
-
-    /**
-     * Provides the current {@link KlighdTreeSelection} provided by the diagram viewer.
-     *
-     * @return the current {@link KlighdTreeSelection} or <code>null</code> if the current selection
-     *         is not of type {@link KlighdTreeSelection}
-     */
-    KlighdTreeSelection getDiagramSelection();
 
     /**
      * Adds or removes the representative of the provided element to/from the current selection

@@ -11,7 +11,7 @@
  * This code is provided under the terms of the Eclipse Public License (EPL).
  * See the file epl-v10.html for the license text.
  */
-package de.cau.cs.kieler.klighd.internal;
+package de.cau.cs.kieler.klighd.eclipse.internal;
 
 import org.eclipse.ui.part.IPage;
 

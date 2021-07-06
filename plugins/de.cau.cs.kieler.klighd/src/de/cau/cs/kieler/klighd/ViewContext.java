@@ -13,6 +13,7 @@
  */
 package de.cau.cs.kieler.klighd;
 
+import java.awt.Composite;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -27,8 +28,6 @@ import org.eclipse.elk.graph.properties.IProperty;
 import org.eclipse.elk.graph.properties.IPropertyHolder;
 import org.eclipse.elk.graph.properties.MapPropertyHolder;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -76,20 +75,14 @@ public class ViewContext extends MapPropertyHolder {
     /** the serial version UID. */
     private static final long serialVersionUID = -431994394109554393L;
 
-    /** the part the source model was selected from (if can reasonably be determined). */
-    private transient IWorkbenchPart sourceWorkbenchPart = null;
-
-    /** the workbench part for which the viewer is created. */
-    private IDiagramWorkbenchPart diagramWorkbenchPart;
-
     /** the viewer provider. */
-    private transient IViewerProvider viewerProvider = null;
+    protected transient IViewerProvider viewerProvider = null;
 
     /** the update strategy. */
     private transient IUpdateStrategy updateStrategy = null;
 
     /** the {@link ISynthesis} being applied. */
-    private transient ISynthesis diagramSynthesis = null;
+    protected transient ISynthesis diagramSynthesis = null;
 
     /** a fall-back instance of {@link DuplicatingDiagramSynthesis}, is instantiated if necessary. */
     private transient ISynthesis duplicator = null;
@@ -101,13 +94,13 @@ public class ViewContext extends MapPropertyHolder {
 
     /** the view model is initiated while configuring the involved {@link IUpdateStrategy} and kept
      * for the whole life-cycle of the view context, in order to enable proper incremental update. */
-    private KNode viewModel = createViewModel();
+    protected KNode viewModel = createViewModel();
 
     /** the {@link IViewer} being in charge of showing this {@link ViewContext}. */
-    private IViewer viewer = null;
+    protected IViewer viewer = null;
 
     /** the {@link #viewer} if it is a {@link ILayoutRecorder}, <code>null</code> otherwise. */
-    private ILayoutRecorder layoutRecorder = null;
+    protected ILayoutRecorder layoutRecorder = null;
 
     /** the view-specific zoom style, initialized with the value defined in the preference store. */
     private ZoomStyle zoomStyle = KlighdPreferences.getPreferredZoomStyle();
@@ -115,14 +108,11 @@ public class ViewContext extends MapPropertyHolder {
     /**
      * Standard constructor.
      *
-     * @param diagramPart
-     *            the {@link IDiagramWorkbenchPart} the diagram is shown in
      * @param inputModel
      *            the source model to be represented by a diagram
      */
-    public ViewContext(final IDiagramWorkbenchPart diagramPart, final Object inputModel) {
+    public ViewContext(final Object inputModel) {
         super();
-        this.diagramWorkbenchPart = diagramPart;
         this.businessModel = inputModel;
         this.viewModel.eAdapters().add(tracer);
 
@@ -289,7 +279,6 @@ public class ViewContext extends MapPropertyHolder {
         };
     }
 
-
     /**
      * Creates the wrapped {@link IViewer} instance that is actually in charge of drawing the diagram
      * into the provided SWT {@link Composite} widget <code>parent</code>. Returns <code>null</code>
@@ -301,10 +290,10 @@ public class ViewContext extends MapPropertyHolder {
      *            the parent {@link Composite} widget
      * @return the created viewer or <code>null</code> on failure
      */
-    public IViewer createViewer(final ContextViewer parentViewer, final Composite parent) {
+    public IViewer createViewer(final ContextViewer parentViewer) {
         if (this.viewerProvider != null) {
             // create the new viewer
-            this.viewer = this.viewerProvider.createViewer(parentViewer, parent);
+            this.viewer = this.viewerProvider.createViewer(parentViewer);
 
             if (this.viewer instanceof ILayoutRecorder) {
                 this.layoutRecorder = (ILayoutRecorder) viewer;
@@ -510,36 +499,6 @@ public class ViewContext extends MapPropertyHolder {
         } else {
             return inputType.isAssignableFrom(model.getClass());
         }
-    }
-
-
-    /**
-     * Returns the diagram workbench part.
-     *
-     * @return the {@link IDiagramWorkbenchPart}
-     */
-    public IDiagramWorkbenchPart getDiagramWorkbenchPart() {
-        return diagramWorkbenchPart;
-    }
-
-
-    /**
-     * Sets the source workbench part (part the source model has been chosen in).
-     *
-     * @param theSourceWorkbenchPart
-     *            the source workbench part (part the source model has been chosen in)
-     */
-    public void setSourceWorkbenchPart(final IWorkbenchPart theSourceWorkbenchPart) {
-        this.sourceWorkbenchPart = theSourceWorkbenchPart;
-    }
-
-    /**
-     * Returns the source workbench part.
-     *
-     * @return the source workbench part (part the source model has been chosen in)
-     */
-    public IWorkbenchPart getSourceWorkbenchPart() {
-        return sourceWorkbenchPart;
     }
 
     /**
@@ -821,7 +780,7 @@ public class ViewContext extends MapPropertyHolder {
 
     // ---------------------------------------------------------------------------------- //
     //  Offered action handling
-
+    
     /**
      * Passes the recommended layout options and related values provided by the employed diagram
      * synthesis.

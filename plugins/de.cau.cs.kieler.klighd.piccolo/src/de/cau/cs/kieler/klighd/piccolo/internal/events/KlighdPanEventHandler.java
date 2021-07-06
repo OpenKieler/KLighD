@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChange
 import org.eclipse.swt.widgets.Widget;
 
 import de.cau.cs.kieler.klighd.KlighdPreferences;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdPreferences;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.event.PPanEventHandler;
@@ -56,7 +57,7 @@ public class KlighdPanEventHandler extends PPanEventHandler {
 
         setAutopan(KlighdPreferences.isAdvancedPanningMode());
 
-        KlighdPreferences.registerPrefChangeListener(widget, new IPreferenceChangeListener() {
+        EclipseKlighdPreferences.registerPrefChangeListener(widget, new IPreferenceChangeListener() {
 
             @Override
             public void preferenceChange(final PreferenceChangeEvent event) {

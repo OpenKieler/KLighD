@@ -55,18 +55,11 @@ import de.cau.cs.kieler.klighd.util.KlighdSynthesisProperties;
  * @kieler.design proposed by chsch
  * @kieler.rating proposed yellow by chsch
  */
-public final class LightDiagramServices {
+public class LightDiagramServices {
 
-    private static final List<IProperty<?>> GLOBALOPTIONS =
+    protected static final List<IProperty<?>> GLOBALOPTIONS =
             Lists.newArrayList(CoreOptions.ANIMATE, CoreOptions.ANIM_TIME_FACTOR,
                     CoreOptions.MIN_ANIM_TIME, CoreOptions.MAX_ANIM_TIME);
-
-    /**
-     * A private constructor to prevent instantiation.
-     */
-    private LightDiagramServices() {
-        // do nothing
-    }
 
 
     /**
@@ -88,9 +81,8 @@ public final class LightDiagramServices {
         ViewContext theViewContext;
         // Ensure that the viewContext is present
         if (config.viewContext() == null) {
-            Pair<IDiagramWorkbenchPart, ViewContext> dwpandvc = 
-                    determineDWPandVC(config.workbenchPart(), config.viewContext());
-            theViewContext = dwpandvc.getSecond();
+            // TODO cannot happen, error case
+            theViewContext = null;
         } else {
             theViewContext = config.viewContext();
         }
@@ -112,12 +104,6 @@ public final class LightDiagramServices {
         // consider this as a failure according to the method doc!
         if (!successful) {
             return false;
-        }
-
-        final IDiagramWorkbenchPart diagramWP = theViewContext.getDiagramWorkbenchPart();
-
-        if (diagramWP != null) {
-            diagramWP.getSite().getPage().bringToTop(diagramWP);
         }
 
         config.performLayout();
@@ -143,33 +129,31 @@ public final class LightDiagramServices {
             return;
         }
 
-        final Pair<IDiagramWorkbenchPart, ViewContext> pair =
-                determineDWPandVC(config.workbenchPart(), config.viewContext());
-
-        if (pair == null || pair.getSecond() == null) {
+        final ViewContext theViewContext = config.viewContext();
+        if (theViewContext == null) {
             final String msg = "KLighD LightDiagramServices: Could not perform layout since no "
-                    + "ViewContext could be determined for IDiagramWorkbenchPart "
-                    + config.workbenchPart() + ". "
+                    + "ViewContext could be determined. "
                     + "Is the diagram correctly and completely initialized?";
             Klighd.handle(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
             return;
         }
 
-        final IDiagramWorkbenchPart thePart = pair.getFirst();
-        final ViewContext theViewContext = pair.getSecond();
+        // TODO what is the part in now eclipse context?
+//        final IDiagramWorkbenchPart thePart = pair.getFirst();
+        
 
-        if (thePart != null) {
-            final IViewer theViewer = thePart.getViewer();
-            if (theViewer == null
-                    || theViewer.getControl() != null && theViewer.getControl().isDisposed()) {
-                // This might happen, if the layout computation is to be executed asynchronously
-                //  and 'thePart' (and with that the corresponding control(s)) has been disposed
-                //  in the meantime.
-                // In that case the layout computation request can be considered out-dated
-                //  and some of the subsequent executions may fail, so...
-                return;
-            }
-        }
+//        if (thePart != null) {
+//            final IViewer theViewer = thePart.getViewer();
+//            if (theViewer == null
+//                    || theViewer.getControl() != null && theViewer.getControl().isDisposed()) {
+//                // This might happen, if the layout computation is to be executed asynchronously
+//                //  and 'thePart' (and with that the corresponding control(s)) has been disposed
+//                //  in the meantime.
+//                // In that case the layout computation request can be considered out-dated
+//                //  and some of the subsequent executions may fail, so...
+//                return;
+//            }
+//        }
 
         final ILayoutRecorder recorder = theViewContext.getLayoutRecorder();
         final KNode viewModel = theViewContext.getViewModel();
@@ -217,10 +201,10 @@ public final class LightDiagramServices {
                 }
             }
     
-            if (thePart instanceof ILayoutConfigProvider) {
-                extendedConfigurator
-                        .overrideWith(((ILayoutConfigProvider) thePart).getLayoutConfig());
-            }
+//            if (thePart instanceof ILayoutConfigProvider) {
+//                extendedConfigurator
+//                        .overrideWith(((ILayoutConfigProvider) thePart).getLayoutConfig());
+//            }
     
             if (config.options() != null) {
                 for (LayoutConfigurator c : Collections2.filter(config.options(),
@@ -246,19 +230,19 @@ public final class LightDiagramServices {
             final DiagramLayoutEngine engine = new KlighdLayoutSetup().getDiagramLayoutEngine();
             final IStatus status;
             
-            if (Klighd.IS_PLATFORM_RUNNING) {
-                final IElkCancelIndicator cancelationIndicator =
-                        thePart != null ? new DispositionAwareCancelationHandle(thePart) : null;
+//            if (Klighd.IS_PLATFORM_RUNNING) {
+//                final IElkCancelIndicator cancelationIndicator =
+//                        thePart != null ? new DispositionAwareCancelationHandle(thePart) : null;
+//
+//                status = ((EclipseDiagramLayoutEngine) engine).layout(thePart, diagramPart, cancelationIndicator, layoutParameters)
+//                        .getProperty(DiagramLayoutEngine.MAPPING_STATUS);
+//
+//            } else {
+            final IElkProgressMonitor progressMonitor = new NullElkProgressMonitor();
 
-                status = engine.layout(thePart, diagramPart, cancelationIndicator, layoutParameters)
-                        .getProperty(DiagramLayoutEngine.MAPPING_STATUS);
-
-            } else {
-                final IElkProgressMonitor progressMonitor = new NullElkProgressMonitor();
-
-                status = engine.layout(thePart, diagramPart, progressMonitor, layoutParameters)
-                        .getProperty(DiagramLayoutEngine.MAPPING_STATUS);
-            }
+            status = engine.layout(diagramPart, progressMonitor, layoutParameters)
+                    .getProperty(DiagramLayoutEngine.MAPPING_STATUS);
+//            }
 
             if (status != null && !status.isOK()) {
                 Klighd.log(status);
@@ -269,64 +253,6 @@ public final class LightDiagramServices {
             }
         }
         
-    }
-
-    private static Pair<IDiagramWorkbenchPart, ViewContext> determineDWPandVC(
-            final IDiagramWorkbenchPart workbenchPart, final ViewContext viewContext) {
-
-        final IDiagramWorkbenchPart thePart;
-        final ViewContext theViewContext;
-
-        if (workbenchPart != null) {
-            thePart = workbenchPart;
-            final IViewer theViewer = thePart.getViewer();
-            if (theViewer != null) {
-                theViewContext = theViewer.getViewContext();
-            } else {
-                theViewContext = null;
-            }
-
-        } else if (viewContext != null) {
-            theViewContext = viewContext;
-            thePart = theViewContext.getDiagramWorkbenchPart();
-
-        } else {
-            return null;
-        }
-
-        return Pair.of(thePart, theViewContext);
-    }
-
-    /**
-     * An implementation of {@link ILayoutCancelationIndicator} checking the provided
-     * {@link IDiagramWorkbenchPart} for disposition. Is handed over to the
-     * {@link DiagramLayoutEngine} in order to let it cancel layout runs if the corresponding
-     * {@link IDiagramWorkbenchPart} has been closed in the meantime.
-     *
-     * @author chsch
-     */
-    private static final class DispositionAwareCancelationHandle implements IElkCancelIndicator {
-
-        private final IDiagramWorkbenchPart workbenchPart;
-
-        /**
-         * Constructor.
-         *
-         * @param wb
-         *            the {@link IDiagramWorkbenchPart} to test for disposition
-         */
-        private DispositionAwareCancelationHandle(final IDiagramWorkbenchPart wb) {
-            workbenchPart = wb;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public boolean isCanceled() {
-            // by convention (I would like to say 'by definition' but there's no definition)
-            //  the employed viewer is only reset to 'null' during IDiagramWorkbenchPart.dispose()
-            return workbenchPart.getViewer() == null;
-        }
     }
 
     /* ---------------------------------------- */
@@ -343,7 +269,7 @@ public final class LightDiagramServices {
      *            the viewContext whose diagram diagram is to be arranged
      */
     public static void zoomDiagram(final ViewContext viewContext) {
-        zoomDiagram(null, viewContext, null);
+        zoomDiagram(viewContext, null);
     }
 
     /**
@@ -357,71 +283,22 @@ public final class LightDiagramServices {
      * @param animate
      *            zoom with or without animation
      */
-    public static void zoomDiagram(final ViewContext viewContext, final boolean animate) {
-        zoomDiagram(null, viewContext, animate);
-    }
+    public static void zoomDiagram(final ViewContext viewContext, final Boolean animate) {
 
-    /**
-     * Performs zoom on the diagram represented by the given {@link IDiagramWorkbenchPart} based on
-     * the current {@link ZoomStyle} defined for the view context.
-     *
-     * The configurations of 'animate' are taken from the preference settings.
-     *
-     * @param viewPart
-     *            the diagram view part showing the diagram to layout
-     */
-    public static void zoomDiagram(final IDiagramWorkbenchPart viewPart) {
-        zoomDiagram(viewPart, null, null);
-    }
-
-    /**
-     * Performs zoom on the diagram represented by the given {@link IDiagramWorkbenchPart} based on
-     * the current {@link ZoomStyle} defined for the view context.
-     *
-     * The configurations of 'animate' are taken from the preference settings.
-     *
-     * @param viewPart
-     *            the diagram view part showing the diagram to layout
-     * @param animate
-     *            zoom with or without animation
-     */
-    public static void zoomDiagram(final IDiagramWorkbenchPart viewPart, final boolean animate) {
-        zoomDiagram(viewPart, null, animate);
-    }
-
-    /**
-     * Performs zoom on the diagram represented by the given {@link IDiagramWorkbenchPart} of
-     * {@link ViewContext} based on the current {@link ZoomStyle} defined for the view context.
-     *
-     * @param workbenchPart
-     *            the {@link IDiagramWorkbenchPart} part showing the diagram to zoom
-     * @param viewContext
-     *            the {@link ViewContext} whose diagram is to be zoomed
-     * @param animate
-     *            zoom with or without animation
-     */
-    private static void zoomDiagram(final IDiagramWorkbenchPart workbenchPart,
-            final ViewContext viewContext, final Boolean animate) {
-
-        final Pair<IDiagramWorkbenchPart, ViewContext> pair =
-                determineDWPandVC(workbenchPart, viewContext);
-
-        if (pair == null || pair.getSecond() == null) {
+        if (viewContext == null) {
             final String msg = "KLighD LightDiagramServices: Could not perform zoom since no "
-                    + "ViewContext could be determined for IDiagramWorkbenchPart "
-                    + workbenchPart + ". "
+                    + "ViewContext could be determined. "
                     + "Is the diagram correctly and completely initialized?";
             Klighd.handle(new Status(IStatus.ERROR, Klighd.PLUGIN_ID, msg));
             return;
         }
 
-        final ViewContext theViewContext = pair.getSecond();
         final boolean doAnimate = animate != null
                 ? animate.booleanValue() : KlighdPreferences
                         .getPreferenceStore().getBoolean(KlighdPreferences.ANIMATE_LAYOUT);
 
-        if (theViewContext.getZoomStyle() != ZoomStyle.NONE) {
-            theViewContext.getViewer().zoom(theViewContext.getZoomStyle(),
+        if (viewContext.getZoomStyle() != ZoomStyle.NONE) {
+            viewContext.getViewer().zoom(viewContext.getZoomStyle(),
                     doAnimate ? KlighdConstants.DEFAULT_ANIMATION_TIME : 0);
         }
     }

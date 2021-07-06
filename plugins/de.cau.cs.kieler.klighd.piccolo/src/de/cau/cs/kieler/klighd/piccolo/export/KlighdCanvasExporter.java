@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Control;
 
-import de.cau.cs.kieler.klighd.IDiagramExporter;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramExporter;
 import de.cau.cs.kieler.klighd.piccolo.KlighdPiccolo;
 import de.cau.cs.kieler.klighd.piccolo.internal.KlighdCanvas;
 
@@ -65,7 +65,7 @@ public abstract class KlighdCanvasExporter extends AbstractDiagramExporter imple
      * @return {@link org.eclipse.core.runtime.Status#OK_STATUS Status#OK_STATUS} if the diagram
      *         export went successfully, an {@link IStatus} providing information on the failure
      *         otherwise.
-     * @see IDiagramExporter#export(de.cau.cs.kieler.klighd.IDiagramExporter.ExportData, Control)
+     * @see IDiagramExporter#export(de.cau.cs.kieler.klighd.eclipse.IDiagramExporter.ExportData, Control)
      */
     public abstract IStatus export(KlighdCanvas canvas, ExportData data);
 }

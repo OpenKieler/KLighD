@@ -42,6 +42,7 @@ import com.google.common.collect.Maps;
 
 import de.cau.cs.kieler.klighd.Klighd;
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.KRendering;
 import de.cau.cs.kieler.klighd.piccolo.KlighdNode;
 import de.cau.cs.kieler.klighd.piccolo.KlighdSWTGraphics;
@@ -100,7 +101,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
     private Stroke stroke = new BasicStroke();
 
     private int strokeAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
-    private RGB strokePaint = KlighdConstants.BLACK;
+    private RGB strokePaint = EclipseKlighdConstants.BLACK;
     private RGBGradient strokePaintGradient = null;
 
     private int paintAlpha = KlighdConstants.ALPHA_FULL_OPAQUE;
@@ -731,7 +732,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         }
 
         graphics.setAlpha(currentAlpha);
-        final LineAttributes defaults = KlighdConstants.DEFAULT_LINE_ATTRIBUTES; 
+        final LineAttributes defaults = EclipseKlighdConstants.DEFAULT_LINE_ATTRIBUTES; 
         graphics.setLineAttributes(skipCopyingLineAttributes ? defaults
                 : new LineAttributes(
                         // workaround for KIPRA-1925
@@ -798,7 +799,7 @@ public class KlighdPath extends KlighdNode.KlighdFigureNode<KRendering> implemen
         graphics.setTransform(t);
         // graphics.setLineWidth(1);
         graphics.setAlpha(KlighdConstants.ALPHA_FULL_OPAQUE);
-        graphics.setFillColor(KlighdConstants.WHITE);
+        graphics.setFillColor(EclipseKlighdConstants.WHITE);
         if (swt) {
             graphics.fill(shapePath);
         } else {

@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 
 import de.cau.cs.kieler.klighd.KlighdConstants;
+import de.cau.cs.kieler.klighd.eclipse.EclipseKlighdConstants;
 import de.cau.cs.kieler.klighd.krendering.Underline;
 import de.cau.cs.kieler.klighd.piccolo.internal.nodes.KlighdStyledText;
 import de.cau.cs.kieler.klighd.piccolo.internal.util.RGBGradient;
@@ -145,7 +146,7 @@ public abstract class KlighdTextController extends PNodeController<KlighdStyledT
                 getNode().setUnderline(KlighdConstants.NO_FONT_UNDERLINING, color);
             }
         } else {
-            getNode().setUnderline(KlighdConstants.NO_FONT_UNDERLINING, KlighdConstants.BLACK);
+            getNode().setUnderline(KlighdConstants.NO_FONT_UNDERLINING, EclipseKlighdConstants.BLACK);
         }
     }
 

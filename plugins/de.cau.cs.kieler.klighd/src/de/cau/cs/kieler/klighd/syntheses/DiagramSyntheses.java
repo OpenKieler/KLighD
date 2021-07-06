@@ -21,9 +21,6 @@ import org.eclipse.elk.core.data.LayoutOptionData;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.util.Pair;
 import org.eclipse.elk.graph.properties.IProperty;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Display;
 
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.kgraph.KGraphElement;
@@ -838,25 +835,6 @@ public final class DiagramSyntheses {
         return krendering;
     }
 
-
-    /**
-     * Wraps the given rendering in a rendering displayed on selection and adds that to the given KGraph
-     * element. The selection rendering is returned to be modified further and is the one obtained by
-     * calling {@link #wrapWithStandardNodeSelectionRendering(ren)}.
-     *
-     * @param kge the KGraph element the rendering should be added to.
-     * @param ren the rendering to be wrapped. May be {@code null}, in which case no rendering is added
-     *            to the selection rendering.
-     * @return the selection rendering.
-     */
-    public static KContainerRendering addRenderingWithStandardSelectionWrapper(final KGraphElement kge,
-            final KRendering ren) {
-
-        final KContainerRendering selectionRendering = wrapWithStandardNodeSelectionRendering(ren);
-        kge.getData().add(selectionRendering);
-        return selectionRendering;
-    }
-
     /** Corner size of the rounded rectangle used to display selections. */
     private static final float SELECTION_RECTANGLE_CORNER_SIZE = 3.0f;
     /** How much larger the selection rectangle should be than the original rendering. */
@@ -867,95 +845,4 @@ public final class DiagramSyntheses {
     private static final int SELECTION_COLOR_G = 213;
     /** Blue component of the standard selection color. */
     private static final int SELECTION_COLOR_B = 255;
-
-    /**
-     * Creates a rendering displayed when an element is selected and wraps the given rendering with it.
-     * The selection rendering's color is retrieved from the operating system's colors and defaults to a
-     * standard color if the application is run headlessly.
-     *
-     * @param ren the rendering to be wrapped by the selection wrapper. May be {@code null}, in which
-     *            case the raw selection rendering is returned.
-     * @return the selection rendering.
-     */
-    public static KContainerRendering wrapWithStandardNodeSelectionRendering(final KRendering ren) {
-        // Retrieve the color to be used for selections (this is done here instead of just once
-        // statically to handle system color changes)
-        int selectionR = SELECTION_COLOR_R;
-        int selectionG = SELECTION_COLOR_G;
-        int selectionB = SELECTION_COLOR_B;
-
-        final Display display = Display.getCurrent();
-        if (display != null) {
-            final Color selectionColor = display.getSystemColor(SWT.COLOR_LIST_SELECTION);
-            selectionR = selectionColor.getRed();
-            selectionG = selectionColor.getGreen();
-            selectionB = selectionColor.getBlue();
-        }
-
-        final KRenderingFactory factory = KRenderingFactory.eINSTANCE;
-        final KRectangle containerRendering = factory.createKRectangle();
-
-        // Make container rectangle invisible
-        final KInvisibility containerInvisibility = factory.createKInvisibility();
-        containerInvisibility.setInvisible(true);
-        containerRendering.getStyles().add(containerInvisibility);
-
-        // Rounded rectangle used to display the selection
-        final KRoundedRectangle selectionRectangle = factory.createKRoundedRectangle();
-        selectionRectangle.setCornerWidth(SELECTION_RECTANGLE_CORNER_SIZE);
-        selectionRectangle.setCornerHeight(SELECTION_RECTANGLE_CORNER_SIZE);
-        containerRendering.getChildren().add(selectionRectangle);
-
-        // Background color of the rounded rectangle
-        final KBackground selectionRectangleBackground = factory.createKBackground();
-        selectionRectangleBackground.setColor(selectionR, selectionG, selectionB);
-        selectionRectangle.getStyles().add(selectionRectangleBackground);
-
-        // Line style and with of the rounded rectangle
-        final KLineStyle selectionRectangleLineStyle = factory.createKLineStyle();
-        selectionRectangleLineStyle.setLineStyle(LineStyle.DASH);
-        selectionRectangle.getStyles().add(selectionRectangleLineStyle);
-
-        final KLineWidth selectionRectangleLineWidth = factory.createKLineWidth();
-        selectionRectangleLineWidth.setLineWidth(1.0f);
-        selectionRectangle.getStyles().add(selectionRectangleLineWidth);
-
-        // Make selection rectangle only visible on selection
-        KInvisibility selectionVisibility = factory.createKInvisibility();
-        selectionVisibility.setInvisible(true);
-        selectionRectangle.getStyles().add(selectionVisibility);
-
-        selectionVisibility = factory.createKInvisibility();
-        selectionVisibility.setInvisible(false);
-        selectionVisibility.setSelection(true);
-        selectionRectangle.getStyles().add(selectionVisibility);
-
-        // Make the selection rectangle a bit larger than the original rendering
-        final KTopPosition topPosition = factory.createKTopPosition()
-                .setPosition(-SELECTION_RECTANGLE_ENLARGEMENT, 0);
-        final KLeftPosition leftPosition = factory.createKLeftPosition()
-                .setPosition(-SELECTION_RECTANGLE_ENLARGEMENT, 0);
-        final KPosition topLeftPosition = factory.createKPosition()
-                .setPositions(leftPosition, topPosition);
-
-        final KBottomPosition bottomPosition = factory.createKBottomPosition()
-                .setPosition(-SELECTION_RECTANGLE_ENLARGEMENT, 0);
-        final KRightPosition rightPosition = factory.createKRightPosition()
-                .setPosition(-SELECTION_RECTANGLE_ENLARGEMENT, 0);
-        final KPosition bottomRightPosition = factory.createKPosition()
-                .setPositions(rightPosition, bottomPosition);
-
-        final KAreaPlacementData areaPlacementData = factory.createKAreaPlacementData();
-        areaPlacementData.setTopLeft(topLeftPosition);
-        areaPlacementData.setBottomRight(bottomRightPosition);
-
-        selectionRectangle.setPlacementData(areaPlacementData);
-
-        // Add the original rendering to the container rendering
-        if (ren != null) {
-            containerRendering.getChildren().add(ren);
-        }
-
-        return containerRendering;
-    }
 }

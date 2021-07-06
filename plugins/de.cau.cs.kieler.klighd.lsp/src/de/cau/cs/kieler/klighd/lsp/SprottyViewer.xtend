@@ -26,7 +26,6 @@ import de.cau.cs.kieler.klighd.viewers.ContextViewer
 import java.util.List
 import org.eclipse.elk.core.math.KVector
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.swt.widgets.Composite
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static com.google.common.collect.Iterables.filter
@@ -50,7 +49,7 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder {
         /** The identifier of this viewer type as specified in the extension. */
         public static final String ID = Provider.name
         
-        override createViewer(ContextViewer parentViewer, Composite parent) {
+        override createViewer(ContextViewer parentViewer) {
             return new SprottyViewer()
         }
     }
@@ -93,13 +92,6 @@ class SprottyViewer extends AbstractViewer implements ILayoutRecorder {
     
     override getContextViewer() {
 //        println("get context viewer called")
-        return null
-    }
-    
-    override getControl() {
-//        println("is Visible called")
-        // cannot return any SWT element, as there is none. Cannot create any either, as SWT always needs a parent
-        // element.
         return null
     }
     

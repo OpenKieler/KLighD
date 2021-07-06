@@ -40,7 +40,7 @@ import edu.umd.cs.piccolo.util.PBounds;
  * Abstract diagram exporter providing the common methods
  * {@link #getExportedBounds(KlighdMainCamera, boolean)} and
  * {@link #drawDiagram(KlighdMainCamera, boolean, KlighdSWTGraphics, PBounds)} to be re-used in
- * concrete implementation of {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporter} and
+ * concrete implementation of {@link de.cau.cs.kieler.klighd.eclipse.IDiagramExporter IDiagramExporter} and
  * {@link de.cau.cs.kieler.klighd.IOffscreenRenderer IOffscreenRenderer}, in order to achieve
  * consistent behavior amongst all those implementations.
  *
@@ -253,7 +253,7 @@ public abstract class AbstractDiagramExporter {
      * Performs the diagram rendering work by means of the employed {@link KlighdSWTGraphicsEx}.<br>
      * <br>
      * This method is supposed to be used by all registered
-     * {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporters} in order to achieve
+     * {@link de.cau.cs.kieler.klighd.eclipse.IDiagramExporter IDiagramExporters} in order to achieve
      * consistent exporting behavior.
      *
      * @param exportConfig
@@ -316,7 +316,7 @@ public abstract class AbstractDiagramExporter {
      * {@link KlighdSWTGraphicsEx}.<br>
      * <br>
      * This method is supposed to be used by all registered
-     * {@link de.cau.cs.kieler.klighd.IDiagramExporter IDiagramExporters} in order to achieve
+     * {@link de.cau.cs.kieler.klighd.eclipse.IDiagramExporter IDiagramExporters} in order to achieve
      * consistent exporting behavior.
      * 
      * @param exportConfig

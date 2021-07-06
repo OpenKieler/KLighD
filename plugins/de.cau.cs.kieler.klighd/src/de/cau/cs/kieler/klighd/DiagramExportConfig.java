@@ -18,8 +18,6 @@ import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.Collections;
 
-import org.eclipse.swt.widgets.Display;
-
 import com.google.common.collect.ImmutableList;
 
 import de.cau.cs.kieler.klighd.IExportBranding.Trim;
@@ -168,32 +166,6 @@ public class DiagramExportConfig {
     public DiagramExportConfig(final ViewContext viewContext, final Rectangle2D diagramBounds,
             final Dimension tileBounds) {
         this(viewContext, diagramBounds, tileBounds, 1d, null, Trim.EMPTY_TRIM, 1);
-    }
-
-    /**
-     * Constructor.<br>
-     * {@link #dotsPerInch} is set to {@link Display#getDPI()} of the default Display.
-     *
-     * @param viewContext
-     *            the {@link ViewContext} belonging to the diagram being exported
-     * @param diagramBounds
-     *            the bounds of the diagram area to be exported
-     * @param tileBounds
-     *            the bounds of the particular diagram tiles
-     * @param diagramScale
-     *            the scale factor to be applied to the diagram (e.g. chosen by the user while
-     *            exporting raster images or during printout), just affects the image quality for
-     *            raster images, has no effect on the visibility of diagram elements or diagram
-     *            figure parts; see {@link #setApplyCameraZoomLevel(boolean)} for the latter
-     * @param pages
-     *            the number of pages the diagram is to be printed, at least 1.
-     */
-    public DiagramExportConfig(final ViewContext viewContext, final Rectangle2D diagramBounds,
-            final Dimension tileBounds, final double diagramScale, final int pages) {
-        this(viewContext, diagramBounds, tileBounds, diagramScale, new Point(), Trim.EMPTY_TRIM, pages);
-
-        final org.eclipse.swt.graphics.Point dpi = Display.getCurrent().getDPI();
-        this.dotsPerInch.setLocation(dpi.x, dpi.y);
     }
 
     /**

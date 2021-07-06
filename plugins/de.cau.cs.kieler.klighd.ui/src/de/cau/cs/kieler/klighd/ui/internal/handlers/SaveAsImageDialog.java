@@ -48,11 +48,11 @@ import org.eclipse.ui.dialogs.SaveAsDialog;
 
 import com.google.common.base.Strings;
 
-import de.cau.cs.kieler.klighd.IDiagramExporter.ExportData;
-import de.cau.cs.kieler.klighd.IDiagramExporter.ExportDataBuilder;
-import de.cau.cs.kieler.klighd.IDiagramExporter.TilingData;
 import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdDataManager.ExporterDescriptor;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramExporter.ExportData;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramExporter.ExportDataBuilder;
+import de.cau.cs.kieler.klighd.eclipse.IDiagramExporter.TilingData;
 import de.cau.cs.kieler.klighd.ViewContext;
 import de.cau.cs.kieler.klighd.ui.KlighdUIPlugin;
 import de.cau.cs.kieler.klighd.ui.internal.Messages;
