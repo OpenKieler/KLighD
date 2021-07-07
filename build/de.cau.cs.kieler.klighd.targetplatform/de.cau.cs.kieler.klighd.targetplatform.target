@@ -7,6 +7,8 @@
       <unit id="org.eclipse.emf.transaction.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.emf.ecore.xcore.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.lsp4j.sdk.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.ui.workbench" version="0.0.0"/>
+      <unit id="org.eclipse.ui.ide" version="0.0.0"/>
       <unit id="org.apache.batik.svggen" version="0.0.0"/>
       <repository location="https://download.eclipse.org/releases/2020-06/"/>
     </location>
@@ -21,7 +23,7 @@
       <unit id="org.eclipse.elk.sdk.feature.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.elk.ui.feature.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.elk.ui.feature.source.feature.group" version="0.0.0"/>
-      <repository location="https://download.eclipse.org/elk/updates/releases/0.7.1/"/>
+      <repository location="https://rtsys.informatik.uni-kiel.de/~kieler/updatesite/nightly/semantics-integration-new-features/pragmatics/klighd/elk/"/>
     </location>
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.xtext.sdk.feature.group" version="0.0.0"/>

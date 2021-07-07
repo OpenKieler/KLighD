@@ -37,7 +37,6 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchPart;
 
 import de.cau.cs.kieler.klighd.IDiagramWorkbenchPart;
 import de.cau.cs.kieler.klighd.IViewer;
@@ -73,7 +72,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
     public static final class Provider implements ILayoutConfigurationStore.Provider {
 
         @Override
-        public ILayoutConfigurationStore get(final IWorkbenchPart workbenchPart, final Object context) {
+        public ILayoutConfigurationStore get(final Object workbenchPart, final Object context) {
             if (context instanceof KGraphElement) {
                 try {
                     return new KlighdLayoutConfigurationStore(workbenchPart, (KGraphElement) context);
@@ -86,7 +85,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
     }
 
     /** The {@link IWorkbenchPart} attached to this context. */
-    private final IWorkbenchPart workbenchPart;
+    private final Object workbenchPart;
 
     /** The view model part used as context for this configuration store. */
     private final KGraphElement graphElement;
@@ -100,7 +99,7 @@ public class KlighdLayoutConfigurationStore implements ILayoutConfigurationStore
      *            The {@link KGraphElement} of the view model this {@link ILayoutConfigurationStore}
      *            is attached to.
      */
-    public KlighdLayoutConfigurationStore(final IWorkbenchPart workbenchPart,
+    public KlighdLayoutConfigurationStore(final Object workbenchPart,
             final KGraphElement context) {
         this.workbenchPart = workbenchPart;
         this.graphElement = context;

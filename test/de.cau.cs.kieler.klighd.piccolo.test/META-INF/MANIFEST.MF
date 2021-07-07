@@ -14,5 +14,6 @@ Require-Bundle: org.junit;bundle-version="4.8.0",
  de.cau.cs.kieler.klighd.piccolo,
  de.cau.cs.kieler.klighd.test,
  de.cau.cs.kieler.kgraph.text,
- de.cau.cs.kieler.klighd.krendering.extensions
+ de.cau.cs.kieler.klighd.krendering.extensions,
+ org.eclipse.jface
 Bundle-ActivationPolicy: lazy

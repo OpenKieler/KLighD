@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KIELER Lightweight Diagrams Standalone UI Setup
+Bundle-SymbolicName: de.cau.cs.kieler.klighd.standalone.ui
+Bundle-Version: 2.1.1.qualifier
+Bundle-Vendor: KIELER Lightweight Diagrams (KLighD)
+Automatic-Module-Name: de.cau.cs.kieler.klighd.standalone.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: org.eclipse.emf.ecore.xmi,
+ org.eclipse.elk.core,
+ de.cau.cs.kieler.klighd,
+ de.cau.cs.kieler.klighd.kgraph,
+ de.cau.cs.kieler.klighd.krendering,
+ de.cau.cs.kieler.klighd.piccolo,
+ org.eclipse.elk.alg.common;resolution:=optional,
+ org.eclipse.elk.alg.force;resolution:=optional,
+ org.eclipse.elk.alg.graphviz.dot;resolution:=optional,
+ org.eclipse.elk.alg.graphviz.layouter;resolution:=optional,
+ org.eclipse.elk.alg.layered;resolution:=optional,
+ org.eclipse.elk.alg.mrtree;resolution:=optional,
+ org.eclipse.elk.alg.radial;resolution:=optional
+Export-Package: de.cau.cs.kieler.klighd.standalone.ui

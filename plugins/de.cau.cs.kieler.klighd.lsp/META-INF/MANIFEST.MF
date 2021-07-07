@@ -37,3 +37,5 @@ Require-Bundle: de.cau.cs.kieler.kgraph.text,
  org.eclipse.sprotty;bundle-version="0.7.0",
  org.eclipse.xtext.ide;bundle-version="2.21.0",
  org.eclipse.xtext.xbase;bundle-version="2.21.0"
+Import-Package: org.eclipse.swt.graphics,
+ org.eclipse.swt.widgets

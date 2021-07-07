@@ -151,7 +151,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * {@inheritDoc}
      */
     @Override
-    public LayoutMapping buildLayoutGraph(final IWorkbenchPart workbenchPart, final Object diagramPart) {
+    public LayoutMapping buildLayoutGraph(final Object workbenchPart, final Object diagramPart) {
         final KNode viewModel;
         final ViewContext viewContext;
 
@@ -209,7 +209,7 @@ public class KlighdDiagramLayoutConnector implements IDiagramLayoutConnector {
      * @return the layout graph mapping
      */
     public LayoutMapping buildLayoutGraph(final KNode viewModel,
-            final boolean performSizeEstimation, final IWorkbenchPart workbenchPart) {
+            final boolean performSizeEstimation, final Object workbenchPart) {
         
         final LayoutMapping mapping = new LayoutMapping(workbenchPart);
         mapping.setProperty(EDGES, new LinkedList<KEdge>());

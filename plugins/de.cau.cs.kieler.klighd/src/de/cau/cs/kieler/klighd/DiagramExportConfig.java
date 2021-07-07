@@ -54,7 +54,7 @@ public class DiagramExportConfig {
 
     /**
      * The configured image resolution; during printouts this field is set to
-     * {@link org.eclipse.swt.printing.Printer#getDPI() Printer#getDPI()} of the chosen printer,
+     * {@link Printer#getDPI() Printer#getDPI()} of the chosen printer,
      * otherwise to {@link Display#getDPI()} of the default Display.
      *
      * @see org.eclipse.swt.graphics.Device#getDPI()
@@ -62,7 +62,7 @@ public class DiagramExportConfig {
     public final Point dotsPerInch;
 
     /**
-     * The {@link Trim} imposed by the used {@link org.eclipse.swt.printing.Printer Printer}
+     * The {@link Trim} imposed by the used {@link Printer Printer}
      * if the corresponding export is a print, is {@link Trim#EMPTY_TRIM} otherwise.
      */
     public final Trim deviceTrim;
@@ -214,7 +214,7 @@ public class DiagramExportConfig {
      *            the image resolution used by the employed drawing
      *            {@link org.eclipse.swt.graphics.Device Device}
      * @param deviceTrim
-     *            the {@link Trim} imposed the used {@link org.eclipse.swt.printing.Printer Printer},
+     *            the {@link Trim} imposed the used {@link Printer Printer},
      *            if the corresponding export is a printout
      * @param pages
      *            the number of pages the diagram is to be printed, at least 1.

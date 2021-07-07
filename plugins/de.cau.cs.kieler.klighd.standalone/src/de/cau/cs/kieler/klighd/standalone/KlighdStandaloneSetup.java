@@ -27,13 +27,9 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
-import de.cau.cs.kieler.klighd.IOffscreenRenderer;
-import de.cau.cs.kieler.klighd.KlighdDataManager;
 import de.cau.cs.kieler.klighd.KlighdOptions;
 import de.cau.cs.kieler.klighd.kgraph.KGraphPackage;
 import de.cau.cs.kieler.klighd.krendering.KRenderingPackage;
-import de.cau.cs.kieler.klighd.piccolo.export.BitmapOffscreenRenderer;
-import de.cau.cs.kieler.klighd.piccolo.export.SVGOffscreenRenderer;
 import de.cau.cs.kieler.klighd.util.ExpansionAwareLayoutOption;
 
 public class KlighdStandaloneSetup {
@@ -64,12 +60,6 @@ public class KlighdStandaloneSetup {
         LayoutMetaDataService.getInstance().registerLayoutMetaDataProviders(
                 Collections2.filter(providers, Predicates.notNull()).toArray(new ILayoutMetaDataProvider[0])
         );
-
-        KlighdDataManager.getInstance()
-                .registerOffscreenRenderer(BitmapOffscreenRenderer.ID, new BitmapOffscreenRenderer(),
-                        IOffscreenRenderer.BMP, IOffscreenRenderer.JPEG, IOffscreenRenderer.PNG)
-                .registerOffscreenRenderer(SVGOffscreenRenderer.ID, new SVGOffscreenRenderer(),
-                        IOffscreenRenderer.SVG);
     }
 
     protected ILayoutMetaDataProvider getForceMetaDataProvider() {

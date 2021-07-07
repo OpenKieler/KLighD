@@ -60,6 +60,11 @@
    </feature>
 
    <bundle id="de.cau.cs.kieler.klighd.standalone" version="2.1.1.qualifier"/>
+   <bundle id="de.cau.cs.kieler.klighd.standalone.source" version="2.1.1.qualifier"/>
+   <bundle id="de.cau.cs.kieler.klighd.standalone.mockup" version="2.1.1.qualifier"/>
+   <bundle id="de.cau.cs.kieler.klighd.standalone.mockup.source" version="2.1.1.qualifier"/>
+   <bundle id="de.cau.cs.kieler.klighd.standalone.ui" version="2.1.1.qualifier"/>
+   <bundle id="de.cau.cs.kieler.klighd.standalone.ui.source" version="2.1.1.qualifier"/>
    <bundle id="de.cau.cs.kieler.klighd.lsp" version="2.1.1.qualifier"/>
    <bundle id="de.cau.cs.kieler.klighd.lsp.source" version="2.1.1.qualifier"/>
 

@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KIELER Lightweight Diagrams Standalone Mockup
+Bundle-SymbolicName: de.cau.cs.kieler.klighd.standalone.mockup
+Bundle-Version: 2.1.1.qualifier
+Bundle-Vendor: KIELER Lightweight Diagrams (KLighD)
+Automatic-Module-Name: Standalone.Mockup
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: org.eclipse.core.runtime
+Export-Package: org.eclipse.jface.action,
+ org.eclipse.jface.operation,
+ org.eclipse.jface.preference,
+ org.eclipse.jface.resource,
+ org.eclipse.jface.util,
+ org.eclipse.jface.viewers,
+ org.eclipse.swt,
+ org.eclipse.swt.events,
+ org.eclipse.swt.graphics,
+ org.eclipse.swt.widgets,
+ org.eclipse.ui;uses:="org.eclipse.core.runtime,org.eclipse.swt.graphics,org.eclipse.swt.widgets",
+ org.eclipse.ui.part,
+ org.eclipse.ui.preferences,
+ org.eclipse.ui.progress,
+ org.eclipse.ui.statushandlers

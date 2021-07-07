@@ -39,16 +39,6 @@
       <artifactId>de.cau.cs.kieler.klighd.krendering.extensions</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>de.cau.cs.kieler.klighd.piccolo</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>de.cau.cs.kieler.klighd.piccolo.freehep</artifactId>
-      <version>${project.version}</version>
-    </dependency>
   </dependencies>
   <dependencyManagement>
     <dependencies>

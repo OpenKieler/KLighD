@@ -95,7 +95,7 @@ public final class KlighdConstants {
 
     /**
      * Default display dot density, basically copied from
-     * {@link org.eclipse.swt.internal.DPIUtil#DPI_ZOOM_100()}.
+     * {@link DPIUtil#DPI_ZOOM_100()}.
      * For more details checkout https://en.wikipedia.org/wiki/Dots_per_inch
      */
     @SuppressWarnings("restriction")
