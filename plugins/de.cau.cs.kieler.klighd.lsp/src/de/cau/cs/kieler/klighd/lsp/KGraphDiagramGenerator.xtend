@@ -1,6 +1,6 @@
 /*
  * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
- *
+ * 
  * http://rtsys.informatik.uni-kiel.de/kieler
  * 
  * Copyright 2018,2020 by
@@ -82,8 +82,8 @@ import org.eclipse.xtext.util.CancelIndicator
  *      YangDiagramGenerator</a>
  */
 class KGraphDiagramGenerator implements IDiagramGenerator {
-	static val LOG = Logger.getLogger(KGraphDiagramGenerator)
-    
+    static val LOG = Logger.getLogger(KGraphDiagramGenerator)
+
     /**
      * A map that maps each {@link KGraphElement} to its {@link SModelElement}.
      * Convenient for finding a specific key KGraphElement faster.
@@ -92,7 +92,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     @Accessors(PUBLIC_GETTER)
     var Map<KGraphElement, SModelElement> kGraphToSModelElementMap
-    
+
     /**
      * A list containing all texts from the source KGraph inside Sprotty labels. Used for the simpler texts-only SGraph.
      * @see #generateTextDiagram
@@ -100,7 +100,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     @Accessors(PUBLIC_GETTER)
     var List<SKLabel> modelLabels
-    
+
     /**
      * A map containing all {@link KText}s from the source KGraph under the key of their ID in the texts-only SGraph.
      * @see #generateTextDiagram
@@ -108,7 +108,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
      */
     @Accessors(PUBLIC_GETTER)
     var Map<String, KText> textMapping
-    
+
     /**
      * The data of all {@link KImage}s contained in the view model.
      */
@@ -118,25 +118,25 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     /**
      * The root node of the translated {@link SGraph}.
      */
-	var SGraph diagramRoot
-	
-	/**
-	 * Provides functionality to tag SModelElements.
-	 */
-	@Inject
-	ITraceProvider traceProvider
-	
-	/**
-	 * Indicates if elements should be traced back to the lines of code in their resource.
-	 */
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-	var boolean activeTracing
-    
+    var SGraph diagramRoot
+
+    /**
+     * Provides functionality to tag SModelElements.
+     */
+    @Inject
+    ITraceProvider traceProvider
+
+    /**
+     * Indicates if elements should be traced back to the lines of code in their resource.
+     */
+    @Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
+    var boolean activeTracing
+
     /**
      * Generates unique IDs for any KGraphElement.
      */
     KGraphElementIdGenerator idGen
-    
+
     /**
      * List of all {@link KEdge}s that need to be generated in the end and added into the list that is the second
      * element of each pair.
@@ -157,23 +157,23 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     override generate(Context context) {
         // TODO: The context now contains more data (especially, also some IDiagramState). Check if this has advantages
         // over our solution
-		val content = context.resource.contents.head
-		var SGraph ret = null
-		if (content instanceof KNode) {
-			ret = toSGraph(content as KNode, context.resource.URI.toString, context.cancelIndicator)
-		}
-		return ret
-	}
-	
-	/**
-	 * Translates a plain {@link KNode} or a KNode translated by {@link #translateModel} to an {@link SGraph}. 
-	 * @param parentNode      the KNode that should be translated. This is the parent node containing all elements of
-	 *                        the graph, that is translated
-	 * @param uri             The uri of the source model the parent node was synthesized from. Used as the ID of the
-	 *                        generated graph.
-	 * @param cancelIndicator Indicates, if the action requesting this translation has already been canceled.
-	 */
-	def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
+        val content = context.resource.contents.head
+        var SGraph ret = null
+        if (content instanceof KNode) {
+            ret = toSGraph(content as KNode, context.resource.URI.toString, context.cancelIndicator)
+        }
+        return ret
+    }
+
+    /**
+     * Translates a plain {@link KNode} or a KNode translated by {@link #translateModel} to an {@link SGraph}. 
+     * @param parentNode      the KNode that should be translated. This is the parent node containing all elements of
+     *                        the graph, that is translated
+     * @param uri             The uri of the source model the parent node was synthesized from. Used as the ID of the
+     *                        generated graph.
+     * @param cancelIndicator Indicates, if the action requesting this translation has already been canceled.
+     */
+    def SGraph toSGraph(KNode parentNode, String uri, CancelIndicator cancelIndicator) {
         LOG.info("Generating diagram for input: '" + uri + "'")
 
         kGraphToSModelElementMap = new HashMap
@@ -194,11 +194,11 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         // Do post processing.
         postProcess()
 
-        return if (cancelIndicator.canceled) 
-               null
-           else 
-               diagramRoot
-	}
+        return if (cancelIndicator.canceled)
+            null
+        else
+            diagramRoot
+    }
 
     /**
      * Translates all {@code nodes} and their outgoing edges to {@link SModelElement}s. Also handles tracing and
@@ -320,10 +320,10 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         ].toList
 
         nodeElement.data = node.data.filter[KRenderingLibrary.isAssignableFrom(it.class)].toList
-        
+
         setProperties(nodeElement, node)
         findSpecialRenderings(filteredData)
-        
+
         val renderingContextData = RenderingContextData.get(node)
         // activate the element by default if it does not have an active/inactive status yet.
         if (!renderingContextData.containsPoperty(KlighdInternalProperties.ACTIVE)) {
@@ -337,7 +337,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             // If the expanded property does not exist yet, use the initial expansion.
             isExpanded = node.getProperty(KlighdProperties.EXPAND)
         }
-        
+
         nodeElement.children.addAll(createPorts(node.ports))
         nodeElement.children.addAll(createLabels(node.labels))
         if ((!node.children.empty) && isExpanded) {
@@ -348,7 +348,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         }
         return nodeElement
     }
-    
+
     /**
      * Set all properties supported by the client.
      */
@@ -356,18 +356,19 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         nodeElement.properties.put("layerId", node.getProperty(LayeredOptions.LAYERING_LAYER_ID))
         nodeElement.properties.put("positionId", node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_ID))
         nodeElement.properties.put("layerConstraint", node.getProperty(LayeredOptions.LAYERING_LAYER_CHOICE_CONSTRAINT))
-        nodeElement.properties.put("positionConstraint", node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT))
+        nodeElement.properties.put("positionConstraint",
+            node.getProperty(LayeredOptions.CROSSING_MINIMIZATION_POSITION_CHOICE_CONSTRAINT))
         nodeElement.properties.put("interactiveLayout", node.getProperty(CoreOptions.INTERACTIVE_LAYOUT))
         nodeElement.properties.put("algorithm", node.getProperty(CoreOptions.ALGORITHM))
         nodeElement.properties.put("desiredPosition", node.getProperty(RectPackingOptions.DESIRED_POSITION))
         nodeElement.properties.put("currentPosition", node.getProperty(RectPackingOptions.CURRENT_POSITION))
         nodeElement.properties.put("aspectRatio", node.getProperty(RectPackingOptions.ASPECT_RATIO))
-        
+
         var parent = node
         if (node.parent !== null) {
             parent = node.parent
         }
-        
+
         // The client expects every node to know what its direction is
         nodeElement.direction = parent.getProperty(LayeredOptions.DIRECTION)
     }
@@ -383,7 +384,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
         edgeElement.tooltip = edge.getProperty(KlighdProperties.TOOLTIP)
 
         val renderings = edge.data.filter[KRendering.isAssignableFrom(it.class)].toList
-        
+
         findSpecialRenderings(renderings)
         edgeElement.children.addAll(createLabels(edge.labels))
         edgeElement.junctionPoints = edge.getProperty(CoreOptions.JUNCTION_POINTS)
@@ -403,9 +404,9 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
     private def SKPort generatePort(KPort port) {
         val SKPort portElement = configSElement(SKPort, idGen.getId(port))
         portElement.tooltip = port.getProperty(KlighdProperties.TOOLTIP)
-        
-        val renderings = port.data.filter [ KRendering.isAssignableFrom(it.class)].toList
-        
+
+        val renderings = port.data.filter[KRendering.isAssignableFrom(it.class)].toList
+
         findSpecialRenderings(renderings)
         portElement.children.addAll(createLabels(port.labels))
 
@@ -560,6 +561,9 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             } else {
                 text = data.text
             }
+
+            data.properties.put(KlighdProperties.IS_NODE_TITLE, data.getProperty(KlighdProperties.IS_NODE_TITLE))
+
             // Found the original text, split it up into individual labels for each line.
             // If there is no text, ignore this KText.
             val lines = text?.split("\\r?\\n", -1)
@@ -574,19 +578,19 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
                 val identifier = KGraphFactory.eINSTANCE.createKIdentifier
                 var uniqueId = ""
                 do {
-                    uniqueId = diagramRoot.id + KGraphElementIdGenerator.ID_SEPARATOR + "texts-only" + 
-                    KGraphElementIdGenerator.ID_SEPARATOR + KGraphElementIdGenerator.LABEL_SEPARATOR 
-                    + Math.random + KGraphElementIdGenerator.ID_SEPARATOR + index
+                    uniqueId = diagramRoot.id + KGraphElementIdGenerator.ID_SEPARATOR + "texts-only" +
+                        KGraphElementIdGenerator.ID_SEPARATOR + KGraphElementIdGenerator.LABEL_SEPARATOR + Math.random +
+                        KGraphElementIdGenerator.ID_SEPARATOR + index
                 } while (textMapping.get(uniqueId) !== null)
                 identifier.id = uniqueId
                 newLabel.data += identifier
-                
+
                 // generate a new Label as if it would belong to the main model
                 val sKLabel = generateLabel(newLabel, false)
                 // All lines point towards the same original data. For matching, the index in the ID has to be taken
                 // into account as well to match it to its line.
                 textMapping.put(sKLabel.id, data)
-                
+
                 dataLabels += sKLabel
             ]
         } else if (data instanceof KContainerRendering) {
@@ -594,8 +598,8 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             if (data instanceof KImage) {
                 imageData = ImageData.of(data)
             }
-            
-            for (childData: data.children) {
+
+            for (childData : data.children) {
                 findSpecialRenderings(childData)
             }
         } else if (data instanceof KRenderingLibrary) {
@@ -612,7 +616,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             images.add(imageData)
         }
     }
-    
+
     /**
      * Get method for the mapping from generated IDs to their corresponding {@link KGraphElement}s.
      * 
@@ -631,7 +635,7 @@ class KGraphDiagramGenerator implements IDiagramGenerator {
             SLabel: 'label'
             SEdge: 'edge'
             SPort: 'port'
-            default: throw new IllegalArgumentException("Unknown SModelElement type: "+ element?.class)
+            default: throw new IllegalArgumentException("Unknown SModelElement type: " + element?.class)
         }
     }
 
